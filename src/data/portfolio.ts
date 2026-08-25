@@ -50,7 +50,7 @@ export const profile = {
     fr: null as string | null,
   },
 
-  site: process.env.NEXT_PUBLIC_SITE_URL ?? "https://malikbrand.dev",
+  site: process.env.NEXT_PUBLIC_SITE_URL ?? "https://malikboudine.vercel.app",
   github: "https://github.com/Poasherkir",
 };
 

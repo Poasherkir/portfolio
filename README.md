@@ -4,7 +4,7 @@ The source for my personal site: a full-stack and mobile developer portfolio bui
 around an interactive 3D keyboard where every keycap is a technology I actually
 ship with.
 
-Live: **https://malikboudine.vercel.app** *(update after first deploy)*
+Live: **<https://malikboudine.vercel.app>**
 
 This is the only public repository on my account. Every project the site talks
 about — Briefing Point Go, TechSub, BAC Archive — is a live product holding real
