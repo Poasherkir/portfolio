@@ -82,7 +82,7 @@ export default function ArchitectureDiagram({ projects }: { projects: Project[] 
           const filled = items.length > 0;
 
           return (
-            <li key={layer.id} className="relative bg-background/85 backdrop-blur-sm">
+            <li key={layer.id} className="relative bg-background/90 backdrop-blur-sm">
               <div
                 className={cn(
                   "grid gap-4 p-5 transition-opacity duration-300 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-8 md:p-6",

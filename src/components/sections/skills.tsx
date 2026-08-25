@@ -34,7 +34,7 @@ export default function Skills() {
       <div className="container">
         <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {skillGroups.map((group) => (
-            <RevealItem key={group.title} className="bg-background/80 p-6 backdrop-blur-md">
+            <RevealItem key={group.title} className="bg-background/88 p-6 backdrop-blur-md">
               <h3 className="eyebrow">{group.title}</h3>
               <ul className="mt-4 space-y-2">
                 {/* Top four only. The full matrix lives on /stack — repeating

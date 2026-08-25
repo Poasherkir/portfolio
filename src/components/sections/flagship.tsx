@@ -40,7 +40,7 @@ export default function Flagship() {
               </h2>
             </Reveal>
             <Reveal delay={0.06}>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              <p className="copy-halo mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 {project.tagline}
               </p>
             </Reveal>
@@ -70,7 +70,7 @@ export default function Flagship() {
                     <p className="eyebrow">
                       {String(i + 1).padStart(2, "0")} — {beat.label}
                     </p>
-                    <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+                    <p className="copy-halo mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
                       {beat.body}
                     </p>
                   </div>
@@ -98,7 +98,7 @@ export default function Flagship() {
             {project.metrics && project.metrics.length > 0 && (
               <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border">
                 {project.metrics.map((m) => (
-                  <RevealItem key={m.label} className="bg-background/80 p-5 backdrop-blur-sm">
+                  <RevealItem key={m.label} className="bg-background/88 p-5 backdrop-blur-sm">
                     <p className="font-display text-3xl font-bold tracking-tight text-brand">
                       {m.value}
                     </p>
@@ -109,7 +109,7 @@ export default function Flagship() {
             )}
 
             <Reveal delay={0.1}>
-              <dl className="mt-6 space-y-5 rounded-xl border border-border bg-card/60 p-6 backdrop-blur-sm">
+              <dl className="mt-6 space-y-5 rounded-xl border border-border bg-card/80 p-6 backdrop-blur-sm">
                 <div>
                   <dt className="eyebrow">Role</dt>
                   <dd className="mt-1.5 text-sm">{project.role}</dd>

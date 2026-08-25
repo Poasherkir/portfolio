@@ -53,7 +53,7 @@ function StudioEnvironment() {
     // RoomEnvironment is a brightly lit white studio. At full strength it
     // floods a near-black keycap all the way up to pastel — which is exactly
     // what kept happening. Keep it as a faint reflection, not a light source.
-    scene.environmentIntensity = 0.18;
+    scene.environmentIntensity = 0.3;
 
     // Dev-only handle, so the scene graph can be inspected from the console.
     if (process.env.NODE_ENV !== "production") {
@@ -264,6 +264,10 @@ export default function KeyboardScene() {
       >
         <Canvas
           shadows
+          // 2.5, not 3. R3F clamps to the display's own devicePixelRatio, so a
+          // higher cap is inert below 3x and costs 44% more pixels on the rare
+          // desktop that reports it. Measured no visible gain; the quality here
+          // comes from the lighting below, not from resolution.
           dpr={[1, isMobile ? 2 : 2.5]}
           camera={{ fov: 34, position: [0, 0, 9] }}
           // ACES (three's default) rolls bright colour toward white, which is
@@ -274,7 +278,7 @@ export default function KeyboardScene() {
             powerPreference: "high-performance",
             alpha: true,
             toneMapping: THREE.NeutralToneMapping,
-            toneMappingExposure: 0.95,
+            toneMappingExposure: 1.06,
           }}
           style={{ background: "transparent" }}
           onPointerMissed={() => setPinned(null)}

@@ -12,7 +12,7 @@ export default function Stats() {
       <div className="container">
         <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {headlineStats.map((stat) => (
-            <RevealItem key={stat.label} className="bg-background/80 p-7 backdrop-blur-sm">
+            <RevealItem key={stat.label} className="bg-background/88 p-7 backdrop-blur-sm">
               <p className="font-display text-5xl font-bold tracking-tight text-brand">
                 {stat.value}
               </p>

@@ -20,7 +20,7 @@ export default function Process() {
 
         <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {deliveryProcess.map((stage) => (
-            <RevealItem key={stage.step} className="bg-background/80 p-7 backdrop-blur-sm">
+            <RevealItem key={stage.step} className="bg-background/88 p-7 backdrop-blur-sm">
               <span className="font-mono text-xs text-brand">{stage.step}</span>
               <h3 className="mt-3 font-display text-lg font-semibold tracking-tight">
                 {stage.title}

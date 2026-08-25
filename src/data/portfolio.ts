@@ -430,15 +430,47 @@ export const projects: Project[] = [
     tags: ["Mobile", "Backend", "Automation"],
     stack: ["Flutter", "Dart", "go_router", "Supabase", "FastAPI", "Hive", "dio", "fl_chart"],
     valueProp: "Electronic Flight Bag for aviation crew workflows.",
-    architecture: {
-      client: ["Flutter", "Dart", "go_router", "fl_chart"],
-      logic: ["ChangeNotifier controllers", "AppScope"],
-      api: ["FastAPI (Amadeus load/pax, OFP)", "dio"],
-      data: ["Supabase Postgres", "Hive offline cache", "flutter_secure_storage"],
-      integrations: ["METAR/TAF", "ADS-B", "CTOT & delays", "eCrew", "Amadeus"],
-      automation: ["Remote config — force update or block a build"],
-      deploy: ["Shared nginx origin with the web app"],
-    },
+    /* PENDING ASSETS — re-enable the moment the five screenshots land in
+       public/assets/projects/. Kept verbatim so it is a one-line change.
+
+    // // Real screens from the production build, supplied by Malik.
+    // screens: [
+    //   {
+    //     src: "/assets/projects/bpg-home.webp",
+    //     alt: "Briefing Point Go home screen showing a layover in SRT, the next flight, and a pre-departure check scored 19 LOW",
+    //     caption: "Duty status and a scored pre-departure check",
+    //   },
+    //   {
+    //     src: "/assets/projects/bpg-roster.webp",
+    //     alt: "Roster screen with Today, Classic, Monthly, Grid and Swap views, a check-in button, the next flight and rest minimums",
+    //     caption: "Roster views, check-in and rest minimums",
+    //   },
+    //   {
+    //     src: "/assets/projects/bpg-tools.webp",
+    //     alt: "Tools screen listing flight calculation, time calculation, operations, airport data, logbook and other tool groups",
+    //     caption: "Tools grouped by task",
+    //   },
+    //   {
+    //     src: "/assets/projects/bpg-airports.webp",
+    //     alt: "Airport lookup screen with a search field for ICAO, IATA or name and a list of recently viewed airports",
+    //     caption: "Airport lookup by ICAO, IATA or name",
+    //   },
+    //   {
+    //     src: "/assets/projects/bpg-settings.webp",
+    //     alt: "Settings screen showing online status, credential storage and offline database sync state",
+    //     caption: "Offline database sync and credential storage",
+    //   },
+    // ],
+    // architecture: {
+    //   client: ["Flutter", "Dart", "go_router", "fl_chart"],
+    //   logic: ["ChangeNotifier controllers", "AppScope"],
+    //   api: ["FastAPI (Amadeus load/pax, OFP)", "dio"],
+    //   data: ["Supabase Postgres", "Hive offline cache", "flutter_secure_storage"],
+    //   integrations: ["METAR/TAF", "ADS-B", "CTOT & delays", "eCrew", "Amadeus"],
+    //   automation: ["Remote config — force update or block a build"],
+    //   deploy: ["Shared nginx origin with the web app"],
+    // },
+    */
     problem:
       "A pilot assembles a duty day from a dozen disconnected sources: roster, operational flight plan, load and passenger figures, slot times and delays, weather, NOTAMs, radiation exposure. On a phone, in an airport, minutes before pushback. Anything not in one place does not get read.",
     approach:

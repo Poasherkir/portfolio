@@ -92,7 +92,7 @@ export default function AboutPage() {
             {PROCESS.map((step) => (
               <RevealItem
                 key={step.n}
-                className="rounded-xl border border-border bg-card/50 p-7 backdrop-blur-sm"
+                className="rounded-xl border border-border bg-card/75 p-7 backdrop-blur-sm"
               >
                 <span className="font-mono text-xs text-brand">{step.n}</span>
                 <h3 className="mt-4 font-display text-lg font-semibold">{step.title}</h3>
@@ -107,7 +107,7 @@ export default function AboutPage() {
             <p className="eyebrow">Why me</p>
             <RevealGroup className="mt-6 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
               {proofPillars.map((pillar, i) => (
-                <RevealItem key={pillar.id} className="bg-background/80 p-7 backdrop-blur-sm md:p-9">
+                <RevealItem key={pillar.id} className="bg-background/88 p-7 backdrop-blur-sm md:p-9">
                   <span className="font-mono text-xs text-brand">
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -130,7 +130,7 @@ export default function AboutPage() {
               {skillGroups.map((group) => (
                 <RevealItem
                   key={group.title}
-                  className="rounded-xl border border-border bg-card/60 p-7 backdrop-blur-sm"
+                  className="rounded-xl border border-border bg-card/80 p-7 backdrop-blur-sm"
                 >
                   <h3 className="font-display text-lg font-semibold tracking-tight">
                     {group.title}

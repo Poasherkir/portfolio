@@ -13,6 +13,7 @@ import ProjectStatus from "@/components/projects/project-status";
 import CaseStudyNav from "@/components/projects/case-study-nav";
 import ArchitectureDiagram from "@/components/projects/architecture-diagram";
 import BeforeAfter from "@/components/projects/before-after";
+import ScreenGallery from "@/components/projects/screen-gallery";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -63,7 +64,7 @@ function Prose({
         <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
           {section.label}
         </h2>
-        <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
+        <p className="copy-halo mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
           {section.body}
         </p>
       </div>
@@ -97,6 +98,7 @@ export default async function CaseStudyPage({ params }: Params) {
     prose.problem,
     prose.approach,
     ...(project.architecture ? [{ key: "architecture", label: "Architecture" }] : []),
+    ...(project.screens?.length ? [{ key: "screens", label: "The app" }] : []),
     ...(project.beforeAfter ? [{ key: "pipeline", label: "Before / after" }] : []),
     prose.hardPart,
     prose.result,
@@ -200,7 +202,7 @@ export default async function CaseStudyPage({ params }: Params) {
                 </Button>
               )}
               {project.privateRepo && !project.links.repo && (
-                <div className="w-full rounded-xl border border-border bg-card/60 p-5 backdrop-blur-sm">
+                <div className="w-full rounded-xl border border-border bg-card/80 p-5 backdrop-blur-sm">
                   <p className="flex items-center gap-2 text-sm font-medium">
                     <Lock className="h-4 w-4 shrink-0 text-brand" />
                     {privateSource.label}
@@ -286,6 +288,23 @@ export default async function CaseStudyPage({ params }: Params) {
                 </Reveal>
               )}
 
+              {project.screens && project.screens.length > 0 && (
+                <Reveal as="section">
+                  <div id="screens" className="scroll-mt-28">
+                    <p className="eyebrow">{pad(num("screens"))} — The app</p>
+                    <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
+                      The app
+                    </h2>
+                    <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                      Screens from the build in production.
+                    </p>
+                    <div className="mt-8">
+                      <ScreenGallery screens={project.screens} variant="strip" />
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+
               {project.beforeAfter && (
                 <Reveal as="section">
                   <div id="pipeline" className="scroll-mt-28">
@@ -354,7 +373,7 @@ export default async function CaseStudyPage({ params }: Params) {
             <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
               <Link
                 href={`/projects/${prev.slug}`}
-                className="group bg-background/80 p-6 backdrop-blur-sm transition-colors hover:bg-card"
+                className="group bg-background/88 p-6 backdrop-blur-sm transition-colors hover:bg-card"
               >
                 <span className="flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted-foreground">
                   <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
@@ -366,7 +385,7 @@ export default async function CaseStudyPage({ params }: Params) {
               </Link>
 
               {/* Where you are. Not a link — nothing to go to. */}
-              <div className="bg-background/40 p-6 text-center backdrop-blur-sm">
+              <div className="bg-background/90 p-6 text-center backdrop-blur-sm">
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brand">
                   Currently reading
                 </span>
@@ -380,7 +399,7 @@ export default async function CaseStudyPage({ params }: Params) {
 
               <Link
                 href={`/projects/${next.slug}`}
-                className="group bg-background/80 p-6 text-right backdrop-blur-sm transition-colors hover:bg-card"
+                className="group bg-background/88 p-6 text-right backdrop-blur-sm transition-colors hover:bg-card"
               >
                 <span className="flex items-center justify-end gap-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted-foreground">
                   Next

@@ -31,7 +31,7 @@ export default function ProjectCard({
     : project.links.live ?? project.links.repo;
 
   const classes = cn(
-    "group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card/60 backdrop-blur-sm",
+    "group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card/80 backdrop-blur-sm",
     "transition-colors duration-300 hover:border-brand/45 focus-within:border-brand",
     className
   );

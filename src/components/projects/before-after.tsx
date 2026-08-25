@@ -40,7 +40,7 @@ function Column({
       className={
         isBrand
           ? "rounded-xl border border-brand/30 bg-brand/[0.06] p-6"
-          : "rounded-xl border border-border bg-card/50 p-6"
+          : "rounded-xl border border-border bg-card/75 p-6"
       }
     >
       <p className="eyebrow">{label}</p>

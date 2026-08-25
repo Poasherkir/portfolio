@@ -24,7 +24,7 @@ export default function ExperienceSection() {
             empty row; these are the details a client checks anyway. */}
         <div className="mb-10 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {about.facts.map((fact) => (
-            <div key={fact.label} className="bg-background/80 p-5 backdrop-blur-sm">
+            <div key={fact.label} className="bg-background/88 p-5 backdrop-blur-sm">
               <p className="eyebrow">{fact.label}</p>
               <p className="mt-1.5 text-sm leading-relaxed">{fact.value}</p>
             </div>

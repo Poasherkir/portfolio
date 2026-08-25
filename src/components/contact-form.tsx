@@ -94,7 +94,7 @@ export default function ContactForm() {
             id="budget"
             name="budget"
             defaultValue={BUDGETS[0]}
-            className="flex h-11 w-full rounded-lg border border-input bg-background/60 px-3 text-sm shadow-sm transition-colors focus-visible:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/25"
+            className="flex h-11 w-full rounded-lg border border-input bg-background/82 px-3 text-sm shadow-sm transition-colors focus-visible:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/25"
           >
             {BUDGETS.map((b) => (
               <option key={b} value={b}>

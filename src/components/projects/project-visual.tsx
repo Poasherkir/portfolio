@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
+import ScreenGallery from "./screen-gallery";
 
 /**
  * Cover art for a project.
@@ -27,6 +28,12 @@ export default function ProjectVisual({
   sizes?: string;
 }) {
   const cover = project.images[0];
+
+  // Real app screens beat a landscape cover for a mobile product — a phone
+  // screenshot letterboxed into 16:10 shows mostly nothing.
+  if (!cover && project.screens?.length) {
+    return <ScreenGallery screens={project.screens} priority={priority} className={className} />;
+  }
 
   if (cover) {
     return (

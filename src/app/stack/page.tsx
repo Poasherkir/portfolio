@@ -49,7 +49,7 @@ export default function StackPage() {
           {/* Legend + counts */}
           <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
             {ORDER.map((level) => (
-              <RevealItem key={level} className="bg-background/80 p-6 backdrop-blur-sm">
+              <RevealItem key={level} className="bg-background/88 p-6 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                   <span className={cn("h-2 w-2 rounded-full", LEVEL_DOT[level])} />
                   <span className="eyebrow">{LEVEL_LABEL[level]}</span>

@@ -30,7 +30,7 @@ export default function Engineering() {
             </Reveal>
 
             <Reveal delay={0.1}>
-              <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
+              <p className="copy-halo mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
                 {engineering.body}
               </p>
             </Reveal>
@@ -41,7 +41,7 @@ export default function Engineering() {
                   <h3 className="font-display text-base font-semibold tracking-tight">
                     {practice.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  <p className="copy-halo mt-2 text-sm leading-relaxed text-muted-foreground">
                     {practice.body}
                   </p>
                 </RevealItem>
@@ -50,7 +50,7 @@ export default function Engineering() {
           </div>
 
           <Reveal delay={0.12} className="lg:sticky lg:top-28 lg:self-start">
-            <div className="rounded-xl border border-border bg-card/60 p-7 backdrop-blur-sm">
+            <div className="rounded-xl border border-border bg-card/80 p-7 backdrop-blur-sm">
               <Lock className="h-5 w-5 text-brand" />
               <h3 className="mt-4 font-display text-lg font-semibold tracking-tight">
                 Why the repos are private

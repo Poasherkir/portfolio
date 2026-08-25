@@ -86,26 +86,26 @@ export const POSES: Record<Section, PoseSet> = {
   // Deep background, small and low. The flagship case study is the credibility
   // moment on this page; the board must not compete with it.
   flagship: {
-    desktop: { position: [2.4, -2.6, -4.4], rotation: [1.02, -0.44, -0.2], scale: 0.68 },
+    desktop: { position: [2.9, -2.3, -3.6], rotation: [1.02, -0.44, -0.2], scale: 0.8 },
     mobile: { position: [0, -3.8, -4.6], rotation: [1.06, -0.28, -0.1], scale: 0.5 },
   },
 
   // Receding: swung left and back so the project cards own the frame.
   projects: {
-    desktop: { position: [-3.4, 0.7, -3.2], rotation: [0.86, 0.62, 0.3], scale: 0.88 },
+    desktop: { position: [-3.5, 0.7, -2.6], rotation: [0.86, 0.62, 0.3], scale: 0.96 },
     mobile: { position: [0, 3.0, -3.8], rotation: [0.9, 0.4, 0.18], scale: 0.58 },
   },
 
   // Low and left, out from under the service cards.
   services: {
-    desktop: { position: [-3.0, -1.6, -2.4], rotation: [1.2, 0.45, 0.22], scale: 0.9 },
+    desktop: { position: [-3.2, -1.6, -1.9], rotation: [1.2, 0.45, 0.22], scale: 0.98 },
     mobile: { position: [0, -2.8, -3.2], rotation: [1.2, 0.3, 0.12], scale: 0.6 },
   },
 
   // High and far back, raked over. Reads as the board settling before the
   // teardown starts on the contact section.
   engineering: {
-    desktop: { position: [-2.6, 1.5, -3.8], rotation: [0.94, 0.5, 0.24], scale: 0.8 },
+    desktop: { position: [-3.0, 1.4, -3.0], rotation: [0.94, 0.5, 0.24], scale: 0.9 },
     mobile: { position: [0, 2.8, -4.0], rotation: [1.0, 0.3, 0.12], scale: 0.54 },
   },
 
@@ -121,20 +121,24 @@ export const POSES: Record<Section, PoseSet> = {
  *
  * Keyed to sections rather than to a fraction of total scroll: the page length
  * changes every time a section is added, and a hard-coded 0.55 stop silently
- * lands somewhere else the moment it does. Content-dense sections push the
- * board back to atmosphere; the stack section is where it takes the stage.
+ * lands somewhere else the moment it does.
+ *
+ * The board stays genuinely present the whole way down rather than dropping to
+ * near-invisible over text. Legibility is bought back where it is actually
+ * lost — the surfaces copy sits on are opaque enough to hold their own — not
+ * by dimming the thing the page is remembered for.
  */
 export const OPACITY: Record<Section, number> = {
   hero: 1,
-  flagship: 0.26,
-  projects: 0.32,
-  services: 0.32,
-  process: 0.42,
+  flagship: 0.58,
+  projects: 0.62,
+  services: 0.62,
+  process: 0.74,
   skills: 1,
-  about: 0.38,
-  experience: 0.5,
-  engineering: 0.34,
-  contact: 0.28,
+  about: 0.66,
+  experience: 0.78,
+  engineering: 0.62,
+  contact: 0.52,
 };
 
 /**

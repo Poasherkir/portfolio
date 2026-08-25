@@ -112,7 +112,7 @@ export default function ProjectSearch({ projects }: { projects: Project[] }) {
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          "inline-flex items-center gap-3 rounded-full border border-border bg-card/50 py-2 pl-4 pr-2.5 text-sm backdrop-blur-sm",
+          "inline-flex items-center gap-3 rounded-full border border-border bg-card/75 py-2 pl-4 pr-2.5 text-sm backdrop-blur-sm",
           "text-muted-foreground transition-colors hover:border-brand/45 hover:text-foreground",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         )}
@@ -131,7 +131,7 @@ export default function ProjectSearch({ projects }: { projects: Project[] }) {
             animate={{ opacity: 1 }}
             exit={reduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.16 }}
-            className="fixed inset-0 z-[100] flex items-start justify-center bg-background/70 p-4 pt-[12vh] backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-start justify-center bg-background/90 p-4 pt-[12vh] backdrop-blur-sm"
             onClick={close}
           >
             <motion.div

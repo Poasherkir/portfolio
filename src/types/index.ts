@@ -49,6 +49,14 @@ export type Project = {
   valueProp: string;
   /** Which layers this project actually has. Absent where the stack is unknown. */
   architecture?: ProjectArchitecture;
+  /**
+   * Portrait app screenshots, shown inside device frames.
+   *
+   * Separate from `images` on purpose: `images` are landscape cover art and go
+   * in 16:10 containers, these are ~9:20 phone screens and would be destroyed
+   * by the same crop.
+   */
+  screens?: { src: string; alt: string; caption: string }[];
   /** Only where a manual process was genuinely replaced by an automated one. */
   beforeAfter?: { before: string[]; via: string; after: string[] };
   /** Real-world value, in plain terms. Case studies only. */

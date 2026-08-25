@@ -33,7 +33,7 @@ export default function Header() {
         className={cn(
           "fixed inset-x-0 top-0 z-[1000] transition-colors duration-300",
           scrolled || open
-            ? "border-b border-border bg-background/80 backdrop-blur-md"
+            ? "border-b border-border bg-background/88 backdrop-blur-md"
             : "border-b border-transparent"
         )}
       >

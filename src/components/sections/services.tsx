@@ -35,7 +35,7 @@ export default function Services() {
             return (
               <RevealItem
                 key={service.id}
-                className="flex h-full flex-col rounded-xl border border-border bg-card/70 p-7 backdrop-blur-sm transition-colors hover:border-brand/40"
+                className="flex h-full flex-col rounded-xl border border-border bg-card/85 p-7 backdrop-blur-sm transition-colors hover:border-brand/40"
               >
                 <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-brand/30 bg-brand/10 text-brand">
                   <Icon className="h-5 w-5" />

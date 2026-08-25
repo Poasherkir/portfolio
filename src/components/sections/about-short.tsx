@@ -30,7 +30,7 @@ export default function AboutShort() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <p className="mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p className="copy-halo mt-6 text-base leading-relaxed text-muted-foreground md:text-lg">
               I&apos;m a Computer Science student and independent full-stack and mobile
               developer based in Algeria. Most of what I ship is the whole thing — the
               mobile client, the database schema behind it, the admin dashboard a team runs
@@ -39,7 +39,7 @@ export default function AboutShort() {
           </Reveal>
 
           <Reveal delay={0.14}>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p className="copy-halo mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
               {about.body[1]}
             </p>
           </Reveal>

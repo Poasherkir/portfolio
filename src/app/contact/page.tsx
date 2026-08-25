@@ -21,7 +21,7 @@ export default function ContactPage() {
       <Section className="py-16 md:py-24">
         <div className="container">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-20">
-            <div className="max-w-2xl rounded-xl border border-border bg-card/60 p-7 backdrop-blur-sm md:p-10">
+            <div className="max-w-2xl rounded-xl border border-border bg-card/80 p-7 backdrop-blur-sm md:p-10">
               <h2 className="font-display text-xl font-semibold tracking-tight">
                 Tell me about the project
               </h2>

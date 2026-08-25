@@ -8,7 +8,7 @@ export default function ProofStrip() {
   return (
     // No backdrop blur: the 3D board passes behind this strip, and blurring it
     // smeared the keycaps into a band of mush.
-    <div className="relative border-y border-border bg-background/70 py-4">
+    <div className="relative border-y border-border bg-background/90 py-4">
       <div className="mask-fade-x flex overflow-hidden">
         <ul className="flex shrink-0 animate-marquee items-center gap-10 pr-10 motion-reduce:animate-none">
           {proofStrip.map((fact) => (

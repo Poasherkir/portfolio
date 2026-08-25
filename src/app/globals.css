@@ -129,6 +129,19 @@
       0 1px 5px hsl(var(--background) / 0.85);
   }
 
+  /* Same idea as .heading-halo, tuned for body copy.
+   *
+   * The 3D board passes behind long-form paragraphs at real opacity now, and a
+   * card behind every block of prose would turn the page into a stack of
+   * boxes. A tight shadow buys the contrast back invisibly — the blur is much
+   * smaller than the heading version because a 22px halo on 16px text reads as
+   * a smudge rather than as separation. */
+  .copy-halo {
+    text-shadow:
+      0 1px 10px hsl(var(--background) / 0.92),
+      0 0 3px hsl(var(--background) / 0.8);
+  }
+
   /* Hairline grid used behind the hero and the services band. */
   .instrument-grid {
     background-image:
