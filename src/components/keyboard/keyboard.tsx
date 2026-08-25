@@ -8,7 +8,7 @@ import { RoundedBox } from "@react-three/drei";
 import { keycaps, type Keycap } from "@/data/portfolio";
 import { capAndInk, keycapTexture } from "./keycap-texture";
 import { CAP_GEOMETRY } from "./keycap-geometry";
-import { floatCeilingAt, opacityAt, poseAt, type Anchor } from "./poses";
+import { floatAmountAt, opacityAt, poseAt, type Anchor } from "./poses";
 
 const COLS = 6;
 const ROWS = keycaps.length;
@@ -85,7 +85,13 @@ function Cap({
     if (!g) return;
     const t = state.clock.elapsedTime;
     const lift = floatRef.current ?? 0;
-    const adrift = lift > 0.002;
+    // "Settled enough to behave like a surface." The caps always carry some
+    // lift now, so the old > 0.002 test was true everywhere and quietly
+    // disabled the neighbour ripple for good. 0.3 keeps the ripple alive
+    // through the stack section, where the board is in formation and being
+    // hovered, and drops it once the caps are genuinely scattered — you
+    // cannot ripple a cloud.
+    const adrift = lift > 0.3;
 
     // A pinned cap stays down; a hovered one bottoms out; otherwise it rests.
     // Neighbours dip toward whatever is hovered — the board reacts as a
@@ -187,8 +193,6 @@ function Cap({
 
 export type KeyboardProps = {
   anchorsRef: RefObject<Anchor[]>;
-  /** Cached scrollable height, refreshed on resize — never read per frame. */
-  maxScrollRef: RefObject<number>;
   /** Normalised cursor position, -1..1 on both axes. */
   pointerRef: RefObject<{ x: number; y: number }>;
   isMobile: boolean;
@@ -202,7 +206,6 @@ export type KeyboardProps = {
 
 export default function Keyboard({
   anchorsRef,
-  maxScrollRef,
   pointerRef,
   isMobile,
   activeId,
@@ -236,24 +239,12 @@ export default function Keyboard({
     if (!g) return;
     const t = state.clock.elapsedTime;
 
-    // Caps lift off the board across the back half of the page, so by the time
-    // the visitor reaches the bottom the keyboard has come apart around them.
-    //
-    // maxScroll is READ FROM A CACHE, never measured here. Touching
-    // scrollHeight forces a synchronous layout, and doing that every frame
-    // while Lenis is writing scroll positions thrashes layout — measured, it
-    // took frame time from 17ms idle to 32ms while scrolling.
-    const max = maxScrollRef.current ?? 0;
-    const progress = max > 0 ? window.scrollY / max : 0;
-    // Tuned to hit: 0 at the top, ~0.30 at a quarter, ~0.92 at half, and fully
-    // adrift by three quarters — so the caps spend the last stretch of the page
-    // floating rather than only breaking apart at the very end.
-    const ramp = Math.min(Math.max((progress - 0.05) / 0.545, 0), 1);
-    const drift = ramp * ramp * (3 - 2 * ramp); // smoothstep
-    // ...then clamped by the section, so the caps reassemble into a keyboard
-    // over the stack section and come apart again after it.
-    floatRef.current =
-      drift * floatCeilingAt(anchorsRef.current ?? [], window.scrollY);
+    // How adrift the caps are, straight from the section table — the same
+    // measured anchors that drive the pose and the opacity. There is no page-
+    // progress ramp any more: it kept the caps pinned flat across the whole
+    // first screen, and "further down the page" was only ever a proxy for
+    // "which section am I in", which the anchors already answer exactly.
+    floatRef.current = floatAmountAt(anchorsRef.current ?? [], window.scrollY);
 
     // Scrubbed, not switched: the pose is interpolated from the live scroll
     // offset every frame, so the board moves continuously with the page rather

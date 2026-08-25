@@ -142,25 +142,29 @@ export const OPACITY: Record<Section, number> = {
 };
 
 /**
- * A ceiling on how far the caps may drift apart, per section.
+ * How adrift the caps are, per section.
  *
- * The drift itself ramps with overall page progress, which is what was asked
- * for — but "half way down the page" stopped meaning "past the stack section"
- * the moment the page got longer. Rather than retune the ramp every time a
- * section is added, the stack section simply pulls the caps back down: it is
- * the one place where the board has to read as a keyboard, because its whole
- * job is letting you hover a key and see what it is.
+ * This used to be a ceiling multiplied by a ramp keyed to overall page
+ * progress, which meant the caps sat dead flat at the top of the page and only
+ * came alive past the halfway mark. Driving it straight from the section table
+ * — the same way opacity is — says the thing directly instead of deriving it
+ * from a proxy, and lets the board be airborne from the first screen.
+ *
+ * The shape still builds toward a full teardown at the bottom. The stack
+ * section is the one deliberate dip: the caps pull back into formation there
+ * because that is where you hover a key to read what it is, and a scattered
+ * cloud is both harder to aim at and no longer recognisably a keyboard.
  */
-export const FLOAT_CEILING: Record<Section, number> = {
-  hero: 1,
-  flagship: 1,
-  projects: 1,
-  services: 1,
-  process: 0.45,
-  skills: 0.05,
-  about: 0.5,
-  experience: 1,
-  engineering: 1,
+export const FLOAT_AMOUNT: Record<Section, number> = {
+  hero: 0.35,
+  flagship: 0.5,
+  projects: 0.62,
+  services: 0.68,
+  process: 0.5,
+  skills: 0.22,
+  about: 0.6,
+  experience: 0.8,
+  engineering: 0.9,
   contact: 1,
 };
 
@@ -259,14 +263,14 @@ export function opacityAt(anchors: Anchor[], scrollY: number): number {
   return OPACITY[last.section];
 }
 
-/** Interpolated drift ceiling for a scroll offset. Mirrors poseAt's walk. */
-export function floatCeilingAt(anchors: Anchor[], scrollY: number): number {
-  if (anchors.length === 0) return FLOAT_CEILING.hero;
-  if (anchors.length === 1) return FLOAT_CEILING[anchors[0].section];
-  if (scrollY <= anchors[0].at) return FLOAT_CEILING[anchors[0].section];
+/** Interpolated drift amount for a scroll offset. Mirrors poseAt's walk. */
+export function floatAmountAt(anchors: Anchor[], scrollY: number): number {
+  if (anchors.length === 0) return FLOAT_AMOUNT.hero;
+  if (anchors.length === 1) return FLOAT_AMOUNT[anchors[0].section];
+  if (scrollY <= anchors[0].at) return FLOAT_AMOUNT[anchors[0].section];
 
   const last = anchors[anchors.length - 1];
-  if (scrollY >= last.at) return FLOAT_CEILING[last.section];
+  if (scrollY >= last.at) return FLOAT_AMOUNT[last.section];
 
   for (let i = 0; i < anchors.length - 1; i++) {
     const a = anchors[i];
@@ -274,11 +278,11 @@ export function floatCeilingAt(anchors: Anchor[], scrollY: number): number {
     if (scrollY >= a.at && scrollY < b.at) {
       const span = b.at - a.at;
       const t = span <= 0 ? 0 : (scrollY - a.at) / span;
-      return lerp(FLOAT_CEILING[a.section], FLOAT_CEILING[b.section], smooth(t));
+      return lerp(FLOAT_AMOUNT[a.section], FLOAT_AMOUNT[b.section], smooth(t));
     }
   }
 
-  return FLOAT_CEILING[last.section];
+  return FLOAT_AMOUNT[last.section];
 }
 
 /** Which section currently owns the frame — used for the teardown trigger. */

@@ -98,7 +98,6 @@ export default function KeyboardScene() {
   const boardOpacity = useMotionValue(1);
 
   const anchorsRef = useRef<Anchor[]>([]);
-  const maxScrollRef = useRef(0);
   const pointerRef = useRef({ x: 0, y: 0 });
   const hoveredRef = useRef<Keycap | null>(null);
   const releaseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -154,9 +153,6 @@ export default function KeyboardScene() {
 
     const remeasure = () => {
       anchorsRef.current = measureAnchors();
-      // Cached here so the frame loop never has to touch scrollHeight.
-      maxScrollRef.current =
-        document.documentElement.scrollHeight - window.innerHeight;
     };
     remeasure();
 
@@ -308,7 +304,6 @@ export default function KeyboardScene() {
 
           <Keyboard
             anchorsRef={anchorsRef}
-            maxScrollRef={maxScrollRef}
             pointerRef={pointerRef}
             isMobile={isMobile}
             activeId={hovered?.id ?? null}
