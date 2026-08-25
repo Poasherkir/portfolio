@@ -1,4 +1,5 @@
 import type {
+  ArchLayerId,
   Experience,
   NavLink,
   Project,
@@ -40,8 +41,7 @@ export const profile = {
     { name: "Arabic", level: "Native" },
   ],
 
-  /** Pending — see CONTENT_CHECKLIST. The mailto line stays hidden while null. */
-  email: null as string | null,
+  email: "malikboudinee1e@gmail.com" as string | null,
   /** Pending — the "Book a call" button stays hidden while null. */
   calendly: null as string | null,
   /** Pending — CV buttons stay hidden while null. */
@@ -429,6 +429,16 @@ export const projects: Project[] = [
     status: "production",
     tags: ["Mobile", "Backend", "Automation"],
     stack: ["Flutter", "Dart", "go_router", "Supabase", "FastAPI", "Hive", "dio", "fl_chart"],
+    valueProp: "Electronic Flight Bag for aviation crew workflows.",
+    architecture: {
+      client: ["Flutter", "Dart", "go_router", "fl_chart"],
+      logic: ["ChangeNotifier controllers", "AppScope"],
+      api: ["FastAPI (Amadeus load/pax, OFP)", "dio"],
+      data: ["Supabase Postgres", "Hive offline cache", "flutter_secure_storage"],
+      integrations: ["METAR/TAF", "ADS-B", "CTOT & delays", "eCrew", "Amadeus"],
+      automation: ["Remote config — force update or block a build"],
+      deploy: ["Shared nginx origin with the web app"],
+    },
     problem:
       "A pilot assembles a duty day from a dozen disconnected sources: roster, operational flight plan, load and passenger figures, slot times and delays, weather, NOTAMs, radiation exposure. On a phone, in an airport, minutes before pushback. Anything not in one place does not get read.",
     approach:
@@ -437,6 +447,8 @@ export const projects: Project[] = [
       "Breadth and trust, at once. Roughly 70 reference and calculation tools sit behind one dashboard, and the data underneath is hostile: METAR/TAF, ADS-B, CTOT and delay feeds, cosmic radiation dose per sector. eCrew and Amadeus credentials live in flutter_secure_storage, structured data caches to Hive so the app still works airside with no signal, and remote config can force an update or block a build outright when something ships wrong. Aviation is not a domain where “it mostly works” is a state you ship in.",
     result:
       "In production with Air Algérie crew. A native rebuild that reached feature parity with the web app without touching the backend — the same Supabase project and FastAPI services serve both.",
+    whyItMatters:
+      "Crew read this minutes before pushback, on a phone, in an airport. Every source it consolidates is one fewer thing to chase while doing something else — and in aviation the cost of missing one is not a bad user experience.",
     links: {},
     images: [],
     featured: true,
@@ -457,6 +469,16 @@ export const projects: Project[] = [
     status: "production",
     tags: ["Web", "Backend"],
     stack: ["Next.js", "NestJS", "Prisma", "PostgreSQL", "Tailwind CSS", "Zod", "Vercel"],
+    valueProp: "Bilingual subscription marketplace built around Algerian payment infrastructure.",
+    architecture: {
+      client: ["Next.js 15 App Router", "Tailwind CSS", "Arabic + French RTL"],
+      logic: ["Order state machine", "Shared Zod schemas"],
+      api: ["NestJS"],
+      data: ["Prisma", "PostgreSQL"],
+      integrations: ["Baridimob", "RedotPay"],
+      automation: ["Admin verification and fulfilment queue"],
+      deploy: ["Vercel — two projects from one monorepo"],
+    },
     problem:
       "Algerians largely cannot buy digital subscriptions: the payment methods people actually hold do not work with international checkout. The workaround in the market is shared credentials, which is fragile and unsafe for everyone involved.",
     approach:
@@ -465,8 +487,21 @@ export const projects: Project[] = [
       "The order lifecycle is a genuine state machine with reserved inventory, not a status column. PENDING_PAYMENT to PENDING_VERIFICATION to VERIFIED — which decrements product capacity — then IN_PROGRESS to FULFILLED. Every terminal state reached after VERIFIED has to hand the reserved capacity back, or the shop slowly convinces itself it is sold out. Dual currency runs the whole way through: dinar and dollar prices are set independently per duration, and a plan with no dollar price is simply not offered for dollar checkout.",
     result:
       "Live and deployed, storefront and API running as two Vercel projects from one monorepo. The admin panel covers verification, the fulfilment queue, capacity, payment methods, coupons, support tickets and analytics — the owner never touches the database.",
+    whyItMatters:
+      "The market default is shared credentials — one account passed between strangers. This gives each customer an account in their own name, paid for with the money they actually hold, which is the difference between a workaround and a product.",
     links: { live: "https://subhub-three.vercel.app/fr" },
-    images: [],
+    // Captured from the live storefront. The only project with real product
+    // shots, because it is the only one with a public URL to capture.
+    images: [
+      {
+        src: "/assets/projects/techsub-fr.webp",
+        alt: "TechSub storefront in French — subscription search and local payment methods",
+      },
+      {
+        src: "/assets/projects/techsub-ar.webp",
+        alt: "The same TechSub storefront in Arabic, laid out right-to-left",
+      },
+    ],
     featured: true,
     hasCaseStudy: true,
     privateRepo: true,
@@ -484,6 +519,15 @@ export const projects: Project[] = [
     status: "production",
     tags: ["Mobile", "Backend", "Automation"],
     stack: ["Flutter", "Riverpod", "go_router", "Supabase", "pdfx", "Python"],
+    valueProp: "Offline-first archive of Algerian Baccalaureate papers from 2008 to 2026.",
+    architecture: {
+      client: ["Flutter", "go_router", "pdfx"],
+      logic: ["Riverpod"],
+      api: ["Supabase Auth", "Row-level security"],
+      data: ["Supabase Postgres + Storage", "Full on-device mirror"],
+      automation: ["Python importer — idempotent and resumable", "HTML/JS admin dashboard"],
+      deploy: ["Public APK — anon key assumed compromised by design"],
+    },
     problem:
       "Algerian bac students revise from photocopies and PDFs scattered across messaging apps, frequently on a connection that cannot be relied on. Anything that needs the network to open is useless in the room where the studying actually happens.",
     approach:
@@ -492,6 +536,8 @@ export const projects: Project[] = [
       "Making the offline guarantee actually hold. Downloads stream to a .part file and are renamed only on success, so an app killed mid-download never leaves a half-file that looks complete; the importer is idempotent and resumable, skipping what storage already has. Local paths are derived from the public URL rather than rebuilt, so the mirror cannot drift from whatever the dashboard uploaded. And because the anon key ships inside a public APK, security cannot rest on key secrecy — reads are public, every write is gated behind Auth and row-level security.",
     result:
       "Serving the full Experimental Sciences archive offline, with new uploads reaching students through a silent background delta-sync rather than an app update.",
+    whyItMatters:
+      "Revision happens where the connection does not reach. An archive that needs the network to open is an archive that is closed at exactly the moment it is needed.",
     links: {},
     images: [],
     featured: true,
@@ -512,6 +558,25 @@ export const projects: Project[] = [
     status: "production",
     tags: ["Automation"],
     stack: ["Python", "PyMuPDF"],
+    valueProp: "Converts raw aviation briefing packs into one clean printable document automatically.",
+    architecture: {
+      automation: ["Python", "PyMuPDF — content-stream editing"],
+    },
+    beforeAfter: {
+      before: [
+        "Watermarked pages from SelfBrief",
+        "Inconsistent page geometry",
+        "Cover, briefing and disclaimer in separate files",
+        "Assembled and cleaned by hand before every flight",
+      ],
+      via: "Python + PyMuPDF",
+      after: [
+        "Watermark layer stripped from the content stream",
+        "Every page normalised to A4",
+        "One correctly ordered document",
+        "One command",
+      ],
+    },
     problem:
       "Airport briefing documents come out of the SelfBrief platform watermarked, in inconsistent page geometries, and split across separate files. Before every flight someone was assembling and cleaning that by hand.",
     approach:
@@ -520,6 +585,8 @@ export const projects: Project[] = [
       "The watermarks are not a flat image you can delete. They are drawn into the page content stream, interleaved with the text that has to survive. Removing them means operating on the page draw operations without touching legible content — then re-normalising geometry so nothing shifts or crops when pages of different sizes are forced to A4.",
     result:
       "A manual, error-prone pre-flight chore reduced to one command. The same approach is the basis of my document-automation service package.",
+    whyItMatters:
+      "It replaces a recurring manual task that had to be done correctly, before every flight, by someone with better things to do. That is the shape of automation worth paying for.",
     links: {},
     images: [],
     featured: true,
@@ -535,6 +602,7 @@ export const projects: Project[] = [
     status: "active",
     tags: ["Web"],
     stack: [],
+    valueProp: "Loan comparison and matching for the Algerian banking market.",
     problem:
       "Algerian borrowers compare loan products by visiting branches and reading PDFs. Rate, duration and eligibility — the three things that decide the answer — are never in one comparable place.",
     approach:
@@ -556,6 +624,10 @@ export const projects: Project[] = [
     status: "active",
     tags: ["Web", "Mobile"],
     stack: ["PWA"],
+    valueProp: "Route-optimisation PWA for delivery riders.",
+    architecture: {
+      client: ["PWA — installable, no store gatekeeping"],
+    },
     problem:
       "Delivery riders in Algiers plan a day of drops in their head and lose time doubling back across the city. I know the shape of that problem because I did electric-bike delivery here — it is obvious from the saddle and invisible from a spreadsheet.",
     approach:
@@ -577,6 +649,12 @@ export const projects: Project[] = [
     status: "archived",
     tags: ["Web", "Backend"],
     stack: ["PHP", "MySQL", "HTML/CSS", "JavaScript"],
+    valueProp: "University records management system with full CRUD workflows.",
+    architecture: {
+      client: ["HTML/CSS", "JavaScript"],
+      logic: ["PHP — server-rendered"],
+      data: ["MySQL — normalised relational schema"],
+    },
     problem:
       "Built for the Programmation Web module: manage students, enrolments and results for a university faculty.",
     approach:
@@ -695,9 +773,69 @@ export const privateSource = {
   short: "Private repo",
   label: "Private production repo",
   cta: "Request a walkthrough",
+  /** One line, stated as policy rather than as an apology. */
+  notice:
+    "Source code is private where projects handle real user data. Architecture walkthroughs and scoped read-only access are available for serious enquiries.",
   reason:
     "These are live products handling real user data — crew rosters, student records, payments — so the source stays private. I will happily walk you through the architecture, the code and the decisions on a call, or share a scoped read-only repo for a serious enquiry.",
 };
+
+/* -------------------------------------------------------------------------- */
+/* Architecture                                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The layers a product passes through, top to bottom.
+ *
+ * This is the spine of the "How I build" diagram on /projects. Selecting a
+ * project fills the layers it genuinely has and dims the ones it does not —
+ * which is why the PDF pipeline lights up exactly one. A diagram where every
+ * project fills every layer would be decoration; this one is a claim.
+ */
+export const architectureLayers: { id: ArchLayerId; label: string; role: string }[] = [
+  { id: "client", label: "Mobile / Web", role: "What the user actually touches" },
+  { id: "logic", label: "Application logic", role: "State, rules and the flows between them" },
+  { id: "api", label: "API / Auth", role: "The boundary, and who is allowed through it" },
+  { id: "data", label: "Database", role: "The schema everything else depends on" },
+  { id: "integrations", label: "Integrations", role: "Third-party data and payment rails" },
+  { id: "automation", label: "Automation", role: "The work nobody should be doing by hand" },
+  { id: "deploy", label: "Deployment", role: "How it reaches a real device" },
+];
+
+export const architectureIntro = {
+  title: "How I build",
+  lead: "I don't just build interfaces. I design the systems behind them.",
+  body: "Pick a project to see the layers it actually has. Not every product needs all seven — a document pipeline is one layer deep and an Electronic Flight Bag is all of them, and pretending otherwise would make this a decoration rather than a description.",
+};
+
+/* -------------------------------------------------------------------------- */
+/* Projects page                                                               */
+/* -------------------------------------------------------------------------- */
+
+export const workPage = {
+  eyebrow: "Selected work",
+  title: "Software I've built, shipped and learned from.",
+  lead: "A selection of production applications, internal tools and automation systems across aviation, education, commerce and logistics.",
+};
+
+/**
+ * The proof line under the page title. Every figure is read back out of the
+ * project data, so it cannot drift from what the case studies say — and if a
+ * metric is ever removed, the line shrinks instead of lying.
+ */
+export const workProof: string[] = [
+  `${projects.filter((p) => p.status === "production").length} production applications`,
+  ...(() => {
+    const tools = getProject("briefing-point-go")?.metrics?.find((m) =>
+      m.label.startsWith("Reference")
+    )?.value;
+    return tools ? [`${tools} aviation tools`] : [];
+  })(),
+  ...(() => {
+    const pdfs = getProject("bac-archive")?.metrics?.find((m) => m.label === "PDFs served")?.value;
+    return pdfs ? [`${pdfs} offline PDFs`] : [];
+  })(),
+];
 
 /* -------------------------------------------------------------------------- */
 /* Engineering practice                                                        */

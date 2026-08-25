@@ -54,9 +54,21 @@ export function WipeReveal({
 
   return (
     <div className={cn("relative overflow-hidden", className)} style={{ width }}>
+      {/* The offset is a PERCENTAGE of the element's own height, never a fixed
+          pixel value.
+          
+          This wrapper clips (`overflow-hidden`), and `whileInView` is driven by
+          an IntersectionObserver that respects ancestor clipping. A fixed
+          `y: 48` pushes a short element — an eyebrow is ~17px tall — entirely
+          outside its own clip box, so the observer sees zero intersection, the
+          animation never triggers, and the content stays hidden forever. Tall
+          headings happened to survive; every small label did not.
+          
+          At 60% of its own height, 40% of the element always remains inside the
+          box, which clears the 0.2 threshold at any size. */}
       <motion.div
-        initial={{ opacity: 0, y: 48 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: "60%" }}
+        whileInView={{ opacity: 1, y: "0%" }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
       >

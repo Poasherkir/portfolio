@@ -7,7 +7,8 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { AnimatePresence, motion, useMotionValue } from "motion/react";
 import { useTheme } from "next-themes";
 import { X } from "lucide-react";
-import { keycapList, keycaps, type Keycap } from "@/data/portfolio";
+import Link from "next/link";
+import { keycapList, keycaps, type Keycap, projects } from "@/data/portfolio";
 import {
   initKeyboardAudio,
   isAudioUnlocked,
@@ -242,6 +243,14 @@ export default function KeyboardScene() {
 
   const shown = pinned ?? hovered;
 
+  // Continuity with /projects: the same technology, filtered. Computed from
+  // the real stacks so a keycap never links to an empty result.
+  const projectCount = shown
+    ? projects.filter((p) =>
+        p.stack.some((tech) => tech.toLowerCase().includes(shown.label.toLowerCase()))
+      ).length
+    : 0;
+
   return (
     <>
       <motion.div
@@ -351,6 +360,15 @@ export default function KeyboardScene() {
 
               {/* Only rendered where there is an honest answer. A logo on a
                   keycap must not imply a project that does not exist. */}
+              {projectCount > 0 && (
+                <Link
+                  href={`/projects?stack=${encodeURIComponent(shown.label)}`}
+                  className="mt-3 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-brand transition-colors hover:text-brand/80"
+                >
+                  See {projectCount} {projectCount === 1 ? "project" : "projects"} →
+                </Link>
+              )}
+
               {shown.usedIn && (
                 <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
                   <span className="font-mono uppercase tracking-[0.16em] text-brand">

@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ExternalLink, Github, Lock } from "lucide-react";
 
 import { caseStudies, getProject, privateSource, profile } from "@/data/portfolio";
 import { absoluteUrl } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/reveal";
 import ProjectVisual from "@/components/projects/project-visual";
-import type { Project } from "@/types";
+import ProjectStatus from "@/components/projects/project-status";
+import CaseStudyNav from "@/components/projects/case-study-nav";
+import ArchitectureDiagram from "@/components/projects/architecture-diagram";
+import BeforeAfter from "@/components/projects/before-after";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -39,11 +42,34 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-const STATUS_LABEL: Record<Project["status"], string> = {
-  production: "In production",
-  active: "In development",
-  archived: "Archived",
-};
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/** A prose section. Rendered narrow — long lines are hard to read. */
+function Prose({
+  n,
+  section,
+}: {
+  n: number;
+  section: { key: string; label: string; body: string };
+}) {
+  if (!section.body.trim()) return null;
+
+  return (
+    <Reveal as="section">
+      <div id={section.key} className="max-w-2xl scroll-mt-28">
+        <p className="eyebrow">
+          {pad(n)} — {section.label}
+        </p>
+        <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
+          {section.label}
+        </h2>
+        <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
+          {section.body}
+        </p>
+      </div>
+    </Reveal>
+  );
+}
 
 export default async function CaseStudyPage({ params }: Params) {
   const { slug } = await params;
@@ -52,13 +78,35 @@ export default async function CaseStudyPage({ params }: Params) {
 
   const index = caseStudies.findIndex((p) => p.slug === project.slug);
   const next = caseStudies[(index + 1) % caseStudies.length];
+  const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length];
 
-  const sections = [
-    { key: "problem", label: "The problem", body: project.problem },
-    { key: "approach", label: "The approach", body: project.approach },
-    { key: "hardPart", label: "The hard part", body: project.hardPart },
-    { key: "result", label: "The result", body: project.result },
-  ].filter((s) => s.body.trim().length > 0);
+  const prose = {
+    problem: { key: "problem", label: "The problem", body: project.problem },
+    approach: { key: "approach", label: "The approach", body: project.approach },
+    hardPart: { key: "hardPart", label: "The hard part", body: project.hardPart },
+    result: { key: "result", label: "The result", body: project.result },
+  };
+
+  /**
+   * Contents in reading order, including the sections that are not prose.
+   * Built from what this project actually has — a case study with no
+   * architecture data simply does not get an Architecture entry, rather than
+   * getting an empty one.
+   */
+  const contents: { key: string; label: string }[] = [
+    prose.problem,
+    prose.approach,
+    ...(project.architecture ? [{ key: "architecture", label: "Architecture" }] : []),
+    ...(project.beforeAfter ? [{ key: "pipeline", label: "Before / after" }] : []),
+    prose.hardPart,
+    prose.result,
+    ...(project.whyItMatters ? [{ key: "why", label: "Why it matters" }] : []),
+  ]
+    .filter((s) => !("body" in s) || String(s.body).trim().length > 0)
+    .map(({ key, label }) => ({ key, label }));
+
+  /** Position of a section in the contents, 1-based. */
+  const num = (key: string) => contents.findIndex((c) => c.key === key) + 1;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,15 +136,12 @@ export default async function CaseStudyPage({ params }: Params) {
               All projects
             </Link>
 
-            <div className="mt-8 flex flex-wrap items-center gap-2">
-              <Badge variant={project.status === "production" ? "brand" : "outline"}>
-                {STATUS_LABEL[project.status]}
-              </Badge>
-              {project.tags.map((t) => (
-                <Badge key={t} variant="outline">
-                  {t}
-                </Badge>
-              ))}
+            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <ProjectStatus status={project.status} />
+              <span aria-hidden className="h-3 w-px bg-border" />
+              <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-foreground/60">
+                {project.tags.join(" · ")}
+              </span>
             </div>
 
             <h1 className="mt-6 max-w-4xl font-display text-display-md font-semibold tracking-tighter text-balance">
@@ -185,27 +230,11 @@ export default async function CaseStudyPage({ params }: Params) {
         {/* Body */}
         <div className="container py-20 md:py-28">
           <div className="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16">
-            {/* Sticky contents rail */}
-            <nav aria-label="Case study sections" className="lg:sticky lg:top-28 lg:self-start">
-              <p className="eyebrow">Contents</p>
-              <ul className="mt-4 space-y-2.5">
-                {sections.map((s, i) => (
-                  <li key={s.key}>
-                    <a
-                      href={`#${s.key}`}
-                      className="flex items-baseline gap-3 text-sm text-muted-foreground transition-colors hover:text-brand"
-                    >
-                      <span className="font-mono text-[0.65rem] text-brand">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      {s.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <CaseStudyNav sections={contents} />
 
               {project.relatedRepos && project.relatedRepos.length > 0 && (
-                <div className="mt-10">
+                <div className="mt-10 hidden lg:block">
                   <p className="eyebrow">Companion repos</p>
                   <ul className="mt-4 space-y-3">
                     {project.relatedRepos.map((r) => (
@@ -222,7 +251,6 @@ export default async function CaseStudyPage({ params }: Params) {
                         ) : (
                           <span className="font-mono text-xs">{r.name}</span>
                         )}
-                        {/* Description omitted until one is written — never padded. */}
                         {r.note && (
                           <span className="mt-0.5 block text-xs text-muted-foreground">
                             {r.note}
@@ -233,53 +261,143 @@ export default async function CaseStudyPage({ params }: Params) {
                   </ul>
                 </div>
               )}
-            </nav>
+            </div>
 
-            <div className="max-w-2xl space-y-14">
-              {sections.map((s, i) => (
-                <Reveal key={s.key} as="section">
-                  <div id={s.key} className="scroll-mt-28">
-                    <p className="eyebrow">
-                      {String(i + 1).padStart(2, "0")} — {s.label}
-                    </p>
+            <div className="space-y-14">
+              {/* Numbering is computed from `contents`, so it stays in step with
+                  the rail even though the sections render in a fixed order. */}
+              <Prose n={num("problem")} section={prose.problem} />
+              <Prose n={num("approach")} section={prose.approach} />
+
+              {project.architecture && (
+                <Reveal as="section">
+                  <div id="architecture" className="scroll-mt-28">
+                    <p className="eyebrow">{pad(num("architecture"))} — Architecture</p>
                     <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
-                      {s.label}
+                      Architecture
                     </h2>
-                    <p className="mt-5 text-base leading-relaxed text-muted-foreground md:text-lg">
-                      {s.body}
+                    <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                      The layers this product actually has, and what sits in each one.
+                    </p>
+                    <div className="mt-8">
+                      <ArchitectureDiagram projects={[project]} />
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+
+              {project.beforeAfter && (
+                <Reveal as="section">
+                  <div id="pipeline" className="scroll-mt-28">
+                    <p className="eyebrow">{pad(num("pipeline"))} — Before / after</p>
+                    <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
+                      What changed
+                    </h2>
+                    <div className="mt-8">
+                      <BeforeAfter data={project.beforeAfter} />
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+
+              <Prose n={num("hardPart")} section={prose.hardPart} />
+
+              {/* Real product shots, where a public URL made them possible. */}
+              {project.images.length > 1 && (
+                <Reveal>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {project.images.slice(1).map((img) => (
+                      <figure
+                        key={img.src}
+                        className="relative overflow-hidden rounded-lg border border-border"
+                      >
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          width={1600}
+                          height={1000}
+                          loading="lazy"
+                          sizes="(max-width: 640px) 100vw, 45vw"
+                          className="h-full w-full object-cover object-top"
+                        />
+                      </figure>
+                    ))}
+                  </div>
+                </Reveal>
+              )}
+
+              <Prose n={num("result")} section={prose.result} />
+
+              {project.whyItMatters && (
+                <Reveal as="section">
+                  <div
+                    id="why"
+                    className="scroll-mt-28 rounded-xl border border-brand/25 bg-brand/[0.05] p-7 md:p-9"
+                  >
+                    <p className="eyebrow">{pad(num("why"))} — Why it matters</p>
+                    <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
+                      Why it matters
+                    </h2>
+                    <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                      {project.whyItMatters}
                     </p>
                   </div>
                 </Reveal>
-              ))}
-
-              {/* Extra screenshots, once they exist. */}
-              {project.images.length > 1 && (
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {project.images.slice(1).map((img) => (
-                    <div
-                      key={img.src}
-                      className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img.src} alt={img.alt} className="h-full w-full object-cover" />
-                    </div>
-                  ))}
-                </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Next case study */}
+        {/* Case study navigation */}
         <div className="border-t border-border">
-          <div className="container py-14">
-            <Link href={`/projects/${next.slug}`} className="group flex flex-col gap-2">
-              <span className="eyebrow">Next case study</span>
-              <span className="flex items-center gap-4 font-display text-3xl font-semibold tracking-tight transition-colors group-hover:text-brand md:text-5xl">
-                {next.title}
-                <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-2" />
-              </span>
-              <span className="text-sm text-muted-foreground">{next.tagline}</span>
+          <div className="container py-12">
+            <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
+              <Link
+                href={`/projects/${prev.slug}`}
+                className="group bg-background/80 p-6 backdrop-blur-sm transition-colors hover:bg-card"
+              >
+                <span className="flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted-foreground">
+                  <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
+                  Previous
+                </span>
+                <span className="mt-2 block font-display text-lg font-semibold tracking-tight transition-colors group-hover:text-brand">
+                  {prev.title}
+                </span>
+              </Link>
+
+              {/* Where you are. Not a link — nothing to go to. */}
+              <div className="bg-background/40 p-6 text-center backdrop-blur-sm">
+                <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brand">
+                  Currently reading
+                </span>
+                <span className="mt-2 block font-display text-lg font-semibold tracking-tight">
+                  {project.title}
+                </span>
+                <span className="mt-1 block font-mono text-[0.6rem] text-muted-foreground">
+                  {index + 1} of {caseStudies.length}
+                </span>
+              </div>
+
+              <Link
+                href={`/projects/${next.slug}`}
+                className="group bg-background/80 p-6 text-right backdrop-blur-sm transition-colors hover:bg-card"
+              >
+                <span className="flex items-center justify-end gap-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted-foreground">
+                  Next
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                </span>
+                <span className="mt-2 block font-display text-lg font-semibold tracking-tight transition-colors group-hover:text-brand">
+                  {next.title}
+                </span>
+              </Link>
+            </div>
+
+            <Link
+              href="/projects"
+              className="mt-8 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-brand"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              All work
             </Link>
           </div>
         </div>
