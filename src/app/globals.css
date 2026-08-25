@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light theme — "daylight cockpit": cool paper, same instrument cyan. */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --brand: 20 100% 70%;
+    --brand-foreground: 222.2 47.4% 11.2%;
+    --signal: 20 100% 70%;
+
+    --radius: 0.5rem;
+
+    --grid-line: 222.2 84% 4.9%;
+    --grid-alpha: 0.05;
+  }
+
+  /* Dark theme — default. Night cockpit: deep navy ground, instrument cyan. */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --brand: 20 100% 70%;
+    --brand-foreground: 222.2 47.4% 11.2%;
+    --signal: 20 100% 70%;
+
+    --grid-line: 20 100% 70%;
+    --grid-alpha: 0.06;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    overflow-x: hidden;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: hsl(var(--brand) / 0.28);
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Respect users who ask for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Thin uppercase label used above every section title and on stat tiles. */
+  .eyebrow {
+    @apply font-mono text-[0.7rem] font-normal uppercase tracking-[0.22em] text-brand;
+  }
+
+  /* Legibility halo for type that sits over the 3D board.
+     Built from --background, so it is a light glow on the light theme and a
+     dark one on dark. An earlier version hardcoded a dark shadow, which did
+     nothing on white and left headings unreadable over the keyboard. */
+  .heading-halo {
+    text-shadow:
+      0 2px 22px hsl(var(--background) / 0.95),
+      0 1px 5px hsl(var(--background) / 0.85);
+  }
+
+  /* Hairline grid used behind the hero and the services band. */
+  .instrument-grid {
+    background-image:
+      linear-gradient(hsl(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px hsl(var(--foreground) / 0.35);
+  }
+
+  .card-hairline {
+    @apply border border-border bg-card/70 backdrop-blur-sm;
+  }
+}
+
+@layer utilities {
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(180deg, black 55%, transparent);
+    mask-image: linear-gradient(180deg, black 55%, transparent);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Printing the /cv page should produce a clean document, not a screenshot of
+   the site: chrome, background art and navigation all drop out. */
+@media print {
+  header[class*="fixed"],
+  footer,
+  [id="nav-overlay"] {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .instrument-grid,
+  .card-hairline {
+    background-image: none !important;
+    backdrop-filter: none !important;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.7em;
+    color: #555;
+  }
+
+  section {
+    padding-block: 1rem !important;
+    break-inside: avoid;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Click-through overlay.
+ *
+ * The 3D keyboard canvas sits behind the page. To let the pointer actually
+ * reach it, the content wrapper stops receiving events and hands them back
+ * only to the things that genuinely need them — links, controls, and text you
+ * might want to select. Everywhere else (padding, empty card ground, gaps
+ * between sections) the cursor falls through to the canvas underneath.
+ * ------------------------------------------------------------------------- */
+.canvas-overlay-mode {
+  pointer-events: none;
+}
+
+.canvas-overlay-mode a,
+.canvas-overlay-mode button,
+.canvas-overlay-mode input,
+.canvas-overlay-mode select,
+.canvas-overlay-mode textarea,
+.canvas-overlay-mode label,
+.canvas-overlay-mode summary,
+.canvas-overlay-mode [role="button"],
+.canvas-overlay-mode [role="tab"],
+.canvas-overlay-mode [role="dialog"],
+.canvas-overlay-mode h1,
+.canvas-overlay-mode h2,
+.canvas-overlay-mode h3,
+.canvas-overlay-mode h4,
+.canvas-overlay-mode p,
+.canvas-overlay-mode li,
+.canvas-overlay-mode dd,
+.canvas-overlay-mode dt,
+.canvas-overlay-mode code,
+.canvas-overlay-mode svg {
+  pointer-events: auto;
+}
+
+/* Let vertical scrolling still work when a finger starts on the canvas. */
+canvas {
+  touch-action: pan-y !important;
+}
+
+
+/* Star twinkle for the space backdrop. Kept in CSS rather than JS so 300
+   stars cost nothing per frame. */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
