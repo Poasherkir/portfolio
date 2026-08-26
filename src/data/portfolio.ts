@@ -724,26 +724,35 @@ export const about = {
 
 export const faq: { q: string; a: string }[] = [
   {
+    q: "Can I see the source code?",
+    a: "Not the repos \u2014 they hold live user data. I will walk you through the architecture and the code on a call, or set up scoped read-only access.",
+  },
+  {
     q: "Do you work with clients outside Algeria?",
-    a: "Yes — that is most of the work. I am in Algiers on GMT+1, which overlaps a full working day with Europe and the morning with North America. I am a registered auto-entrepreneur through ANAE, so I can invoice international clients and receive foreign payments legally. No workarounds at the end of the project.",
+    a: "Most of my work is. I am on GMT+1, so a full day overlaps with Europe and the morning with North America.",
+  },
+  {
+    q: "Can you invoice my company?",
+    a: "Yes. Registered auto-entrepreneur through ANAE, so international invoices and foreign payments are all above board.",
   },
   {
     q: "Which languages can we work in?",
-    a: "English, French or Arabic — including the written work. Specs, code comments, commit messages and handover documentation come in whichever you prefer, not just the conversation.",
+    a: "English, French or Arabic \u2014 including specs, commit messages and handover docs, not just the calls.",
   },
   {
-    q: "How do you price a project?",
-    a: "By outcome, not by hour. You get a fixed scope, a timeline and a price before anything starts, and I would rather tell you a feature is a bad idea in week one than build it and invoice you for it. Tell me what you need and I will come back with a number.",
+    q: "How do you price?",
+    a: "Fixed scope, fixed price, agreed before anything starts. Tell me what you need and I will come back with a number.",
   },
   {
-    q: "How long does something take?",
-    a: "A cross-platform mobile app with a backend and admin dashboard is typically 4–8 weeks to a first release. A backend and admin panel on its own is 2–5 weeks. An automation or document pipeline is usually 1–3 weeks. Work is broken into milestones you review before I move on, so you are never weeks away from the last thing you actually saw.",
+    q: "How long does it take?",
+    a: "A mobile app with a backend and dashboard: 4\u20138 weeks to first release. A backend on its own: 2\u20135 weeks. An automation: 1\u20133 weeks.",
   },
   {
-    q: "What do I actually get at the end?",
-    a: "Signed release builds and store submission, the backend and its schema, an admin dashboard your team operates without me, and handover documentation in English or French. The goal is that you do not need me on retainer.",
+    q: "What do I get at the end?",
+    a: "Signed builds, the backend and its schema, an admin dashboard your team runs, and documentation in English or French.",
   },
 ];
+
 
 /* -------------------------------------------------------------------------- */
 /* Private source                                                              */

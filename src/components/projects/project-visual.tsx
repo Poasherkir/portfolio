@@ -73,11 +73,11 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
 function Caption({ left, right }: { left: string; right?: string }) {
   return (
     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5">
-      <p className="font-mono text-[0.6rem] uppercase leading-relaxed tracking-[0.18em] text-white/45">
+      <p className="font-mono text-[0.7rem] uppercase leading-relaxed tracking-[0.16em] text-white/55 sm:text-[0.62rem] sm:tracking-[0.18em]">
         {left}
       </p>
       {right && (
-        <p className="shrink-0 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-brand/80">
+        <p className="shrink-0 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-brand/90 sm:text-[0.62rem] sm:tracking-[0.18em]">
           {right}
         </p>
       )}

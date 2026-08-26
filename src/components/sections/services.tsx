@@ -60,7 +60,7 @@ export default function Services() {
                     wall of text that nobody reads; native <details> keeps it
                     keyboard accessible and working before hydration. */}
                 <details className="group/d mt-6 border-t border-border pt-6">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background">
+                  <summary className="-my-2 flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 py-2 text-sm font-medium transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background">
                     What&apos;s included
                     <ChevronDown
                       className="h-4 w-4 shrink-0 text-brand transition-transform duration-300 group-open/d:rotate-180"
