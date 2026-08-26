@@ -13,7 +13,6 @@ next-env.d.ts
 
 .vercel
 
-# Editor / tooling
-.claude
+# Editor
 .vscode
 .idea
