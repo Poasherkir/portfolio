@@ -55,17 +55,17 @@ export const POSES: Record<Section, PoseSet> = {
   // The run-up. Swinging back across to centre and starting to tip face-on, so
   // arriving at the stack section reads as a landing rather than a cut.
   process: {
-    desktop: { position: [2.8, 1.2, -2.6], rotation: [1.1, -0.4, -0.2], scale: 0.86 },
+    desktop: { position: [2.8, 1.2, -2.6], rotation: [1.1, -0.4, -0.2], scale: 0.72 },
     mobile: { position: [0, 2.6, -3.4], rotation: [1.12, -0.26, -0.1], scale: 0.58 },
   },
 
   // The subject: centred, tipped toward the viewer, caps readable and live.
   skills: {
-    desktop: { position: [0, -0.1, -0.1], rotation: [1.16, 0, 0], scale: 1.0 },
+    desktop: { position: [0, -0.35, -0.1], rotation: [1.16, 0, 0], scale: 0.68 },
     // Depth, not scale, is the lever on a narrow viewport: the board is a fixed
     // 4.3 units across, so at z=-0.4 it is already wider than the frustum and
     // crops off both edges. Pulling it back widens the frustum around it.
-    mobile: { position: [0, 0.9, -4.6], rotation: [1.2, 0, 0], scale: 0.52 },
+    mobile: { position: [0, 0.9, -4.6], rotation: [1.2, 0, 0], scale: 0.44 },
   },
 
   // Leaving the stage to the left and turning away — the long sweep back across
@@ -168,6 +168,20 @@ export const FLOAT_AMOUNT: Record<Section, number> = {
   contact: 1,
 };
 
+/**
+ * How large the board sits in frame, as a multiplier on every pose's scale.
+ *
+ * Apparent size is `scale / (cameraZ - poseZ)`, so multiplying scale here is
+ * exactly equivalent to walking every pose closer to the camera — without
+ * having to retune twenty position values, and without the poses drifting out
+ * of agreement with each other as they get edited one at a time.
+ *
+ * Mobile gets much less. The frustum is roughly a third as wide there, so the
+ * multiplier that fills a desktop frame crops the board off both edges of a
+ * phone.
+ */
+const BOARD_SCALE = { desktop: 1.45, mobile: 1.18 };
+
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** Smoothstep, so a segment eases in and out rather than running linearly. */
@@ -220,13 +234,17 @@ export function measureAnchors(): Anchor[] {
 /** The interpolated pose for a given scroll offset. */
 export function poseAt(anchors: Anchor[], scrollY: number, isMobile: boolean): Pose {
   const key = isMobile ? "mobile" : "desktop";
-  if (anchors.length === 0) return POSES.hero[key];
-  if (anchors.length === 1) return POSES[anchors[0].section][key];
+  const sized = (pose: Pose): Pose => ({
+    ...pose,
+    scale: pose.scale * BOARD_SCALE[key],
+  });
+  if (anchors.length === 0) return sized(POSES.hero[key]);
+  if (anchors.length === 1) return sized(POSES[anchors[0].section][key]);
 
-  if (scrollY <= anchors[0].at) return POSES[anchors[0].section][key];
+  if (scrollY <= anchors[0].at) return sized(POSES[anchors[0].section][key]);
 
   const last = anchors[anchors.length - 1];
-  if (scrollY >= last.at) return POSES[last.section][key];
+  if (scrollY >= last.at) return sized(POSES[last.section][key]);
 
   for (let i = 0; i < anchors.length - 1; i++) {
     const a = anchors[i];
@@ -234,11 +252,11 @@ export function poseAt(anchors: Anchor[], scrollY: number, isMobile: boolean): P
     if (scrollY >= a.at && scrollY < b.at) {
       const span = b.at - a.at;
       const t = span <= 0 ? 0 : (scrollY - a.at) / span;
-      return lerpPose(POSES[a.section][key], POSES[b.section][key], smooth(t));
+      return sized(lerpPose(POSES[a.section][key], POSES[b.section][key], smooth(t)));
     }
   }
 
-  return POSES[last.section][key];
+  return sized(POSES[last.section][key]);
 }
 
 /** Canvas opacity for a given scroll offset, interpolated like the poses are. */
