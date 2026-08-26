@@ -43,7 +43,7 @@ export default function Projects() {
       <SectionHeader
         id="projects"
         title="Projects"
-        desc="Problem, approach, the part that was actually hard, and the result."
+        desc="Six shipped products. Three have full case studies."
       />
 
       <div className="grid grid-cols-1 gap-y-8 md:grid-cols-3">

@@ -1,36 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { about, foundations, proofPillars, skillGroups } from "@/data/portfolio";
+import { about, deliveryProcess, foundations, proofPillars } from "@/data/portfolio";
 import PageHeader from "@/components/page-header";
 import { Section } from "@/components/section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
+import ExperienceSection from "@/components/sections/experience";
+import Engineering from "@/components/sections/engineering";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Malik Boudine — full-stack and mobile developer in Algiers. Final-year CS student who has been shipping production software since before the degree. Flutter, React, Supabase, Python. EN/FR/AR.",
+    "Malik Boudine — full-stack and mobile developer in Algiers. Flutter, React, Supabase and Python, from architecture to deployment. EN/FR/AR.",
   alternates: { canonical: "/about" },
 };
-
-const PROCESS = [
-  {
-    n: "01",
-    title: "Scope it honestly",
-    body: "I would rather tell you a feature is a bad idea in week one than build it and invoice you for it. If a job is not a fit for me, I say so.",
-  },
-  {
-    n: "02",
-    title: "Ship in gates",
-    body: "Work is broken into milestones you review before I move on. You are never three weeks away from the last thing you actually saw.",
-  },
-  {
-    n: "03",
-    title: "Hand it over properly",
-    body: "Signed builds, an admin dashboard your team can operate, and documentation in English or French. The goal is that you do not need me on retainer.",
-  },
-];
 
 export default function AboutPage() {
   return (
@@ -88,13 +72,13 @@ export default function AboutPage() {
             Small commits, milestone gates, visual verification before moving on.
           </h2>
 
-          <RevealGroup className="mt-12 grid gap-6 md:grid-cols-3">
-            {PROCESS.map((step) => (
+          <RevealGroup className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {deliveryProcess.map((step) => (
               <RevealItem
-                key={step.n}
+                key={step.step}
                 className="rounded-xl border border-border bg-card/75 p-7 backdrop-blur-sm"
               >
-                <span className="font-mono text-xs text-brand">{step.n}</span>
+                <span className="font-mono text-xs text-brand">{step.step}</span>
                 <h3 className="mt-4 font-display text-lg font-semibold">{step.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
               </RevealItem>
@@ -122,39 +106,27 @@ export default function AboutPage() {
             </RevealGroup>
           </div>
 
-          {/* The written stack. The home page shows it as a keyboard; this is
-              the version you can actually read. */}
           <div className="mt-20 border-t border-border pt-10">
             <p className="eyebrow">Technical range</p>
-            <RevealGroup className="mt-6 grid gap-6 md:grid-cols-2">
-              {skillGroups.map((group) => (
-                <RevealItem
-                  key={group.title}
-                  className="rounded-xl border border-border bg-card/80 p-7 backdrop-blur-sm"
-                >
-                  <h3 className="font-display text-lg font-semibold tracking-tight">
-                    {group.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{group.blurb}</p>
-                  <ul className="mt-6 space-y-2.5">
-                    {group.items.map((item) => (
-                      <li key={item.name} className="flex flex-wrap items-baseline gap-x-2">
-                        <span className="text-sm font-medium">{item.name}</span>
-                        {item.note && (
-                          <span className="font-mono text-[0.68rem] text-muted-foreground">
-                            — {item.note}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-            <p className="mt-8 font-mono text-xs text-muted-foreground">{foundations}</p>
+            <Reveal>
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+                {foundations}
+              </p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <Button asChild variant="outline" className="mt-6">
+                <Link href="/stack">
+                  See the full stack
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </Reveal>
           </div>
         </div>
       </Section>
+
+      <ExperienceSection />
+      <Engineering />
     </>
   );
 }

@@ -1,46 +1,56 @@
 import Link from "next/link";
-import { ArrowRight, Lock } from "lucide-react";
-import { getProject, privateSource } from "@/data/portfolio";
+import { ArrowRight } from "lucide-react";
+import { getProject } from "@/data/portfolio";
 import { Section } from "@/components/section";
-import { Reveal, RevealGroup, RevealItem, WipeReveal } from "@/components/reveal";
+import { Reveal, WipeReveal } from "@/components/reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import ProjectVisual from "@/components/projects/project-visual";
+import CountUp from "@/components/count-up";
 
-/** One project with room to be understood: problem, approach, result. */
+/** The hook only. The case study page carries the detail. */
 export default function Flagship() {
   const project = getProject("briefing-point-go");
   if (!project) return null;
 
-  const beats = [
-    { label: "The problem", body: project.problem },
-    { label: "The approach", body: project.approach },
-    { label: "The hard part", body: project.hardPart },
-    { label: "The result", body: project.result },
-  ].filter((b) => b.body.trim().length > 0);
-
   return (
     <Section id="flagship" className="py-24 md:py-32">
       <div className="container">
-        <WipeReveal>
-          <p className="eyebrow">Flagship project</p>
-        </WipeReveal>
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <Link
+              href={`/projects/${project.slug}`}
+              className="group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]">
+                <ProjectVisual project={project} priority />
+              </div>
+              <span className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-black/80 to-transparent p-5 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                View case study
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </Reveal>
 
-        <div className="mt-4 grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
           <div>
-            <Reveal>
-              <h2 className="font-display text-4xl font-bold tracking-tight md:text-6xl">
+            <WipeReveal>
+              <p className="eyebrow">Flagship</p>
+            </WipeReveal>
+
+            <Reveal delay={0.05}>
+              <h2 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-5xl">
                 {project.title}
               </h2>
             </Reveal>
-            <Reveal delay={0.06}>
-              <p className="copy-halo mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+
+            <Reveal delay={0.1}>
+              <p className="copy-halo mt-4 text-lg leading-relaxed text-muted-foreground">
                 {project.tagline}
               </p>
             </Reveal>
 
-            <Reveal delay={0.12}>
-              <div className="mt-6 flex flex-wrap items-center gap-2">
+            <Reveal delay={0.14}>
+              <div className="mt-5 flex flex-wrap items-center gap-2">
                 <Badge variant="brand">In production</Badge>
                 {project.tags.map((t) => (
                   <Badge key={t} variant="outline">
@@ -50,87 +60,35 @@ export default function Flagship() {
               </div>
             </Reveal>
 
-            {/* Cover sits inside the column so the story stays the focus. */}
-            <Reveal delay={0.16}>
-              <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-xl border border-border">
-                <ProjectVisual project={project} priority />
-              </div>
-            </Reveal>
-
-            <div className="mt-12 space-y-9">
-              {beats.map((beat, i) => (
-                <Reveal key={beat.label} delay={i * 0.04}>
-                  <div>
-                    <p className="eyebrow">
-                      {String(i + 1).padStart(2, "0")} — {beat.label}
-                    </p>
-                    <p className="copy-halo mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
-                      {beat.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal delay={0.1}>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Button asChild>
-                  <Link href={`/projects/${project.slug}`}>
-                    Read the case study
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link href="/contact">{privateSource.cta}</Link>
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-
-          {/* Facts rail */}
-          <aside className="lg:sticky lg:top-28 lg:self-start">
             {project.metrics && project.metrics.length > 0 && (
-              <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border">
-                {project.metrics.map((m) => (
-                  <RevealItem key={m.label} className="bg-background/88 p-5 backdrop-blur-sm">
-                    <p className="font-display text-3xl font-bold tracking-tight text-brand">
-                      {m.value}
-                    </p>
-                    <p className="mt-1 text-sm text-muted-foreground">{m.label}</p>
-                  </RevealItem>
-                ))}
-              </RevealGroup>
+              <Reveal delay={0.18}>
+                <dl className="mt-9 grid grid-cols-3 gap-4 border-y border-border py-6">
+                  {project.metrics.map((m) => (
+                    <div key={m.label}>
+                      <dd>
+                        <CountUp
+                          value={m.value}
+                          className="font-display text-2xl font-bold tracking-tight text-brand md:text-3xl"
+                        />
+                      </dd>
+                      <dt className="mt-1 text-xs leading-snug text-muted-foreground">
+                        {m.label}
+                      </dt>
+                    </div>
+                  ))}
+                </dl>
+              </Reveal>
             )}
 
-            <Reveal delay={0.1}>
-              <dl className="mt-6 space-y-5 rounded-xl border border-border bg-card/80 p-6 backdrop-blur-sm">
-                <div>
-                  <dt className="eyebrow">Role</dt>
-                  <dd className="mt-1.5 text-sm">{project.role}</dd>
-                </div>
-                <div>
-                  <dt className="eyebrow">Stack</dt>
-                  <dd className="mt-2 flex flex-wrap gap-1.5">
-                    {project.stack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md border border-border px-2 py-0.5 font-mono text-[0.65rem] text-muted-foreground"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="eyebrow">Source</dt>
-                  <dd className="mt-1.5 flex items-start gap-2 text-sm text-muted-foreground">
-                    <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-                    {privateSource.label}
-                  </dd>
-                </div>
-              </dl>
+            <Reveal delay={0.22}>
+              <Button asChild size="lg" className="mt-8">
+                <Link href={`/projects/${project.slug}`}>
+                  Read the case study
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </Reveal>
-          </aside>
+          </div>
         </div>
       </div>
     </Section>

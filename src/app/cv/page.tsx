@@ -126,22 +126,6 @@ export default function CvPage() {
               <p className="mt-5 font-mono text-xs text-muted-foreground">{foundations}</p>
             </section>
 
-            {/* Education */}
-            <section>
-              <h3 className="eyebrow">Education</h3>
-              <div className="mt-5 border-t border-border pt-5">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-                  <h4 className="font-display text-lg font-semibold tracking-tight">
-                    {profile.studies.degree}
-                  </h4>
-                  <span className="font-mono text-xs text-muted-foreground">
-                    Expected {profile.studies.graduating}
-                  </span>
-                </div>
-                <p className="mt-1 text-sm text-muted-foreground">{profile.studies.school}</p>
-              </div>
-            </section>
-
             {/* Languages + status */}
             <section>
               <h3 className="eyebrow">Languages & status</h3>

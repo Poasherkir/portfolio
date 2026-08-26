@@ -14,7 +14,7 @@ export default function Skills() {
         <SectionHeader
           id="skills"
           title="Tech Stack"
-          desc="Every keycap is something on this page — no filler logos for technologies I do not use. Hover one, or just press a key."
+          desc="Every key is something I have shipped with. Hover one, or press it on your keyboard."
         />
       </div>
 

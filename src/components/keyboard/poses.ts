@@ -5,29 +5,15 @@
  * rotation.x must be positive — the board is modelled flat with caps at +Y and
  * the camera at +Z, so a negative angle shows the underside. 1.571 is face-on.
  */
-export type Section =
-  | "hero"
-  | "flagship"
-  | "projects"
-  | "services"
-  | "process"
-  | "skills"
-  | "about"
-  | "experience"
-  | "engineering"
-  | "contact";
+export type Section = "hero" | "flagship" | "projects" | "skills" | "services" | "contact";
 
 /** Document order. Anchors are re-sorted from the real DOM at runtime. */
 export const SECTION_IDS: Section[] = [
   "hero",
   "flagship",
   "projects",
-  "services",
-  "process",
   "skills",
-  "about",
-  "experience",
-  "engineering",
+  "services",
   "contact",
 ];
 
@@ -46,11 +32,6 @@ export const POSES: Record<Section, PoseSet> = {
     mobile: { position: [0, -4.5, -3.8], rotation: [1.05, -0.25, -0.06], scale: 0.62 },
   },
 
-  // Swings back to centre and tips face-on, leading into the stack section.
-  process: {
-    desktop: { position: [2.8, 1.2, -2.6], rotation: [1.1, -0.4, -0.2], scale: 0.72 },
-    mobile: { position: [0, 2.6, -3.4], rotation: [1.12, -0.26, -0.1], scale: 0.58 },
-  },
 
   // Centred and tipped toward the viewer. Every cap must stay hoverable here.
   skills: {
@@ -59,17 +40,7 @@ export const POSES: Record<Section, PoseSet> = {
     mobile: { position: [0, 0.9, -4.6], rotation: [1.2, 0, 0], scale: 0.44 },
   },
 
-  // Right-hand side: the About copy is left-aligned and capped at 3xl.
-  about: {
-    desktop: { position: [3.7, -0.6, -2.4], rotation: [1.08, -0.5, -0.24], scale: 0.84 },
-    mobile: { position: [0, -2.6, -3.2], rotation: [1.12, 0.32, 0.14], scale: 0.56 },
-  },
 
-  // Drifting right and turning, while the timeline reads on the left.
-  experience: {
-    desktop: { position: [3.2, 0.3, -2.2], rotation: [1.05, -0.62, -0.3], scale: 0.86 },
-    mobile: { position: [0, 2.8, -3.4], rotation: [1.1, -0.35, -0.15], scale: 0.6 },
-  },
 
   // Deep background — the flagship case study owns this section.
   flagship: {
@@ -89,11 +60,6 @@ export const POSES: Record<Section, PoseSet> = {
     mobile: { position: [0, -2.8, -3.2], rotation: [1.2, 0.3, 0.12], scale: 0.6 },
   },
 
-  // High and far back, settling before the contact teardown.
-  engineering: {
-    desktop: { position: [-3.0, 1.4, -3.0], rotation: [0.94, 0.5, 0.24], scale: 0.9 },
-    mobile: { position: [0, 2.8, -4.0], rotation: [1.0, 0.3, 0.12], scale: 0.54 },
-  },
 
   // Teardown: pitched almost face-on while the caps drift off the board.
   contact: {
@@ -111,11 +77,7 @@ export const OPACITY: Record<Section, number> = {
   flagship: 0.58,
   projects: 0.62,
   services: 0.62,
-  process: 0.74,
   skills: 1,
-  about: 0.66,
-  experience: 0.78,
-  engineering: 0.62,
   contact: 0.52,
 };
 
@@ -129,11 +91,7 @@ export const FLOAT_AMOUNT: Record<Section, number> = {
   flagship: 0.5,
   projects: 0.62,
   services: 0.68,
-  process: 0.5,
   skills: 0.22,
-  about: 0.6,
-  experience: 0.8,
-  engineering: 0.9,
   contact: 1,
 };
 

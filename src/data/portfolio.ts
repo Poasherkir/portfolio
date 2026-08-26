@@ -26,11 +26,6 @@ export const profile = {
   timezone: "GMT+1",
   /** Registered to invoice and receive foreign payments. */
   legal: "Registered auto-entrepreneur (ANAE) — I invoice internationally.",
-  studies: {
-    degree: "BSc Computer Science (ISIL), L3",
-    school: "USTHB, Algiers",
-    graduating: "June 2027",
-  },
   languages: [
     { name: "English", level: "Professional" },
     { name: "French", level: "Professional" },
@@ -102,7 +97,7 @@ export const hero = {
   /** The big display type, one line per entry. */
   displayLines: ["I build", "software", "that ships."],
   subhead:
-    "Full-stack and mobile developer building production web and mobile applications with Flutter, React, Supabase and Python — from architecture to deployment.",
+    "I build production apps end to end. Flutter on mobile, React on web, Supabase and Python behind them — architecture through to the signed release.",
   /** Set to null when booked up. */
   availability: "Available for selected freelance projects",
   primaryCta: { label: "View my work", href: "/projects" },
@@ -297,7 +292,7 @@ export const experience: Experience[] = [
 
 /** One line, kept understated. */
 export const foundations =
-  "CS fundamentals: databases, operating systems, graph theory, software engineering, linear algebra.";
+  "Also comfortable in: Postgres tuning, relational modelling, REST integration, release engineering.";
 
 /* -------------------------------------------------------------------------- */
 /* Services                                                                    */
@@ -680,7 +675,7 @@ export const projects: Project[] = [
       data: ["MySQL — normalised relational schema"],
     },
     problem:
-      "Built for the Programmation Web module: manage students, enrolments and results for a university faculty.",
+      "Records system for a university faculty: manage students, enrolments and results.",
     approach:
       "A server-rendered PHP/MySQL application — full CRUD over a normalised relational schema, delivered with LaTeX documentation and a presentation.",
     hardPart: "",
@@ -707,54 +702,21 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 /* -------------------------------------------------------------------------- */
 
 export const about = {
-  lead: "Final-year CS student in Algiers who has been shipping production software since before the degree.",
+  lead: "Full-stack and mobile developer in Algiers. I build production software end to end.",
   body: [
     "I write Flutter and Dart for mobile, React and TypeScript for web, and Python when a problem turns out to be a pipeline wearing a UI. The backend is usually Supabase — Postgres with row-level security, because permissions belong on the server.",
-    "The work I care most about is Briefing Point Go, an Electronic Flight Bag used by Air Algérie crew. Aviation is a useful teacher: tolerance for “it mostly works” is zero, the data sources are hostile, and the person using your app is doing something else at the same time. Building it taught me more about correctness and failure modes than any module has.",
+    "The work I care most about is Briefing Point Go, an Electronic Flight Bag used by Air Algérie crew. Aviation is a hard teacher. Tolerance for \u201cit mostly works\u201d is zero, the data sources are hostile, and the person using your app is flying a plane at the same time.",
     "It has also been rewritten twice — React Native, then React + Capacitor, then Flutter. I mention that because migrations are where architectural judgement actually shows. Choosing a stack is easy. Knowing when the one you chose has stopped paying for itself is not.",
     "Outside the aviation work I have shipped a consumer exam-prep platform with its own payment gating and content pipeline, a loan-matching app for Algerian banking, and a route-optimisation PWA for delivery riders — that last one because I did electric-bike delivery in Algiers and knew exactly where the time went.",
     "I work in English, French and Arabic, remotely, from GMT+1. I am a registered auto-entrepreneur through ANAE, which means I can invoice international clients and receive foreign payments legally. No workarounds, no awkward conversation at the end of the project.",
   ],
   facts: [
     { label: "Based", value: "Algiers, Algeria — GMT+1, remote" },
-    { label: "Studying", value: "BSc Computer Science (ISIL), USTHB — L3, graduating June 2027" },
     { label: "Languages", value: "English, French, Arabic" },
     { label: "Status", value: "Registered auto-entrepreneur (ANAE) — invoices internationally" },
     { label: "Primary stack", value: "Flutter · React · Supabase · Python" },
   ],
 };
-
-/* -------------------------------------------------------------------------- */
-/* Headline numbers                                                            */
-/* -------------------------------------------------------------------------- */
-
-/**
- * Every figure here is derived from the project data or taken straight from a
- * project README. Nothing is estimated — if a number cannot be pointed at, it
- * does not get a tile.
- */
-export const headlineStats: { value: string; label: string; note: string }[] = [
-  {
-    value: String(projects.filter((p) => p.status === "production").length),
-    label: "Apps in production",
-    note: "Aviation, commerce, education, automation",
-  },
-  {
-    value: "4",
-    label: "Layers shipped per product",
-    note: "Mobile client, database, admin dashboard, signed release",
-  },
-  {
-    value: "343",
-    label: "PDFs served offline",
-    note: "171 exam entries across 2008–2026 in BAC Archive",
-  },
-  {
-    value: "3",
-    label: "Languages worked in",
-    note: "English, French and Arabic — specs, calls and handover",
-  },
-];
 
 /* -------------------------------------------------------------------------- */
 /* FAQ                                                                         */

@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { ArrowRight, Check, Smartphone, Database, Workflow, LifeBuoy } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  Smartphone,
+  Database,
+  Workflow,
+  LifeBuoy,
+} from "lucide-react";
 import { services } from "@/data/portfolio";
 import { Section, SectionHeader } from "@/components/section";
 import { RevealGroup, RevealItem } from "@/components/reveal";
@@ -23,7 +31,7 @@ export default function Services() {
         <SectionHeader
           id="services"
           title="Services"
-          desc="Priced as outcomes, not hours. Every package ends with something you own and can run without me."
+          desc="Fixed scope, fixed price, fixed date. You end up owning something your team can run."
           spacer="mb-12 md:mb-20"
         />
 
@@ -48,16 +56,28 @@ export default function Services() {
                   {service.outcome}
                 </p>
 
-                <ul className="mt-6 space-y-2.5 border-t border-border pt-6">
-                  {service.includes.map((line) => (
-                    <li key={line} className="flex gap-2.5 text-sm text-muted-foreground">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden />
-                      {line}
-                    </li>
-                  ))}
-                </ul>
+                {/* Collapsed by default. Four cards times five bullets is a
+                    wall of text that nobody reads; native <details> keeps it
+                    keyboard accessible and working before hydration. */}
+                <details className="group/d mt-6 border-t border-border pt-6">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background">
+                    What&apos;s included
+                    <ChevronDown
+                      className="h-4 w-4 shrink-0 text-brand transition-transform duration-300 group-open/d:rotate-180"
+                      aria-hidden
+                    />
+                  </summary>
+                  <ul className="mt-5 space-y-2.5">
+                    {service.includes.map((line) => (
+                      <li key={line} className="flex gap-2.5 text-sm text-muted-foreground">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden />
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
 
-                <dl className="mt-auto space-y-3 border-t border-border pt-6">
+                <dl className="mt-6 space-y-3 border-t border-border pt-6">
                   <div className="flex items-baseline justify-between gap-4">
                     <dt className="eyebrow">Timeline</dt>
                     <dd className="text-sm">{service.timeline}</dd>

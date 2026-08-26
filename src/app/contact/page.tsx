@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CalendarClock, Mail, MapPin } from "lucide-react";
 import { contactCopy, profile, services, socials } from "@/data/portfolio";
+import Faq from "@/components/sections/faq";
 import PageHeader from "@/components/page-header";
 import { Section } from "@/components/section";
 import ContactForm from "@/components/contact-form";
@@ -105,6 +106,7 @@ export default function ContactPage() {
           </div>
         </div>
       </Section>
+      <Faq />
     </>
   );
 }

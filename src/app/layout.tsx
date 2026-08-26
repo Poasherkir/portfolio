@@ -91,7 +91,6 @@ const jsonLd = {
       "Mobile application development",
       "Electronic Flight Bag",
     ],
-    alumniOf: { "@type": "CollegeOrUniversity", name: "USTHB, Algiers" },
     sameAs: [profile.github],
   },
 };
