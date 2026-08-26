@@ -5,12 +5,8 @@ import { ClipboardList, X } from "lucide-react";
 import { CONTENT_CHECKLIST } from "@/data/portfolio";
 
 /**
- * Development-only reminder of what content is still missing.
- *
- * The site never invents a metric, a testimonial or a link — anything unknown
- * is simply not rendered. That is correct for visitors but easy to forget
- * about, so this panel keeps the outstanding list in front of Malik while he
- * works. It is compiled out of production builds.
+ * Dev-only reminder of what content is still missing. Anything unknown is not
+ * rendered at all, which is easy to forget about. Compiled out in production.
  */
 export default function DevChecklist() {
   const [open, setOpen] = useState(false);

@@ -1,12 +1,7 @@
 import { ArrowDown } from "lucide-react";
 import type { Project } from "@/types";
 
-/**
- * The manual process, the thing that replaced it, and what comes out.
- *
- * Only rendered where a real manual workflow was genuinely automated — this is
- * a claim about how the work changed, not a layout that every project gets.
- */
+/** The manual process, what replaced it, and what comes out. */
 export default function BeforeAfter({ data }: { data: NonNullable<Project["beforeAfter"]> }) {
   return (
     <div className="grid items-stretch gap-4 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">

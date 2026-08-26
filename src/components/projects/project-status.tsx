@@ -1,13 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
-/**
- * One status treatment, used everywhere a project appears.
- *
- * The glyph carries the meaning as much as the colour does — a filled dot for
- * live, a half dot for in-flight, a dash for finished. Colour alone would fail
- * anyone who cannot separate the hues, and this costs nothing to get right.
- */
+/** The glyph carries the meaning alongside the colour, not colour alone. */
 const STATUS = {
   production: { glyph: "●", label: "Production", tone: "text-brand" },
   active: { glyph: "◐", label: "In development", tone: "text-foreground/70" },

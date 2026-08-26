@@ -24,19 +24,10 @@ export default function ProjectGrid({
   const params = useSearchParams();
   const reduced = useReducedMotion();
 
-  /**
-   * Continuity with the 3D keyboard on the home page: pressing a keycap can
-   * send you here as /projects?stack=flutter. Matched against the real stack
-   * strings, case-insensitively, so "flutter" finds "Flutter" and "go_router".
-   */
+  /** Keycaps on the home page link here as /projects?stack=flutter. */
   const stackQuery = params.get("stack")?.trim().toLowerCase() ?? "";
 
-  /**
-   * A stack query searches EVERY project, not just the ones in this grid.
-   * The two Flutter apps are featured further up the page, so scoping the
-   * search to the leftovers made ?stack=flutter answer "nothing" on a site
-   * that visibly leads with two Flutter apps.
-   */
+  /** Searches every project, not just this grid — the featured ones count too. */
   const stackMatches = useMemo(() => {
     if (!stackQuery) return null;
     return (allProjects ?? projects).filter((p) =>
@@ -44,8 +35,7 @@ export default function ProjectGrid({
     );
   }, [projects, allProjects, stackQuery]);
 
-  // Hide a filter entirely if nothing in the visible pool uses that tag — the
-  // pool changes under a stack query, and stale chips would show counts of 0.
+  // Chips describe the visible pool, which changes under a stack query.
   const available = useMemo(() => {
     const used = new Set((stackMatches ?? projects).flatMap((p) => p.tags));
     return FILTERS.filter((f) => f === "All" || used.has(f));
@@ -56,7 +46,7 @@ export default function ProjectGrid({
     return active === "All" ? base : base.filter((p) => p.tags.includes(active));
   }, [projects, stackMatches, active]);
 
-  // Arriving from a keycap lands mid-page; bring the results into view once.
+  // Arriving from a keycap lands mid-page.
   const scrolledRef = useRef(false);
   useEffect(() => {
     if (!stackQuery || scrolledRef.current) return;

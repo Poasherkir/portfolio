@@ -9,16 +9,12 @@ import type {
 } from "@/types";
 
 /* ---------------------------------------------------------------------------
- * SINGLE SOURCE OF CONTENT
+ * Site content.
  *
- * Everything the site says lives in this file. Components read from it and
- * never hardcode copy, so content can be edited without touching JSX.
- *
- * RULES (from the brief, enforced by the components):
- *   - No invented metrics. If a number is not known the field is omitted and
- *     the line is not rendered — never guessed.
- *   - Anything still missing is listed in CONTENT_CHECKLIST at the bottom and
- *     surfaced as a dev-only overlay. It never renders in production.
+ * Everything the site says lives here; components read from it and never
+ * hardcode copy. Unknown values are omitted rather than guessed, and the
+ * component simply does not render that line. Outstanding items are listed in
+ * CONTENT_CHECKLIST at the bottom.
  * ------------------------------------------------------------------------- */
 
 export const profile = {
@@ -28,7 +24,7 @@ export const profile = {
   role: "Full-stack & mobile developer",
   location: "Algiers, Algeria",
   timezone: "GMT+1",
-  /** Trust signal — registered to invoice and receive foreign payments legally. */
+  /** Registered to invoice and receive foreign payments. */
   legal: "Registered auto-entrepreneur (ANAE) — I invoice internationally.",
   studies: {
     degree: "BSc Computer Science (ISIL), L3",
@@ -42,9 +38,9 @@ export const profile = {
   ],
 
   email: "malikboudinee1e@gmail.com" as string | null,
-  /** Pending — the "Book a call" button stays hidden while null. */
+  /** Null hides the "Book a call" button. */
   calendly: null as string | null,
-  /** Pending — CV buttons stay hidden while null. */
+  /** Null hides the CV buttons. */
   cv: {
     en: null as string | null,
     fr: null as string | null,
@@ -94,8 +90,7 @@ export const navLinks: NavLink[] = [
 
 export const socials: SocialLink[] = [
   { title: "GitHub", href: profile.github, handle: "@Poasherkir", icon: "github" },
-  // Pending — see CONTENT_CHECKLIST. Add LinkedIn / Upwork / Fiverr here and
-  // they appear automatically in the header, footer and contact page.
+  // Add LinkedIn / Upwork here and they appear in the header, footer and contact page.
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -108,13 +103,13 @@ export const hero = {
   displayLines: ["I build", "software", "that ships."],
   subhead:
     "Full-stack and mobile developer building production web and mobile applications with Flutter, React, Supabase and Python — from architecture to deployment.",
-  /** Only shown while it is actually true. Set to null when booked up. */
+  /** Set to null when booked up. */
   availability: "Available for selected freelance projects",
   primaryCta: { label: "View my work", href: "/projects" },
   secondaryCta: { label: "Let's work together", href: "/contact" },
 };
 
-/** Facts, not adjectives. Every line here is verifiable. */
+/** Every line here is verifiable. */
 export const proofStrip: string[] = [
   "Flagship: an Electronic Flight Bag in commercial aviation use",
   "Rewritten twice — React Native → Capacitor → Flutter",
@@ -217,21 +212,19 @@ export type Keycap = {
   icon: string;
   label: string;
   description: string;
-  /** Honest tier — surfaced in the read-out so a logo is never a false claim. */
+  /** Surfaced in the read-out, so a logo never overstates the level. */
   level: SkillLevel;
   /** Brand hex. Used as a dark tint for the cap body, not at full strength. */
   color: string;
   /** Physical key that presses this cap when typed. */
   key: string;
-  /** Where this is actually used. Omitted where there is no honest answer —
-   *  a logo on a keycap must not imply a project that does not exist. */
+  /** Omitted where there is nothing real to point at. */
   usedIn?: string;
 };
 
 /**
- * The board doubles as the skills matrix, so every cap carries its tier. A
- * logo on a keycap reads as "I use this" — for the roadmap items that would be
- * a straight lie, which is why hovering one says so in as many words.
+ * The board doubles as the skills matrix, so every cap carries its tier and
+ * the read-out states it — a logo alone would overstate the roadmap entries.
  */
 export const keycaps: Keycap[][] = [
   // Web core
@@ -302,7 +295,7 @@ export const experience: Experience[] = [
   },
 ];
 
-/** One line. Deliberately not over-emphasised. */
+/** One line, kept understated. */
 export const foundations =
   "CS fundamentals: databases, operating systems, graph theory, software engineering, linear algebra.";
 
@@ -381,7 +374,7 @@ export const services: Service[] = [
 /* Delivery process                                                            */
 /* -------------------------------------------------------------------------- */
 
-/** Complete product delivery, not just the build step in the middle. */
+/** End-to-end delivery, not just the build step. */
 export const deliveryProcess: { step: string; title: string; body: string }[] = [
   {
     step: "01",
@@ -430,10 +423,9 @@ export const projects: Project[] = [
     tags: ["Mobile", "Backend", "Automation"],
     stack: ["Flutter", "Dart", "go_router", "Supabase", "FastAPI", "Hive", "dio", "fl_chart"],
     valueProp: "Electronic Flight Bag for aviation crew workflows.",
-    /* PENDING ASSETS — re-enable the moment the five screenshots land in
-       public/assets/projects/. Kept verbatim so it is a one-line change.
+    /* TODO: re-enable once the screenshots are in public/assets/projects/.
 
-    // // Real screens from the production build, supplied by Malik.
+    // // Real screens from the production build.
     // screens: [
     //   {
     //     src: "/assets/projects/bpg-home.webp",

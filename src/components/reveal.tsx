@@ -29,12 +29,8 @@ export function BlurIn({
 }
 
 /**
- * Wipe reveal: the content slides up while a brand-coloured panel sweeps off it.
- * The site's signature entrance for headings.
- *
- * The panel is mounted on the client only. Rendering it server-side would ship
- * HTML in which a solid cyan rectangle sits on top of the heading — which is
- * what a visitor would be left staring at if the JS were slow or blocked.
+ * Content slides up while a coloured panel sweeps off it. The panel mounts on
+ * the client only — server-rendered, it would cover the heading if JS stalled.
  */
 export function WipeReveal({
   children,
@@ -54,18 +50,10 @@ export function WipeReveal({
 
   return (
     <div className={cn("relative overflow-hidden", className)} style={{ width }}>
-      {/* The offset is a PERCENTAGE of the element's own height, never a fixed
-          pixel value.
-          
-          This wrapper clips (`overflow-hidden`), and `whileInView` is driven by
-          an IntersectionObserver that respects ancestor clipping. A fixed
-          `y: 48` pushes a short element — an eyebrow is ~17px tall — entirely
-          outside its own clip box, so the observer sees zero intersection, the
-          animation never triggers, and the content stays hidden forever. Tall
-          headings happened to survive; every small label did not.
-          
-          At 60% of its own height, 40% of the element always remains inside the
-          box, which clears the 0.2 threshold at any size. */}
+      {/* Percentage, never a fixed pixel offset. This wrapper clips, and
+          whileInView's IntersectionObserver respects that clipping — a fixed
+          y:48 pushes anything shorter than 48px fully outside its own clip
+          box, so it never intersects and never reveals. */}
       <motion.div
         initial={{ opacity: 0, y: "60%" }}
         whileInView={{ opacity: 1, y: "0%" }}

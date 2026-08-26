@@ -4,17 +4,9 @@ import type { Project } from "@/types";
 import ScreenGallery from "./screen-gallery";
 
 /**
- * Cover art for a project.
- *
- * Real screenshots win whenever they exist — TechSub has a public URL, so it
- * has real ones. For everything else the source is private and there is no
- * honest screenshot to show, so this draws a *data portrait* instead: a mark
- * per PDF served, a mark per tool shipped, the actual shape of the pipeline.
- *
- * The distinction matters. A fabricated UI mockup would claim something untrue
- * about a product nobody can verify; a diagram built from the project's own
- * published numbers claims exactly what the case study already says. Every
- * count below is read from `project.metrics`, not typed in here.
+ * Cover art. Uses real screenshots where they exist; otherwise draws a figure
+ * from the project's own numbers — a mark per PDF served, a mark per tool
+ * shipped. Counts come from project.metrics, never hard-coded here.
  */
 export default function ProjectVisual({
   project,
@@ -29,8 +21,7 @@ export default function ProjectVisual({
 }) {
   const cover = project.images[0];
 
-  // Real app screens beat a landscape cover for a mobile product — a phone
-  // screenshot letterboxed into 16:10 shows mostly nothing.
+  // A phone screenshot letterboxed into 16:10 shows almost nothing.
   if (!cover && project.screens?.length) {
     return <ScreenGallery screens={project.screens} priority={priority} className={className} />;
   }
@@ -78,7 +69,7 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
   );
 }
 
-/** Small caption strip, so the abstraction is always labelled as what it is. */
+/** Caption strip, so the figure is always labelled. */
 function Caption({ left, right }: { left: string; right?: string }) {
   return (
     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5">
@@ -121,7 +112,7 @@ function AviationPortrait({ project, className }: { project: Project; className?
   const tools = metric(project, "Reference") ?? 0;
   const sections = metric(project, "Main sections") ?? 0;
 
-  // Marks laid out on a fixed grid: deterministic, so server and client agree.
+  // Fixed grid — deterministic, so server and client agree.
   const cols = 10;
   const rows = Math.ceil(tools / cols);
 
@@ -157,7 +148,7 @@ function AviationPortrait({ project, className }: { project: Project; className?
               className="h-1.5 w-1.5 rounded-[1px]"
               style={{
                 background: "hsl(var(--brand))",
-                // Front rows brightest, so it reads as depth rather than noise.
+                // Front rows brightest, for depth.
                 opacity: 0.85 - (Math.floor(i / cols) / Math.max(rows, 1)) * 0.55,
               }}
             />

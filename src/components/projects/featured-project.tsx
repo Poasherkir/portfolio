@@ -6,17 +6,8 @@ import ProjectVisual from "./project-visual";
 import ProjectStatus from "./project-status";
 
 /**
- * A featured project, given enough room to be understood rather than skimmed.
- *
- * Two sizes. `hero` is the flagship — full width, visual and copy side by side,
- * and the only one at that scale on the page. `large` is for the rest of the
- * featured set: still substantial, but visibly second, because three identical
- * cards would say all three matter equally and none of them lead.
- *
- * Order of information is fixed: status, name, what it is for, what kind of
- * thing it is, what it is made of, then the way in. The stack comes last on
- * purpose — a client reads the value proposition, another engineer reads the
- * pills, and putting the pills first serves neither.
+ * A featured project. `hero` is the flagship and the only one at that scale;
+ * `large` is the rest of the featured set.
  */
 export default function FeaturedProject({
   project,

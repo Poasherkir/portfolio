@@ -7,13 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import ProjectVisual from "@/components/projects/project-visual";
 
-/**
- * The credibility hero.
- *
- * The 3D board wins attention; this is what converts it. One project, given
- * enough room to actually be understood — problem, approach, the part that was
- * hard, and the result — rather than a sixth of a card grid.
- */
+/** One project with room to be understood: problem, approach, result. */
 export default function Flagship() {
   const project = getProject("briefing-point-go");
   if (!project) return null;

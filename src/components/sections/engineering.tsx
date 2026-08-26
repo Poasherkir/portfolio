@@ -6,12 +6,8 @@ import { Reveal, RevealGroup, RevealItem, WipeReveal } from "@/components/reveal
 import { Button } from "@/components/ui/button";
 
 /**
- * The section that answers "can I see the code?" before it is asked.
- *
- * Deliberately not a contribution graph. The shipping work lives in private
- * repositories, so a public graph would understate it — and dressing one up
- * would be a lie told in chart form. Say why it is private, say what can be
- * shown instead, and let the practices carry the weight.
+ * Answers "can I see the code?" before it is asked. Not a contribution graph —
+ * the shipping work is in private repos, so a public graph would understate it.
  */
 export default function Engineering() {
   return (

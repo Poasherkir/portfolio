@@ -7,18 +7,9 @@ import type { Keycap } from "@/data/portfolio";
  * so nothing is fetched from a CDN at runtime.
  */
 /**
- * Picks the cap colour and the ink that goes on it, together.
- *
- * The rule the reference board follows is that a cap and its logo are never
- * the same colour — the logo is a flat monochrome silhouette that contrasts
- * with the plastic under it. Full-colour brand logos on brand-coloured caps is
- * exactly what made Flutter's blue mark vanish into a blue cap, and GitHub's
- * black mark vanish into a dark one.
- *
- * So: brands with an actual hue keep it and take white ink (or near-black if
- * the colour is bright enough that white would not read, e.g. JavaScript
- * yellow). Brands that are essentially black, white or grey have no usable cap
- * colour at all, so they get a neutral charcoal cap and a white mark.
+ * Cap colour and ink are picked together so the logo always contrasts with the
+ * plastic under it. Brands with a real hue keep it; black/white/grey brands get
+ * a charcoal cap instead, since their own colour gives nothing to work with.
  */
 export function capAndInk(hex: string): { cap: string; ink: string } {
   const c = new THREE.Color(hex);
@@ -53,19 +44,11 @@ function monochrome(svg: string, ink: string) {
 const cache = new Map<string, THREE.CanvasTexture>();
 
 /**
- * Fetches an SVG and draws it into a 2D context.
- *
- * Two traps here, both of which produce a silent blank draw rather than an
- * error, and both of which cost me a long time:
- *
- *  1. Devicon files declare only a viewBox. An SVG with no intrinsic width or
- *     height decodes to a zero-sized image and drawImage paints nothing, so
- *     the dimensions are read off the viewBox and written back in.
- *
- *  2. The blob URL must stay alive until AFTER the draw. Chrome rasterises SVG
- *     images lazily at draw time, so revoking the URL the moment `decode()`
- *     resolves leaves a decoded-but-unpaintable image. The draw therefore
- *     happens inside this function, before the revoke.
+ * Fetches an SVG and draws it. Two silent-failure traps:
+ *  1. Devicon files declare only a viewBox, so they decode to a zero-sized
+ *     image and paint nothing. Width/height are written back from the viewBox.
+ *  2. The blob URL must outlive the draw — Chrome rasterises SVGs lazily, so
+ *     revoking on decode() leaves a decoded but unpaintable image.
  */
 async function drawSvg(
   url: string,
@@ -112,11 +95,7 @@ export function keycapTexture(cap: Keycap, tint: string, ink: string) {
   texture.colorSpace = THREE.SRGBColorSpace;
   cache.set(cap.id, texture);
 
-  /**
-   * Opaque, cap colour first. The legend plane carries the identical scoop as
-   * the cap top, so an opaque legend simply becomes the cap's top face — which
-   * keeps the alpha channel out of the problem entirely.
-   */
+  // Opaque cap colour first, so the legend never needs an alpha channel.
   const base = () => {
     ctx.fillStyle = tint;
     ctx.fillRect(0, 0, S, S);
@@ -128,18 +107,14 @@ export function keycapTexture(cap: Keycap, tint: string, ink: string) {
   drawSvg(`/assets/devicon/${cap.icon}`, ink, (img) => {
     base();
 
-    // Preserve aspect ratio — several Devicon files are wordmarks, and
-    // squashing them into a square looks broken.
+    // Several Devicon files are wordmarks, so keep the aspect ratio.
     const pad = S * 0.13;
     const boxSize = S - pad * 2;
     const ratio = (img.naturalWidth || 1) / (img.naturalHeight || 1);
     const w = ratio >= 1 ? boxSize : boxSize * ratio;
     const h = ratio >= 1 ? boxSize / ratio : boxSize;
 
-    // Drawn perfectly crisp — NO shadow blur. An earlier version put a soft
-    // dark halo behind every logo "for contrast", and it was the single thing
-    // making the whole board look cheap: every mark came out fuzzy and faded
-    // instead of sharp like a real pad-printed legend.
+    // No shadow blur — a halo behind the mark reads as fuzzy, not printed.
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, (S - w) / 2, (S - h) / 2, w, h);

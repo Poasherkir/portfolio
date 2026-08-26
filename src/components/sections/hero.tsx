@@ -10,18 +10,10 @@ import SocialIcon from "@/components/layout/social-icon";
 import { usePreloader } from "@/components/preloader";
 import { cn } from "@/lib/utils";
 
-/**
- * Developer first, name second.
- *
- * The 3D board is already the visual hero and owns the right-hand column, so
- * the copy here stays deliberately spare: what he does, in three lines, one
- * sentence of substance, and two ways to act on it. Anything more competes
- * with the keyboard instead of supporting it.
- */
+/** The board owns the right column, so the copy here stays spare. */
 export default function Hero() {
-  // The hero always renders — gating it on the preloader would ship an empty
-  // <h1> to crawlers and flash a blank screen. Instead the entrance is simply
-  // delayed so it finishes settling as the intro panel lifts away.
+  // Always renders — gating on the preloader would ship an empty <h1>.
+  // The entrance is delayed instead, to settle as the intro panel lifts.
   const { isLoading } = usePreloader();
   const offset = isLoading ? 0.7 : 0;
 

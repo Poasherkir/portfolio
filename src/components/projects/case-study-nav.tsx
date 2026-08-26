@@ -4,15 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Contents rail for a case study.
- *
- * Desktop: a sticky column that tracks where you are. Mobile: the same list
- * turned into a horizontally scrollable strip pinned under the header, because
- * a vertical rail on a narrow screen costs a whole viewport before the reader
- * reaches the thing it indexes.
- *
- * Scroll-spy uses IntersectionObserver rather than a scroll handler — no
- * layout reads per frame, and it stays correct while smooth scroll is running.
+ * Contents rail. Sticky column on desktop, horizontal strip on mobile.
+ * Scroll-spy via IntersectionObserver — no per-frame layout reads, and it
+ * stays correct while smooth scroll is running.
  */
 export default function CaseStudyNav({
   sections,
@@ -31,7 +25,7 @@ export default function CaseStudyNav({
         for (const entry of entries) {
           seen.set(entry.target.id, entry.intersectionRatio);
         }
-        // Whichever tracked section currently shows the most of itself wins.
+        // Whichever section shows the most of itself wins.
         let best = "";
         let bestRatio = 0;
         for (const [id, ratio] of seen) {

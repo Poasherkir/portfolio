@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 export const CAP_SIZE = 0.72;
-/** Tall enough that the side walls read — that is where a cap gets its bulk. */
+/** Tall enough that the side walls read. */
 export const CAP_HEIGHT = 0.42;
 const CORNER = 0.09;
 const BEVEL = 0.03;
@@ -45,9 +45,8 @@ function buildCap() {
   geometry.center();
   geometry.computeBoundingBox();
 
-  // Flat top plane, BEFORE any scooping. Everything that has to sit on the cap
-  // face is measured from here — the post-dish bounding box is the scooped rim,
-  // which is a different height and the source of a very confusing bug.
+  // Flat top before scooping. Measure from here — the post-dish bounding box
+  // is the scooped rim, which sits at a different height.
   const rimY = geometry.boundingBox!.max.y;
   const pos = geometry.attributes.position;
   const from = rimY - BEVEL * 1.2;
@@ -72,16 +71,9 @@ export const CAP_GEOMETRY = built.geometry;
 /** Height of the cap's flat top before dishing. Position legends from this. */
 export const CAP_RIM_Y = built.rimY;
 /**
- * Top-down planar UVs.
- *
- * The legend used to be a second plane floating above the cap, and it caused
- * nothing but trouble — depth ordering, alpha discarding, stale uploads. This
- * projects the texture straight down onto the cap instead, so the logo is part
- * of the cap's own surface. One mesh, one material, one texture.
- *
- * Side-wall vertices sit on the perimeter, so they sample the very edge of the
- * texture — which is plain cap colour, because the logo is drawn inset. The
- * sides therefore come out solid colour with no smearing, for free.
+ * Top-down planar UVs, so the logo is part of the cap's own surface rather than
+ * a second plane floating above it. Side-wall vertices sample the texture edge,
+ * which is plain cap colour, so the sides come out solid with no smearing.
  */
 function applyPlanarUVs(geometry: THREE.BufferGeometry) {
   const pos = geometry.attributes.position;

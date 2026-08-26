@@ -8,12 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/contact-form";
 
-/**
- * The ask. Two columns: the form, and the answers to the questions people have
- * before filling one in — how fast do I reply, what timezone am I in, can I
- * invoice them legally. The right column used to be empty, which made the page
- * end on dead space at exactly the moment it needed to convert.
- */
+/** The form, plus the answers people want before filling one in. */
 export default function ContactSection() {
   return (
     <Section id="contact" className="mx-auto max-w-7xl pb-24">

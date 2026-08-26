@@ -2,11 +2,7 @@ import { deliveryProcess } from "@/data/portfolio";
 import { Section, SectionHeader } from "@/components/section";
 import { RevealGroup, RevealItem } from "@/components/reveal";
 
-/**
- * Complete product delivery, not just the build step in the middle. The point
- * of showing all six is that a client can see who handles deployment and
- * handover — usually the part that decides whether a project actually lands.
- */
+/** All six steps, so deployment and handover are visibly covered. */
 export default function Process() {
   return (
     <Section id="process" className="py-24 md:py-32">

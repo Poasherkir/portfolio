@@ -9,16 +9,8 @@ import type { Project } from "@/types";
 import ProjectStatus from "./project-status";
 
 /**
- * Search across the work. ⌘K / Ctrl+K, or the button.
- *
- * Deliberately not a general command palette — there is no other palette in
- * the app to extend, and a second one that only did navigation would be two
- * things to maintain and two shortcuts to remember. This searches projects and
- * nothing else, which is the part that is actually hard to browse.
- *
- * Matching runs over the title, the value proposition, the tagline, the tags
- * and the stack together, so "aviation" finds the flight bag and the PDF
- * pipeline, and "flutter" finds both Flutter apps.
+ * Project search. Matches across title, value prop, tagline, tags and stack,
+ * so "aviation" finds the flight bag and the PDF pipeline.
  */
 export default function ProjectSearch({ projects }: { projects: Project[] }) {
   const [open, setOpen] = useState(false);

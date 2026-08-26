@@ -5,11 +5,7 @@ export type ProjectStatus = "production" | "active" | "archived";
 /** Broad buckets used by the /projects filter bar. */
 export type ProjectTag = "Mobile" | "Backend" | "Automation" | "Web";
 
-/**
- * The layers every product passes through, top to bottom. A project lights up
- * only the layers it genuinely has — the PDF pipeline is one layer wide, and
- * that is the point: the diagram describes real systems, not a template.
- */
+/** Layers a product passes through. A project only fills the ones it has. */
 export type ArchLayerId =
   | "client"
   | "logic"
@@ -19,7 +15,7 @@ export type ArchLayerId =
   | "automation"
   | "deploy";
 
-/** Tech per layer for one project. Layers with nothing real stay absent. */
+/** Tech per layer. Layers with nothing in them are omitted. */
 export type ProjectArchitecture = Partial<Record<ArchLayerId, string[]>>;
 
 export type Project = {
@@ -39,27 +35,21 @@ export type Project = {
   links: { repo?: string; live?: string; store?: string };
   images: { src: string; alt: string }[];
   featured: boolean;
-  /** Set when the source is private. Renders "walkthrough on request" instead of a dead link. */
+  /** Private source — renders a walkthrough offer instead of a dead link. */
   privateRepo?: boolean;
   /** Optional extra repos that belong to the same product. */
   relatedRepos?: { name: string; url?: string; note: string }[];
-  /** Only render a metrics row when there are real numbers to show. */
+  /** Omitted when there are no figures to show. */
   metrics?: { label: string; value: string }[];
-  /** One sentence on why the thing exists. Shown on cards instead of a stack dump. */
+  /** One sentence on why it exists. Cards lead with this, not the stack. */
   valueProp: string;
-  /** Which layers this project actually has. Absent where the stack is unknown. */
+  /** Absent where the stack is not documented. */
   architecture?: ProjectArchitecture;
-  /**
-   * Portrait app screenshots, shown inside device frames.
-   *
-   * Separate from `images` on purpose: `images` are landscape cover art and go
-   * in 16:10 containers, these are ~9:20 phone screens and would be destroyed
-   * by the same crop.
-   */
+  /** Portrait app screenshots, shown in device frames. `images` is landscape. */
   screens?: { src: string; alt: string; caption: string }[];
-  /** Only where a manual process was genuinely replaced by an automated one. */
+  /** Only where a manual process was replaced by an automated one. */
   beforeAfter?: { before: string[]; via: string; after: string[] };
-  /** Real-world value, in plain terms. Case studies only. */
+  /** Case studies only. */
   whyItMatters?: string;
   /** Long-form case study only exists for the top projects. */
   hasCaseStudy: boolean;
@@ -78,7 +68,7 @@ export type Service = {
   outcome: string;
   includes: string[];
   timeline: string;
-  /** Null until Malik decides the band — the price line is omitted rather than invented. */
+  /** Null hides the price line rather than showing a guess. */
   priceBand: string | null;
   icon: "mobile" | "server" | "automation" | "rescue";
 };
@@ -104,7 +94,7 @@ export type ProofPillar = {
 
 export type Experience = {
   id: number;
-  /** Omitted where the real dates are not yet confirmed — never invented. */
+  /** Omitted where the dates are not confirmed. */
   startDate?: string;
   endDate?: string;
   title: string;

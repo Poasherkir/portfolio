@@ -33,9 +33,7 @@ type CapProps = {
   hoverPos: { r: number; c: number } | null;
   active: boolean;
   pinned: boolean;
-  /** 0 = seated on the board, 1 = fully adrift. Updated every frame, so it is
-   *  a ref rather than a prop — a prop would re-render all 30 caps on every
-   *  scroll event. */
+  /** 0 = seated, 1 = fully adrift. A ref, so scrolling does not re-render 30 caps. */
   floatRef: RefObject<number>;
   onHover: (cap: Keycap | null) => void;
   onPress: (cap: Keycap) => void;
@@ -71,13 +69,11 @@ function Cap({
   const phase = useMemo(() => (index * 137.5) % (Math.PI * 2), [index]);
   const drift = useMemo(() => 1.4 + ((index * 37) % 100) / 60, [index]);
 
-  // Row profile: on a real board every row is moulded at its own angle, and
-  // the outer rows sit higher than the middle. Uniform caps look injection
-  // -moulded in one go, which is exactly the cheap tell.
+  // Real boards mould each row at its own angle, with the outer rows higher.
   const rowTilt = (row - (ROWS - 1) / 2) * -0.075;
   const rowLift = Math.abs(row - (ROWS - 1) / 2) * 0.016;
 
-  // A little deterministic variance so 24 caps are not one repeated surface.
+  // Deterministic variance, so the caps are not one repeated surface.
   const roughness = useMemo(() => 0.52 + ((index * 53) % 17) / 260, [index]);
 
   useFrame((state, dt) => {
@@ -85,35 +81,26 @@ function Cap({
     if (!g) return;
     const t = state.clock.elapsedTime;
     const lift = floatRef.current ?? 0;
-    // "Settled enough to behave like a surface." The caps always carry some
-    // lift now, so the old > 0.002 test was true everywhere and quietly
-    // disabled the neighbour ripple for good. 0.3 keeps the ripple alive
-    // through the stack section, where the board is in formation and being
-    // hovered, and drops it once the caps are genuinely scattered — you
-    // cannot ripple a cloud.
+    // Settled enough to behave like a surface. The caps always carry some
+    // lift, so this cannot test for zero or the ripple never fires.
     const adrift = lift > 0.3;
 
-    // A pinned cap stays down; a hovered one bottoms out; otherwise it rests.
-    // Neighbours dip toward whatever is hovered — the board reacts as a
-    // surface rather than 30 independent objects.
+    // Neighbours dip toward whatever is hovered, so the board reacts as a surface.
     let ripple = 0;
     if (hoverPos && !active && !adrift) {
       const d = Math.hypot(row - hoverPos.r, col - hoverPos.c);
       if (d < 2.6) ripple = -0.035 * Math.exp(-d * 0.9);
     }
 
-    // Gentle idle float, so the board breathes instead of sitting dead. Each
-    // cap has its own phase, which keeps it from looking like one rigid slab.
+    // Per-cap phase, so the idle motion is not one rigid slab.
     const idleFloat = Math.sin(t * 0.9 + phase) * 0.014;
 
-    // Scroll lifts the caps off the board and sets them drifting. Everything is
-    // scaled by `lift`, so it is a continuous departure rather than a switch.
+    // Scaled by `lift` throughout, so departure is continuous, not a switch.
     const scattered = lift * (1.35 + Math.sin(t * 0.9 + phase) * drift);
     const seated = pinned ? -0.12 : active ? -0.09 : ripple + idleFloat;
     const targetY = seated * (1 - lift) + scattered;
 
-    // Damping loosens as they leave: drifting keys feel weightless, a seated
-    // key still snaps under the finger.
+    // Damping loosens as they leave, so drifting keys feel weightless.
     g.position.y = damp(g.position.y, targetY, 18 - lift * 15.5, dt);
 
     // Click impulses: a quick overshoot, and a full tumble that unwinds.
@@ -122,18 +109,15 @@ function Cap({
 
     const spin = Math.sin(t * 0.5 + phase) * 0.6 * lift;
     g.rotation.z = damp(g.rotation.z, spin + pop.current * 0.5, 2, dt);
-    // Base and offset are tracked separately on purpose. Damping g.rotation.x
-    // and then adding the tumble to it feeds the offset back in as next
-    // frame's starting value, so the rotation accumulates and the caps end up
-    // arbitrarily upside-down.
+    // Base and tumble tracked separately — damping the summed value feeds the
+    // offset back in each frame and the rotation accumulates without bound.
     restX.current = damp(restX.current, Math.cos(t * 0.4 + phase) * 0.4 * lift, 2, dt);
     g.rotation.x = restX.current + flip.current * Math.PI * 2;
 
     const base = active || pinned ? 1.05 : 1;
     g.scale.setScalar(damp(g.scale.x, base + pop.current * 0.16, 14, dt));
 
-    // Glow ONLY on interaction. A permanent emissive bloom is what made these
-    // read as cheap backlit plastic — at rest the cap is lit, not lit up.
+    // Glow only on interaction. At rest the cap is lit, not lit up.
     if (material.current) {
       const targetGlow = pinned ? 0.85 : active ? 0.55 : 0;
       material.current.emissiveIntensity = damp(
@@ -147,10 +131,8 @@ function Cap({
   });
 
   return (
-    // Outer group holds the static grid offset; the inner one is what the frame
-    // loop moves. Keeping them separate matters: React re-applies `position` on
-    // every re-render, so animating y on the same group would snap it back to
-    // the resting height each time `active` flips.
+    // Outer group holds the static grid offset, inner one is animated. React
+    // re-applies `position` on re-render and would snap the animated y back.
     <group position={[position[0], position[1] + rowLift, position[2]]} rotation={[rowTilt, 0, 0]}>
       <group ref={group}>
         <mesh
@@ -161,9 +143,8 @@ function Cap({
             e.stopPropagation();
             onHover(cap);
           }}
-          // No stopPropagation here on purpose: react-three-fiber tears down
-          // its internal raycast state before pointer-out fires, and calling
-          // stopPropagation on that event throws.
+          // No stopPropagation — R3F tears down its raycast state before
+          // pointer-out fires and throws if the event is stopped.
           onPointerOut={() => onHover(null)}
           onClick={(e) => {
             e.stopPropagation();
@@ -174,8 +155,7 @@ function Cap({
         >
           <meshStandardMaterial
             ref={material}
-            // Cap colour is baked into the texture, so the material tint is
-            // white and the map supplies both the colour and the logo.
+            // Colour is baked into the texture, so the tint stays white.
             map={texture}
             color="#ffffff"
             roughness={roughness}
@@ -200,7 +180,7 @@ export type KeyboardProps = {
   pinnedId: string | null;
   onHover: (cap: Keycap | null) => void;
   onPress: (cap: Keycap) => void;
-  /** Driven from here rather than useScroll — see opacityAt for why. */
+  /** Written every frame from the same anchors that drive the pose. */
   boardOpacity: MotionValue<number>;
 };
 
@@ -239,11 +219,7 @@ export default function Keyboard({
     if (!g) return;
     const t = state.clock.elapsedTime;
 
-    // How adrift the caps are, straight from the section table — the same
-    // measured anchors that drive the pose and the opacity. There is no page-
-    // progress ramp any more: it kept the caps pinned flat across the whole
-    // first screen, and "further down the page" was only ever a proxy for
-    // "which section am I in", which the anchors already answer exactly.
+    // Straight from the section table, like the pose and the opacity.
     floatRef.current = floatAmountAt(anchorsRef.current ?? [], window.scrollY);
 
     // Scrubbed, not switched: the pose is interpolated from the live scroll

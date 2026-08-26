@@ -33,13 +33,9 @@ function hasWebGL() {
 
 
 /**
- * Image-based lighting from three's built-in RoomEnvironment.
- *
- * This is the single biggest thing separating "3D primitive" from "moulded
- * object": without an environment map, a physical material has nothing to
- * reflect, so every surface reads as flat gouache. drei's <Environment> presets
- * would do the same job but fetch an .hdr from a CDN — this one is generated
- * locally at startup and costs one render.
+ * Image-based lighting from three's RoomEnvironment. Without an environment map
+ * a physical material has nothing to reflect and reads flat. Generated locally
+ * rather than using drei's presets, which fetch an .hdr from a CDN.
  */
 function StudioEnvironment() {
   const scene = useThree((s) => s.scene);
@@ -50,9 +46,8 @@ function StudioEnvironment() {
     const pmrem = new THREE.PMREMGenerator(gl);
     const target = pmrem.fromScene(new RoomEnvironment(), 0.04);
     scene.environment = target.texture;
-    // RoomEnvironment is a brightly lit white studio. At full strength it
-    // floods a near-black keycap all the way up to pastel — which is exactly
-    // what kept happening. Keep it as a faint reflection, not a light source.
+    // A bright white studio at full strength floods dark caps to pastel.
+    // Keep it as a faint reflection, not a light source.
     scene.environmentIntensity = 0.3;
 
     // Dev-only handle, so the scene graph can be inspected from the console.
@@ -84,17 +79,10 @@ export default function KeyboardScene() {
   const [audioReady, setAudioReady] = useState(true);
 
   /**
-   * The board fades out as the caps drift, so it is not sitting behind the FAQ
-   * and contact copy at full brightness.
-   *
-   * This is ONE opacity on the canvas element, not per-material transparency.
-   * Making 30 caps `transparent` pushes them into three's alpha-blended pass,
-   * where they sort unreliably against each other and blend together — which
-   * looks blurry the moment they start overlapping. Fading the composited
-   * layer keeps every cap crisply opaque and costs a single GPU operation.
+   * One opacity on the canvas, not per-material transparency: 30 transparent
+   * caps land in three's alpha-blended pass, sort unreliably against each other
+   * and read as blur wherever they overlap. Written every frame by <Keyboard>.
    */
-  // Written every frame by <Keyboard> from the same measured section anchors
-  // that drive the pose, so presence and position never disagree.
   const boardOpacity = useMotionValue(1);
 
   const anchorsRef = useRef<Anchor[]>([]);
@@ -108,11 +96,7 @@ export default function KeyboardScene() {
     return map;
   }, []);
 
-  /**
-   * Pitch per cap, rising left to right across the board. A real keyboard does
-   * not make one identical noise 30 times — the switches sit in different
-   * positions in the case and ring slightly differently.
-   */
+  /** Pitch rises left to right — switches ring differently across the case. */
   const pitchOf = useMemo(() => {
     const map = new Map<string, number>();
     keycaps.forEach((row, r) =>
@@ -143,11 +127,7 @@ export default function KeyboardScene() {
     };
   }, []);
 
-  /**
-   * Anchors are measured from the real DOM, and re-measured whenever the page
-   * changes height — images loading, a modal opening, a route change. A stale
-   * measurement is what makes scroll-linked animation drift out of sync.
-   */
+  /** Re-measured whenever the page changes height, or the choreography drifts. */
   useEffect(() => {
     if (!supported) return;
 
@@ -239,8 +219,7 @@ export default function KeyboardScene() {
 
   const shown = pinned ?? hovered;
 
-  // Continuity with /projects: the same technology, filtered. Computed from
-  // the real stacks so a keycap never links to an empty result.
+  // Computed from the real stacks, so a keycap never links to an empty result.
   const projectCount = shown
     ? projects.filter((p) =>
         p.stack.some((tech) => tech.toLowerCase().includes(shown.label.toLowerCase()))
@@ -250,25 +229,19 @@ export default function KeyboardScene() {
   return (
     <>
       <motion.div
-        // No negative z-index. Content behind an opaque ancestor background is
-        // dropped from hit-testing, which is what stopped the caps receiving
-        // hover at all. The canvas simply renders before <main>, so the page
-        // paints over it, and `canvas-overlay-mode` hands the pointer back.
+        // Never a negative z-index: content behind an opaque ancestor
+        // background is dropped from hit-testing and stops receiving hover.
         className="fixed inset-0 z-0"
         style={{ opacity: boardOpacity, cursor: hovered ? "pointer" : "default" }}
         aria-hidden
       >
         <Canvas
           shadows
-          // 2.5, not 3. R3F clamps to the display's own devicePixelRatio, so a
-          // higher cap is inert below 3x and costs 44% more pixels on the rare
-          // desktop that reports it. Measured no visible gain; the quality here
-          // comes from the lighting below, not from resolution.
+          // R3F clamps to the display's own ratio, so a higher cap is inert
+          // below 3x and only costs pixels on the machines that report it.
           dpr={[1, isMobile ? 2 : 2.5]}
           camera={{ fov: 34, position: [0, 0, 9] }}
-          // ACES (three's default) rolls bright colour toward white, which is
-          // exactly what turned saturated brand colours into pastel. The
-          // Khronos neutral curve keeps hue and saturation intact in highlights.
+          // ACES rolls saturated colour toward white; neutral keeps the hue.
           gl={{
             antialias: true,
             powerPreference: "high-performance",

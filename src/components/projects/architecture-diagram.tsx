@@ -6,17 +6,9 @@ import { architectureIntro, architectureLayers } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
-/**
- * The layered architecture, per project.
- *
- * The honest part is the dimming. Selecting the PDF pipeline lights up exactly
- * one layer, because that is all it has — it is a document pipeline, not an
- * application. A diagram where every project filled all seven rows would be
- * wallpaper; one that visibly empties is making a claim you can check against
- * the case study.
- */
+/** Layered architecture per project. Layers a project lacks are dimmed. */
 export default function ArchitectureDiagram({ projects }: { projects: Project[] }) {
-  // Only projects whose layers are actually documented can be shown here.
+  // Only projects with documented layers.
   const selectable = projects.filter((p) => p.architecture);
   const [activeSlug, setActiveSlug] = useState(selectable[0]?.slug ?? "");
   const reduced = useReducedMotion();

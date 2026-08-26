@@ -2,15 +2,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * A phone screenshot in a device bezel.
- *
- * The app is light-themed and this site is dark, so a bare screenshot would
- * float as a bright rectangle with no edge. The bezel gives it a boundary and
- * reads as "this is a running app" rather than "this is an image".
- *
- * Aspect is fixed at 9:19.5 and the image is cover-cropped from the top —
- * source captures vary by a few pixels between devices, and letting each one
- * set its own height would make a row of phones ragged.
+ * A phone screenshot in a device bezel. Aspect is fixed and the image is
+ * cover-cropped from the top — captures vary by a few pixels between devices,
+ * and a row of phones at their own heights looks ragged.
  */
 export default function PhoneFrame({
   src,

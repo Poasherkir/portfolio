@@ -4,12 +4,7 @@ import { foundations, skillGroups } from "@/data/portfolio";
 import { Section, SectionHeader } from "@/components/section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 
-/**
- * The 3D keyboard flies into the empty stage in the middle of this section and
- * is the headline. The written list underneath is deliberately short — the
- * board is the fun way in, /stack is the exhaustive answer, and a second wall
- * of text here would just be the same information twice.
- */
+/** The board flies into the stage here; /stack has the exhaustive list. */
 export default function Skills() {
   return (
     <Section id="skills" className="pb-24 pt-24 md:pb-32 md:pt-32">

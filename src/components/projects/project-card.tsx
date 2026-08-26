@@ -6,14 +6,8 @@ import ProjectVisual from "./project-visual";
 import ProjectStatus from "./project-status";
 
 /**
- * A project in the "more work" grid.
- *
- * Visual first, then status, name, what it is for, and only then what it is
- * made of. The stack pills are deliberately the quietest thing on the card —
- * a technology list is what a CV leads with, and this is not one.
- *
- * No "Private" badge here. It is true of nearly every project, so repeating it
- * seven times says nothing; the page states the policy once instead.
+ * A project in the "more work" grid. No "Private" badge — it is true of nearly
+ * every project, so the page states the policy once instead.
  */
 export default function ProjectCard({
   project,
@@ -24,8 +18,7 @@ export default function ProjectCard({
   priority?: boolean;
   className?: string;
 }) {
-  // Case studies get their own page; everything else points at its live site or
-  // repo. Anything private links nowhere and says so, rather than 404-ing.
+  // Case studies get their own page; everything else points at its live site.
   const href = project.hasCaseStudy
     ? `/projects/${project.slug}`
     : project.links.live ?? project.links.repo;

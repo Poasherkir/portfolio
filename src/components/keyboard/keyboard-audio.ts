@@ -66,12 +66,7 @@ function buildNoise(context: AudioContext) {
   return buffer;
 }
 
-/**
- * Browsers refuse to start an AudioContext until the page has seen a real user
- * gesture. Pointer *movement* does not count — which is why hover-triggered
- * sound is silent until something is clicked. So the context is created on the
- * first genuine gesture and everything is audible from then on.
- */
+/** Creates the context on the first real gesture. Pointer moves do not count. */
 export function initKeyboardAudio() {
   if (typeof window === "undefined" || unlocked) return;
 
@@ -92,16 +87,8 @@ export function initKeyboardAudio() {
     master = ctx.createGain();
     master.gain.value = muted ? 0 : 1;
 
-    /**
-     * Soft clip, not a compressor.
-     *
-     * Hovering quickly fires several strikes within milliseconds and they sum.
-     * A DynamicsCompressor handles that but ducks the sharp attack — which is
-     * the entire thing that makes a click read as a click; measured, it pulled
-     * a single strike down to -23 dBFS. A tanh shaper is transparent at normal
-     * level and simply refuses to exceed full scale: a single strike lands at
-     * -8 dBFS, four overlapping at -4, neither clipping.
-     */
+    // Soft clip rather than a compressor: overlapping strikes still sum
+    // safely, but the attack survives. A compressor ducks it to -23 dBFS.
     const shaper = ctx.createWaveShaper();
     const curve = new Float32Array(1024);
     for (let i = 0; i < curve.length; i++) {
@@ -117,9 +104,7 @@ export function initKeyboardAudio() {
     unlocked = true;
     unlockListeners.forEach((fn) => fn(true));
 
-    // Confirmation click, immediately. Without it the visitor clicks, hears
-    // nothing (because the click itself is what armed the audio), and
-    // reasonably concludes the sound is broken.
+    // Play immediately — the gesture that armed the audio needs feedback.
     if (!muted) setTimeout(() => playPress(1.06), 30);
 
     window.removeEventListener("pointerdown", unlock);
@@ -133,25 +118,15 @@ export function initKeyboardAudio() {
 }
 
 /**
- * Modal synthesis.
- *
- * A struck object does not make "filtered noise" — it rings at a set of
- * resonant modes, each with its own frequency, loudness and decay time. So a
- * very short impulse is fed through a bank of high-Q bandpass filters tuned to
- * those modes. That is what makes this read as a piece of plastic being hit
- * rather than a hiss with an envelope on it.
+ * Modal synthesis: a short impulse through a bank of high-Q bandpass filters
+ * tuned to the object's resonant modes.
  */
 type Mode = { f: number; q: number; gain: number; decay: number };
 
 /**
- * Makeup gain.
- *
- * A high-Q bandpass passes only a narrow slice of the exciter's spectrum, so
- * six of them in parallel discard most of the energy going in. The mode gains
- * below read like output amplitudes but are nothing of the sort — measured
- * straight out of the graph, the summed result peaked at -34 dBFS, which is
- * inaudible on any normal volume setting. Measured again across a sweep, 13x
- * puts the peak near -6 dBFS with headroom to spare.
+ * Makeup gain. High-Q bandpasses throw away most of the exciter's energy, so
+ * the mode gains below are not output amplitudes — unscaled the bank peaks
+ * around -34 dBFS. 13x puts it near -6 dBFS.
  */
 const MAKEUP = 13;
 

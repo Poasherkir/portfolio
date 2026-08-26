@@ -3,13 +3,8 @@ import type { Project } from "@/types";
 import PhoneFrame from "./phone-frame";
 
 /**
- * A row of real app screens.
- *
- * Two arrangements. `stage` staggers a few phones on a lit backdrop for use as
- * cover art — the middle one sits forward so the group reads as one object
- * rather than three loose rectangles. `strip` lays them out flat with captions
- * for the case study, where the reader wants to look at each screen properly
- * rather than admire an arrangement.
+ * App screens. `stage` staggers three phones for use as cover art; `strip`
+ * lays them out flat with captions for the case study.
  */
 export default function ScreenGallery({
   screens,
@@ -51,7 +46,7 @@ export default function ScreenGallery({
     );
   }
 
-  // Stage: at most three, because a fourth phone at this size is unreadable.
+  // At most three — a fourth is unreadable at this size.
   const shown = screens.slice(0, 3);
 
   return (
@@ -75,8 +70,7 @@ export default function ScreenGallery({
               key={screen.src}
               className={cn(
                 "w-[27%] max-w-[190px] shrink-0 transition-transform duration-500",
-                // The centre phone stands forward; the outer two sit back and
-                // tilt away, which turns a row into a group.
+                // Centre phone forward, outer two back and tilted.
                 isCentre
                   ? "z-10 -translate-y-3 scale-[1.06]"
                   : "z-0 translate-y-4 scale-[0.94] opacity-90",

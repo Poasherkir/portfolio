@@ -5,15 +5,7 @@ import { Section } from "@/components/section";
 import { Reveal, WipeReveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 
-/**
- * Developer first, student second — that ordering is deliberate. The degree is
- * true and stays on the page, but it is context, not the headline.
- *
- * Deliberately narrative-only: the facts rail that would normally sit beside
- * this (based / studying / languages / status) is already rendered by the
- * Experience section directly below, and printing it twice in one screen is
- * what makes a page feel padded rather than full.
- */
+/** Narrative only — the facts rail is already in the Experience section. */
 export default function AboutShort() {
   return (
     <Section id="about" className="py-24 md:py-32">
