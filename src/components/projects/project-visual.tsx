@@ -97,8 +97,6 @@ function DataPortrait({ project, className }: { project: Project; className?: st
       return <RoutePortrait className={className} />;
     case "bankidz":
       return <ComparePortrait className={className} />;
-    case "gestion-scolarite":
-      return <SchemaPortrait className={className} />;
     default:
       return <GenericPortrait project={project} className={className} />;
   }
@@ -370,77 +368,6 @@ function ComparePortrait({ className }: { className?: string }) {
     </Frame>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/* Gestion de la Scolarité — a normalised relational schema                    */
-/* -------------------------------------------------------------------------- */
-
-function SchemaPortrait({ className }: { className?: string }) {
-  const tables = [
-    { x: 42, y: 44, label: "etudiants" },
-    { x: 160, y: 96, label: "inscriptions" },
-    { x: 278, y: 44, label: "modules" },
-  ];
-
-  return (
-    <Frame className={className}>
-      <svg viewBox="0 0 380 200" className="absolute inset-0 h-full w-full">
-        <line x1="102" y1="72" x2="160" y2="112" stroke="hsl(var(--brand))" strokeOpacity="0.4" />
-        <line x1="220" y1="112" x2="278" y2="72" stroke="hsl(var(--brand))" strokeOpacity="0.4" />
-        {tables.map((t) => (
-          <g key={t.label}>
-            <rect
-              x={t.x}
-              y={t.y}
-              width="60"
-              height="56"
-              rx="3"
-              fill="#ffffff"
-              fillOpacity="0.05"
-              stroke="#ffffff"
-              strokeOpacity="0.2"
-            />
-            <line
-              x1={t.x}
-              y1={t.y + 15}
-              x2={t.x + 60}
-              y2={t.y + 15}
-              stroke="#ffffff"
-              strokeOpacity="0.2"
-            />
-            <text
-              x={t.x + 30}
-              y={t.y + 10.5}
-              textAnchor="middle"
-              fontSize="6"
-              fill="hsl(var(--brand))"
-              fillOpacity="0.9"
-              fontFamily="monospace"
-            >
-              {t.label}
-            </text>
-            {[26, 34, 42, 50].map((dy) => (
-              <line
-                key={dy}
-                x1={t.x + 8}
-                y1={t.y + dy}
-                x2={t.x + 44}
-                y2={t.y + dy}
-                stroke="#ffffff"
-                strokeOpacity="0.14"
-              />
-            ))}
-          </g>
-        ))}
-      </svg>
-      <Caption left="Normalised schema, full CRUD over students and enrolments" right="ARCHIVED" />
-    </Frame>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* Fallback                                                                    */
-/* -------------------------------------------------------------------------- */
 
 function GenericPortrait({ project, className }: { project: Project; className?: string }) {
   return (

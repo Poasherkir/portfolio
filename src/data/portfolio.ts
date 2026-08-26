@@ -174,7 +174,6 @@ export const skillGroups: SkillGroup[] = [
     items: [
       { name: "Supabase", note: "Postgres, Auth, Storage, RLS, Edge Functions" },
       { name: "PHP / MySQL" },
-      { name: "Oracle SQL", note: "relational modelling" },
       { name: "Python", note: "pipelines, scraping, automation" },
       { name: "Playwright", note: "authenticated scraping" },
       { name: "REST API integration" },
@@ -244,8 +243,8 @@ export const keycaps: Keycap[][] = [
   [
     { id: "supabase", icon: "supabase-plain.svg", label: "Supabase", level: "shipping", color: "#3ECF8E", key: "s", description: "Postgres, auth, storage and edge functions without a devops hire.", usedIn: "Briefing Point Go · BAC Archive" },
     { id: "postgresql", icon: "postgresql-plain.svg", label: "PostgreSQL", level: "shipping", color: "#4169E1", key: "g", description: "Relational modelling done properly, before any client code exists.", usedIn: "TechSub · Supabase apps" },
-    { id: "mysql", icon: "mysql-original.svg", label: "MySQL", level: "shipping", color: "#4479A1", key: "q", description: "Behind the university records system, and plenty of client sites.", usedIn: "Gestion de la Scolarité" },
-    { id: "oracle", icon: "oracle-original.svg", label: "Oracle SQL", level: "shipping", color: "#F80000", key: "o", description: "Relational modelling from the coursework side of the fence.", usedIn: "Coursework — relational modelling" },
+    { id: "mysql", icon: "mysql-original.svg", label: "MySQL", level: "shipping", color: "#4479A1", key: "q", description: "Relational schema design and CRUD backends on PHP stacks." },
+    { id: "oracle", icon: "oracle-original.svg", label: "Oracle SQL", level: "working", color: "#F80000", key: "o", description: "Relational modelling and query work. No shipped project on this one." },
     { id: "mongodb", icon: "mongodb-plain.svg", label: "MongoDB", level: "working", color: "#47A248", key: "m", description: "Postgres covers the work today." },
     { id: "prisma", icon: "prisma-original.svg", label: "Prisma", level: "shipping", color: "#2D3748", key: "e", description: "Typed schema and migrations behind the TechSub API.", usedIn: "TechSub API" },
   ],
@@ -659,33 +658,6 @@ export const projects: Project[] = [
     hasCaseStudy: false,
     privateRepo: true,
   },
-  {
-    slug: "gestion-scolarite",
-    title: "Gestion de la Scolarité",
-    tagline: "University records management system — PHP, MySQL, full CRUD.",
-    role: "Developer — application, schema, LaTeX documentation",
-    year: "Coursework",
-    status: "archived",
-    tags: ["Web", "Backend"],
-    stack: ["PHP", "MySQL", "HTML/CSS", "JavaScript"],
-    valueProp: "University records management system with full CRUD workflows.",
-    architecture: {
-      client: ["HTML/CSS", "JavaScript"],
-      logic: ["PHP — server-rendered"],
-      data: ["MySQL — normalised relational schema"],
-    },
-    problem:
-      "Records system for a university faculty: manage students, enrolments and results.",
-    approach:
-      "A server-rendered PHP/MySQL application — full CRUD over a normalised relational schema, delivered with LaTeX documentation and a presentation.",
-    hardPart: "",
-    result: "",
-    links: {},
-    images: [],
-    featured: false,
-    hasCaseStudy: false,
-    privateRepo: true,
-  },
 ];
 
 /** Small strip at the bottom of /projects. Kept tiny on purpose. */
@@ -917,11 +889,6 @@ export const CONTENT_CHECKLIST: ChecklistItem[] = [
   },
   { area: "Projects", item: "BankiDZ — confirm stack and status", where: "projects[bankidz].stack" },
   { area: "Projects", item: "LivreurPro — repo name and full stack", where: "projects[livreurpro]" },
-  {
-    area: "Projects",
-    item: "Gestion de la Scolarité — repo name",
-    where: "projects[gestion-scolarite].links",
-  },
   {
     area: "Projects",
     item: "Confirm which repos can be public — every linked repo needs a real README with screenshots",

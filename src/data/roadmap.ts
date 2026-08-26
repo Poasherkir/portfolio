@@ -29,9 +29,6 @@ export const LEVEL_BLURB: Record<SkillLevel, string> = {
   roadmap: "Worked with and comfortable in.",
 };
 
-/** The stated order to take them in — not a menu to attack at once. */
-export const learningPath = ["JavaScript", "TypeScript", "SQL", "Java", "Python"];
-
 export const languagePriority: {
   language: string;
   stars: number;
@@ -67,7 +64,7 @@ export const skillAreas: SkillArea[] = [
       { name: "GitHub", level: "shipping" },
       { name: "HTTP / REST APIs", level: "shipping" },
       { name: "JSON", level: "shipping" },
-      { name: "Data structures & algorithms", level: "shipping", note: "coursework + solvers" },
+      { name: "Data structures & algorithms", level: "shipping", note: "interview-grade, plus solvers" },
       { name: "Debugging", level: "shipping" },
       { name: "Authentication & authorization", level: "shipping", note: "Supabase auth + RLS" },
       { name: "Linux / terminal", level: "working" },
