@@ -258,15 +258,16 @@ export default function KeyboardScene() {
             position={[4, 8, 6]}
             intensity={dark ? 1.35 : 1.8}
             castShadow
-            shadow-mapSize={[2048, 2048]}
+            shadow-mapSize={[4096, 4096]}
             shadow-bias={-0.0005}
             shadow-normalBias={0.02}
           >
-            {/* Fitted to the board (~5.5 x 4.6 units) rather than a loose 12x12
-                box. Over half the shadow map was being spent on empty space;
-                tightening it roughly doubles the texel density on the caps at
-                no extra cost. */}
-            <orthographicCamera attach="shadow-camera" args={[-4.5, 4.5, 4.5, -4.5, 0.1, 24]} />
+            {/* Sized to the largest pose. The board is scaled per section and
+                reaches ~14.8 units across on the background poses, so a box
+                fitted to its unscaled footprint clipped the shadows off the
+                outer caps. 4096 keeps the texel density up over the wider
+                area — at 2048 a cap only got ~90 texels. */}
+            <orthographicCamera attach="shadow-camera" args={[-8, 8, 8, -8, 0.1, 26]} />
           </directionalLight>
           {/* Coloured rims, kept low: they shape the case without washing the
               legends out. Point lights decay with distance squared, so these

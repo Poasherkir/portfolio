@@ -28,43 +28,43 @@ type PoseSet = { desktop: Pose; mobile: Pose };
 export const POSES: Record<Section, PoseSet> = {
   // Low and right, clear of the hero copy.
   hero: {
-    desktop: { position: [2.87, -1.31, -1.8], rotation: [1.0, -0.5, -0.18], scale: 0.92 },
-    mobile: { position: [0, -2.74, -3.8], rotation: [1.05, -0.25, -0.06], scale: 0.62 },
+    desktop: { position: [1.8, -1.12, -1.8], rotation: [1.0, -0.5, -0.18], scale: 2.337 },
+    mobile: { position: [0, -1.17, -3.8], rotation: [1.05, -0.25, -0.06], scale: 0.9 },
   },
 
 
   // Centred and tipped toward the viewer. Every cap must stay hoverable here.
   skills: {
-    desktop: { position: [0, -0.35, -0.1], rotation: [1.16, 0, 0], scale: 0.68 },
+    desktop: { position: [0, -0.17, -0.1], rotation: [1.16, 0, 0], scale: 1.541 },
     // Pulled back rather than scaled down — the frustum widens with distance.
-    mobile: { position: [0, 0.9, -4.6], rotation: [1.2, 0, 0], scale: 0.44 },
+    mobile: { position: [0, 0.42, -4.6], rotation: [1.2, 0, 0], scale: 0.691 },
   },
 
 
 
   // Deep background — the flagship case study owns this section.
   flagship: {
-    desktop: { position: [2.9, -2.12, -3.6], rotation: [1.02, -0.44, -0.2], scale: 0.8 },
-    mobile: { position: [0, -3.21, -4.6], rotation: [1.06, -0.28, -0.1], scale: 0.5 },
+    desktop: { position: [1.6, -1, -3.6], rotation: [1.02, -0.44, -0.2], scale: 2.845 },
+    mobile: { position: [0, -1.08, -4.6], rotation: [1.06, -0.28, -0.1], scale: 0.993 },
   },
 
   // Receding: swung left and back so the project cards own the frame.
   projects: {
-    desktop: { position: [-3.16, 0.7, -2.6], rotation: [0.86, 0.62, 0.3], scale: 0.96 },
-    mobile: { position: [0, 2.81, -3.8], rotation: [0.9, 0.4, 0.18], scale: 0.58 },
+    desktop: { position: [-1.48, 0.7, -2.6], rotation: [0.86, 0.62, 0.3], scale: 2.619 },
+    mobile: { position: [0, 1.02, -3.8], rotation: [0.9, 0.4, 0.18], scale: 0.935 },
   },
 
   // Low and left, out from under the service cards.
   services: {
-    desktop: { position: [-2.76, -1.21, -1.9], rotation: [1.2, 0.45, 0.22], scale: 0.98 },
-    mobile: { position: [0, -2.59, -3.2], rotation: [1.2, 0.3, 0.12], scale: 0.6 },
+    desktop: { position: [-1.39, -0.87, -1.9], rotation: [1.2, 0.45, 0.22], scale: 2.461 },
+    mobile: { position: [0, -0.97, -3.2], rotation: [1.2, 0.3, 0.12], scale: 0.891 },
   },
 
 
   // Teardown: pitched almost face-on while the caps drift off the board.
   contact: {
-    desktop: { position: [2.2, -0.2, -1.2], rotation: [1.44, 0.18, 0.4], scale: 0.98 },
-    mobile: { position: [0, -1.4, -2.6], rotation: [1.4, 0.14, 0.28], scale: 0.68 },
+    desktop: { position: [1.1, -0.2, -1.2], rotation: [1.44, 0.18, 0.4], scale: 2.207 },
+    mobile: { position: [0, -0.78, -2.6], rotation: [1.4, 0.14, 0.28], scale: 0.816 },
   },
 };
 
@@ -100,7 +100,7 @@ export const FLOAT_AMOUNT: Record<Section, number> = {
  * is equivalent to moving every pose closer without retuning each one.
  * Mobile gets less — the frustum is far narrower and crops sooner.
  */
-const BOARD_SCALE = { desktop: 1.2, mobile: 1.05 };
+const BOARD_SCALE = { desktop: 1, mobile: 1 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
