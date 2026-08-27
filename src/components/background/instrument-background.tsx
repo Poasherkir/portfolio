@@ -92,12 +92,12 @@ export default function InstrumentBackground() {
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       {/* Deep space ground. Light theme keeps a clean paper wash instead — a
           starfield on white reads as dirt, not as space. */}
-      <div className="absolute inset-0 bg-[#f6f8fb] dark:bg-[#04060d]" />
+      <div className="absolute inset-0 bg-[#f6f8fb] dark:bg-[#080808]" />
       <div
         className="absolute inset-0 hidden dark:block"
         style={{
           background:
-            "radial-gradient(120% 90% at 70% 10%, #101a33 0%, #070b16 45%, #04060d 100%)",
+            "radial-gradient(120% 90% at 70% 10%, #1a1010 0%, #0b0b0b 45%, #080808 100%)",
         }}
       />
 

@@ -97,13 +97,13 @@ export async function POST(req: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   const html = `
-    <div style="font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.6;color:#0f172a">
+    <div style="font-family:ui-sans-serif,system-ui,sans-serif;line-height:1.6;color:#121212">
       <h2 style="margin:0 0 16px">New enquiry from the portfolio</h2>
       <table cellpadding="0" cellspacing="0" style="font-size:14px">
-        <tr><td style="padding:2px 16px 2px 0;color:#64748b">Name</td><td>${escapeHtml(name)}</td></tr>
-        <tr><td style="padding:2px 16px 2px 0;color:#64748b">Email</td><td>${escapeHtml(email)}</td></tr>
-        ${company ? `<tr><td style="padding:2px 16px 2px 0;color:#64748b">Company</td><td>${escapeHtml(company)}</td></tr>` : ""}
-        ${budget ? `<tr><td style="padding:2px 16px 2px 0;color:#64748b">Budget</td><td>${escapeHtml(budget)}</td></tr>` : ""}
+        <tr><td style="padding:2px 16px 2px 0;color:#7a7a7a">Name</td><td>${escapeHtml(name)}</td></tr>
+        <tr><td style="padding:2px 16px 2px 0;color:#7a7a7a">Email</td><td>${escapeHtml(email)}</td></tr>
+        ${company ? `<tr><td style="padding:2px 16px 2px 0;color:#7a7a7a">Company</td><td>${escapeHtml(company)}</td></tr>` : ""}
+        ${budget ? `<tr><td style="padding:2px 16px 2px 0;color:#7a7a7a">Budget</td><td>${escapeHtml(budget)}</td></tr>` : ""}
       </table>
       <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0" />
       <p style="white-space:pre-wrap;font-size:14px;margin:0">${escapeHtml(message)}</p>

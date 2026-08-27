@@ -301,7 +301,7 @@ export default function Keyboard({
         receiveShadow
       >
         <meshPhysicalMaterial
-          color="#191d24"
+          color="#1c1c1c"
           roughness={0.34}
           metalness={0.65}
           clearcoat={0.35}
@@ -319,7 +319,7 @@ export default function Keyboard({
         receiveShadow
       >
         <meshStandardMaterial
-          color="#0d1116"
+          color="#0e0e0e"
           roughness={0.7}
           metalness={0.3}
           envMapIntensity={0.35}

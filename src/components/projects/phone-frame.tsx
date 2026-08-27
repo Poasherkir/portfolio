@@ -23,7 +23,7 @@ export default function PhoneFrame({
     <div
       className={cn(
         "relative aspect-[9/19.5] w-full overflow-hidden rounded-[1.75rem]",
-        "border border-white/15 bg-[#0b1220] p-[3px] shadow-2xl",
+        "border border-white/15 bg-[#111111] p-[3px] shadow-2xl",
         className
       )}
     >

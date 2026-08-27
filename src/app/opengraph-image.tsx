@@ -20,7 +20,7 @@ export default async function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#070c14",
+          background: "#0c0c0c",
           padding: "72px",
           fontFamily: "sans-serif",
         }}
@@ -56,13 +56,13 @@ export default async function OpengraphImage() {
               width: 14,
               height: 14,
               borderRadius: "50%",
-              background: "#22d3ee",
+              background: "#e63946",
               display: "flex",
             }}
           />
           <span
             style={{
-              color: "#8fa3b8",
+              color: "#9a9a9a",
               fontSize: 24,
               letterSpacing: 6,
               textTransform: "uppercase",
@@ -73,15 +73,15 @@ export default async function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ color: "#e6edf5", fontSize: 88, fontWeight: 700, lineHeight: 1.05 }}>
+          <span style={{ color: "#f2f2f2", fontSize: 88, fontWeight: 700, lineHeight: 1.05 }}>
             {profile.name}
           </span>
-          <span style={{ color: "#22d3ee", fontSize: 44, fontWeight: 600, marginTop: 8 }}>
+          <span style={{ color: "#e63946", fontSize: 44, fontWeight: 600, marginTop: 8 }}>
             {profile.role}
           </span>
           <span
             style={{
-              color: "#8fa3b8",
+              color: "#9a9a9a",
               fontSize: 30,
               marginTop: 28,
               maxWidth: 940,
@@ -98,7 +98,7 @@ export default async function OpengraphImage() {
             justifyContent: "space-between",
             borderTop: "1px solid rgba(230,237,245,0.14)",
             paddingTop: 28,
-            color: "#8fa3b8",
+            color: "#9a9a9a",
             fontSize: 24,
           }}
         >

@@ -52,7 +52,7 @@ export default function ScreenGallery({
   return (
     <div
       className={cn(
-        "absolute inset-0 overflow-hidden bg-[#080d16] dark:bg-[#070c14]",
+        "absolute inset-0 overflow-hidden bg-[#0d0d0d] dark:bg-[#0c0c0c]",
         className
       )}
     >

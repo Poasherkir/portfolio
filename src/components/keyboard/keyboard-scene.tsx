@@ -271,9 +271,9 @@ export default function KeyboardScene() {
           {/* Coloured rims, kept low: they shape the case without washing the
               legends out. Point lights decay with distance squared, so these
               read far weaker at the board than the numbers suggest. */}
-          <pointLight position={[-4, 2, 5]} intensity={dark ? 12 : 6} color="#ffab70" />
+          <pointLight position={[-4, 2, 5]} intensity={dark ? 12 : 6} color="#e63946" />
           <pointLight position={[5, -1, 4]} intensity={dark ? 7 : 3} color="#70c8ff" />
-          <hemisphereLight intensity={dark ? 0.15 : 0.4} groundColor="#0b0f16" />
+          <hemisphereLight intensity={dark ? 0.15 : 0.4} groundColor="#0c0c0c" />
 
           <Keyboard
             anchorsRef={anchorsRef}

@@ -54,7 +54,7 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
   return (
     <div
       className={cn(
-        "absolute inset-0 overflow-hidden bg-[#080d16] dark:bg-[#070c14]",
+        "absolute inset-0 overflow-hidden bg-[#0d0d0d] dark:bg-[#0c0c0c]",
         className
       )}
       aria-hidden
@@ -320,7 +320,7 @@ function RoutePortrait({ className }: { className?: string }) {
         <path d={path} fill="none" stroke="hsl(var(--brand))" strokeOpacity="0.55" strokeWidth="1.5" />
         {stops.map(([x, y], i) => (
           <g key={i}>
-            <circle cx={x} cy={y} r="6" fill="#080d16" stroke="hsl(var(--brand))" strokeOpacity="0.8" />
+            <circle cx={x} cy={y} r="6" fill="#0d0d0d" stroke="hsl(var(--brand))" strokeOpacity="0.8" />
             <text
               x={x}
               y={y + 2.5}
