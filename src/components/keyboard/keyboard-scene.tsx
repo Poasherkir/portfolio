@@ -18,6 +18,7 @@ import {
 } from "./keyboard-audio";
 import Keyboard from "./keyboard";
 import { measureAnchors, type Anchor } from "./poses";
+import { useQuality } from "./use-quality";
 
 function hasWebGL() {
   try {
@@ -74,6 +75,7 @@ export default function KeyboardScene() {
 
   const [supported, setSupported] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const quality = useQuality();
   const [hovered, setHovered] = useState<Keycap | null>(null);
   const [pinned, setPinned] = useState<Keycap | null>(null);
   const [audioReady, setAudioReady] = useState(true);
@@ -236,10 +238,14 @@ export default function KeyboardScene() {
         aria-hidden
       >
         <Canvas
-          shadows
-          // R3F clamps to the display's own ratio, so a higher cap is inert
-          // below 3x and only costs pixels on the machines that report it.
-          dpr={[1, isMobile ? 2 : 2.5]}
+          shadows={quality.shadows}
+          // Capped by measured device capability, not viewport width. R3F
+          // clamps to the display's own ratio on top of this, so the number is
+          // a ceiling rather than a target.
+          dpr={[1, quality.dpr]}
+          // Lets R3F drop resolution on its own when frames start costing too
+          // much, so a device that is slower than it looks still stays fluid.
+          performance={{ min: 0.5 }}
           camera={{ fov: 34, position: [0, 0, 9] }}
           // ACES rolls saturated colour toward white; neutral keeps the hue.
           gl={{
@@ -258,7 +264,7 @@ export default function KeyboardScene() {
             position={[4, 8, 6]}
             intensity={dark ? 1.35 : 1.8}
             castShadow
-            shadow-mapSize={[4096, 4096]}
+            shadow-mapSize={[quality.shadowMap, quality.shadowMap]}
             shadow-bias={-0.0005}
             shadow-normalBias={0.02}
           >
