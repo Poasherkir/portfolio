@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { BlurIn } from "@/components/reveal";
 import ScrollCue from "@/components/scroll-cue";
 import SocialIcon from "@/components/layout/social-icon";
+import Magnetic from "@/components/magnetic";
 import { usePreloader } from "@/components/preloader";
 import { cn } from "@/lib/utils";
 
@@ -62,15 +63,19 @@ export default function Hero() {
 
           <BlurIn delay={offset + 0.85}>
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg">
-                <Link href={hero.primaryCta.href}>
-                  {hero.primaryCta.label}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
-              </Button>
+              <Magnetic>
+                <Button asChild size="lg">
+                  <Link href={hero.primaryCta.href}>
+                    {hero.primaryCta.label}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </Magnetic>
+              <Magnetic>
+                <Button asChild size="lg" variant="outline">
+                  <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
+                </Button>
+              </Magnetic>
 
               <div className="flex items-center gap-2">
                 {/* asChild, not <Link><Button> — nesting a button inside an

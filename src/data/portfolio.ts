@@ -294,6 +294,59 @@ export const foundations =
   "Also comfortable in: Postgres tuning, relational modelling, REST integration, release engineering.";
 
 /* -------------------------------------------------------------------------- */
+/* Capabilities                                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The skills list is organised by technology. This is the same work organised
+ * by what a client is actually buying — every entry names the project it can
+ * be checked against, so nothing here is a claim without a receipt.
+ */
+export const capabilities: {
+  id: string;
+  title: string;
+  body: string;
+  proof: string;
+}[] = [
+  {
+    id: "offline",
+    title: "Works without a signal",
+    body: "Local-first storage and background sync, so the app keeps working on a plane, in a basement or on a dead connection — and catches up quietly when the network returns.",
+    proof: "BAC Archive · Briefing Point Go",
+  },
+  {
+    id: "payments",
+    title: "Payments that work locally",
+    body: "Integration with the payment methods your customers actually hold, including Algerian rails like BaridiMob where there is no usable SDK and international checkout simply fails.",
+    proof: "TechSub",
+  },
+  {
+    id: "bilingual",
+    title: "Arabic, French and English",
+    body: "Full right-to-left layouts, not a translated string file. Mixed-direction text, mirrored navigation and number formatting that survives contact with real content.",
+    proof: "TechSub · BAC Archive",
+  },
+  {
+    id: "security",
+    title: "Permissions enforced on the server",
+    body: "Row-level security in Postgres and encrypted credential storage on device. If a request should be refused it is refused by the database, not by a hidden button.",
+    proof: "Briefing Point Go · TechSub",
+  },
+  {
+    id: "release",
+    title: "Shipped to the store, not to a demo",
+    body: "Signed release pipelines, ProGuard rules, screenshot blocking on sensitive screens, and remote config that can force an update or block a bad build after it is out.",
+    proof: "Briefing Point Go",
+  },
+  {
+    id: "integrations",
+    title: "Hostile data sources",
+    body: "Live third-party feeds normalised into something dependable — weather and aircraft tracking, authenticated scraping where there is no API, and document pipelines that rebuild broken PDFs.",
+    proof: "Briefing Point Go · Aviation PDF Pipeline",
+  },
+];
+
+/* -------------------------------------------------------------------------- */
 /* Services                                                                    */
 /* -------------------------------------------------------------------------- */
 

@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project, ProjectTag } from "@/types";
 import ProjectCard from "./project-card";
+import Spotlight from "@/components/spotlight";
 
 const FILTERS: (ProjectTag | "All")[] = ["All", "Mobile", "Web", "Backend", "Automation"];
 
@@ -131,8 +132,9 @@ export default function ProjectGrid({
         </div>
       )}
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
+      <Spotlight className="mt-10 rounded-xl">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
           {visible.map((project, i) => (
             <motion.div
               key={project.slug}
@@ -149,9 +151,10 @@ export default function ProjectGrid({
             >
               <ProjectCard project={project} priority={i < 3} className="w-full" />
             </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </Spotlight>
 
       {visible.length === 0 && (
         <p className="mt-10 text-sm text-muted-foreground">
