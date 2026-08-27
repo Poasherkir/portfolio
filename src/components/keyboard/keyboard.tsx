@@ -60,14 +60,31 @@ function Cap({
   const flip = useRef(0);
   /** Damped base pitch, kept apart from the tumble offset — see below. */
   const restX = useRef(0);
+  /** Smoothed drift amount. Damping happens here, never on the orbit itself. */
+  const liftSmooth = useRef(0);
+  /** Damped seated height, so hover and click still snap under the finger. */
+  const seatedY = useRef(0);
   // Cap colour and legend ink are chosen together, so a logo can never end up
   // the same colour as the plastic it sits on.
   const { cap: capHex, ink } = useMemo(() => capAndInk(cap.color), [cap.color]);
   const texture = useMemo(() => keycapTexture(cap, capHex, ink), [cap, capHex, ink]);
 
-  // Each cap gets its own phase so the teardown float does not move in lockstep.
+  // Golden-angle phase, so no two caps reach the top of their arc together.
   const phase = useMemo(() => (index * 137.5) % (Math.PI * 2), [index]);
-  const drift = useMemo(() => 1.4 + ((index * 37) % 100) / 60, [index]);
+  // Each cap orbits at its own speed. Without this every cap shares one
+  // frequency and the whole board pulses in time, which reads as a wobble
+  // rather than as thirty objects floating independently.
+  const speed = useMemo(() => 0.34 + ((index * 29) % 13) / 90, [index]);
+  // Bounded radii. The board is ~4.3 units across, so anything much beyond
+  // half a unit throws caps clear of it and across the page copy.
+  const radius = useMemo(
+    () => ({
+      x: 0.3 + ((index * 17) % 11) / 44,
+      y: 0.34 + ((index * 23) % 9) / 34,
+      z: 0.18 + ((index * 31) % 7) / 46,
+    }),
+    [index]
+  );
 
   // Real boards mould each row at its own angle, with the outer rows higher.
   const rowTilt = (row - (ROWS - 1) / 2) * -0.075;
@@ -80,7 +97,14 @@ function Cap({
     const g = group.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    const lift = floatRef.current ?? 0;
+
+    // Damp the drift AMOUNT, not the drift itself. The orbit below is already
+    // continuous, and running a sine through an exponential follower both
+    // delays it and eats its amplitude — that lag was the motion reading as
+    // sluggish rather than weightless.
+    liftSmooth.current = damp(liftSmooth.current, floatRef.current ?? 0, 2.6, dt);
+    const lift = liftSmooth.current;
+
     // Settled enough to behave like a surface. The caps always carry some
     // lift, so this cannot test for zero or the ripple never fires.
     const adrift = lift > 0.3;
@@ -93,26 +117,37 @@ function Cap({
     }
 
     // Per-cap phase, so the idle motion is not one rigid slab.
-    const idleFloat = Math.sin(t * 0.9 + phase) * 0.014;
+    const idleFloat = Math.sin(t * speed * 2 + phase) * 0.014;
 
-    // Scaled by `lift` throughout, so departure is continuous, not a switch.
-    const scattered = lift * (1.35 + Math.sin(t * 0.9 + phase) * drift);
-    const seated = pinned ? -0.12 : active ? -0.09 : ripple + idleFloat;
-    const targetY = seated * (1 - lift) + scattered;
+    // Seated state is the part worth damping: it changes in steps, and a key
+    // still has to drop under the finger.
+    const seatedTarget = pinned ? -0.12 : active ? -0.09 : ripple + idleFloat;
+    seatedY.current = damp(seatedY.current, seatedTarget, 16, dt);
 
-    // Damping loosens as they leave, so drifting keys feel weightless.
-    g.position.y = damp(g.position.y, targetY, 18 - lift * 15.5, dt);
+    // Three-axis orbit, applied straight. Incommensurable frequency ratios
+    // (1, 0.83, 0.61) mean x, y and z never come back into step, so the path
+    // is an open Lissajous curve instead of a closed loop the eye can learn.
+    const w = t * speed;
+    const orbitX = Math.sin(w + phase) * radius.x;
+    const orbitY = Math.sin(w * 0.83 + phase * 1.7) * radius.y;
+    const orbitZ = Math.cos(w * 0.61 + phase * 0.6) * radius.z;
+
+    // Rise is what separates "floating" from "vibrating in place", but it is
+    // deliberately smaller than the board is tall.
+    g.position.x = orbitX * lift;
+    g.position.y = seatedY.current * (1 - lift) + lift * (0.72 + orbitY);
+    g.position.z = orbitZ * lift;
 
     // Click impulses: a quick overshoot, and a full tumble that unwinds.
     pop.current = damp(pop.current, 0, 6, dt);
     flip.current = damp(flip.current, 0, 3.2, dt);
 
-    const spin = Math.sin(t * 0.5 + phase) * 0.6 * lift;
-    g.rotation.z = damp(g.rotation.z, spin + pop.current * 0.5, 2, dt);
-    // Base and tumble tracked separately — damping the summed value feeds the
-    // offset back in each frame and the rotation accumulates without bound.
-    restX.current = damp(restX.current, Math.cos(t * 0.4 + phase) * 0.4 * lift, 2, dt);
+    // Rotation follows the same rule: the sway is applied directly, and only
+    // the click impulse goes through a damper.
+    g.rotation.z = Math.sin(w * 0.77 + phase) * 0.34 * lift + pop.current * 0.5;
+    restX.current = Math.cos(w * 0.53 + phase * 1.3) * 0.26 * lift;
     g.rotation.x = restX.current + flip.current * Math.PI * 2;
+    g.rotation.y = Math.sin(w * 0.41 + phase * 0.9) * 0.3 * lift;
 
     const base = active || pinned ? 1.05 : 1;
     g.scale.setScalar(damp(g.scale.x, base + pop.current * 0.16, 14, dt));
@@ -240,7 +275,9 @@ export default function Keyboard({
     // Position tracks scroll tightly; rotation is looser so the cursor
     // parallax feels weighted rather than twitchy.
     g.position.x = damp(g.position.x, target.position[0], 9, dt);
-    g.position.y = damp(g.position.y, target.position[1] + Math.sin(t * 0.5) * 0.05, 9, dt);
+    // Breath is added after the damper for the same reason the caps are: a
+    // follower chasing a sine lags it and shrinks it.
+    g.position.y = damp(g.position.y, target.position[1], 9, dt) + Math.sin(t * 0.5) * 0.05;
     g.position.z = damp(g.position.z, target.position[2], 9, dt);
 
     g.rotation.x = damp(g.rotation.x, target.rotation[0] + parallaxX, 4, dt);
