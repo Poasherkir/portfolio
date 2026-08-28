@@ -647,7 +647,7 @@ export const projects: Project[] = [
     links: {},
     images: [],
     featured: false,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
     privateRepo: true,
     metrics: [
       { label: "Architectures before this one", value: "4" },
@@ -681,7 +681,7 @@ export const projects: Project[] = [
     links: {},
     images: [],
     featured: false,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
     privateRepo: true,
   },
   {
@@ -747,7 +747,7 @@ export const projects: Project[] = [
     links: {},
     images: [],
     featured: true,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
     privateRepo: true,
   },
   {
@@ -772,7 +772,7 @@ export const projects: Project[] = [
     links: {},
     images: [],
     featured: true,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
     privateRepo: true,
   },
 ];
