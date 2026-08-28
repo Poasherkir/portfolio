@@ -255,7 +255,7 @@ export const keycaps: Keycap[][] = [
     { id: "nodejs", icon: "nodejs-plain.svg", label: "Node.js", level: "working", color: "#5FA04E", key: "4", description: "The next backend ecosystem after Supabase." },
     { id: "nestjs", icon: "nestjs-original.svg", label: "NestJS", level: "shipping", color: "#E0234E", key: "5", description: "Structured Node backend — the TechSub API runs on it.", usedIn: "TechSub API" },
     { id: "java", icon: "java-plain.svg", label: "Java", level: "working", color: "#E76F00", key: "7", description: "Fourth step on the path, after SQL." },
-    { id: "fastapi", icon: "fastapi-original.svg", label: "FastAPI", level: "shipping", color: "#009688", key: "8", description: "The Amadeus load/pax and OFP services behind Briefing Point Go.", usedIn: "Briefing Point Go services" },
+    { id: "fastapi", icon: "fastapi-original.svg", label: "FastAPI", level: "shipping", color: "#009688", key: "8", description: "The load and flight-plan services behind Briefing Point Go.", usedIn: "Briefing Point Go services" },
   ],
   // Tooling
   [
@@ -282,7 +282,7 @@ export const experience: Experience[] = [
     company: "Independent — registered auto-entrepreneur (ANAE)",
     description: [
       "Ships production Flutter apps end to end: mobile client, Supabase backend, React admin dashboard and a signed release pipeline — alone.",
-      "Flagship work is Briefing Point Go, an Electronic Flight Bag in production with Air Algérie crew, integrating METAR weather, ADS-B tracking and authenticated eCrew roster data.",
+      "Flagship work is Briefing Point Go, an Electronic Flight Bag in production with Air Algérie crew, integrating METAR weather, ADS-B tracking and authenticated crew roster data.",
       "Works and delivers in English, French and Arabic, invoicing international clients legally.",
     ],
     skills: ["flutter", "dart", "supabase", "postgresql", "react", "python"],
@@ -513,9 +513,9 @@ export const projects: Project[] = [
     problem:
       "A pilot assembles a duty day from a dozen disconnected sources: roster, operational flight plan, load and passenger figures, slot times and delays, weather, NOTAMs, radiation exposure. On a phone, in an airport, minutes before pushback. Anything not in one place does not get read.",
     approach:
-      "One Flutter app, five tabs behind a go_router StatefulShellRoute.indexedStack — Home, Airports, Crew, Tools, Settings. State is plain ChangeNotifier controllers per feature, read through a top-level AppScope; no Provider, Riverpod or Bloc anywhere, so rebuild scope stays explicit and the dependency surface stays small. It speaks to the same Supabase backend and the same two internal FastAPI services (Amadeus load/pax, OFP) as the existing web app, through the same nginx origin — the rebuild required no server changes at all.",
+      "One Flutter app, five tabs behind a go_router StatefulShellRoute.indexedStack — Home, Airports, Crew, Tools, Settings. State is plain ChangeNotifier controllers per feature, read through a top-level AppScope; no Provider, Riverpod or Bloc anywhere, so rebuild scope stays explicit and the dependency surface stays small. It speaks to the same Supabase backend and the same two internal FastAPI services (load figures and flight plans) as the existing web app, through the same nginx origin — the rebuild required no server changes at all.",
     hardPart:
-      "Breadth and trust, at once. Roughly 70 reference and calculation tools sit behind one dashboard, and the data underneath is hostile: METAR/TAF, ADS-B, CTOT and delay feeds, cosmic radiation dose per sector. eCrew and Amadeus credentials live in flutter_secure_storage, structured data caches to Hive so the app still works airside with no signal, and remote config can force an update or block a build outright when something ships wrong. Aviation is not a domain where “it mostly works” is a state you ship in.",
+      "Breadth and trust, at once. Roughly 70 reference and calculation tools sit behind one dashboard, and the data underneath is hostile: METAR/TAF, ADS-B, CTOT and delay feeds, cosmic radiation dose per sector. Operator credentials live in flutter_secure_storage, structured data caches to Hive so the app still works airside with no signal, and remote config can force an update or block a build outright when something ships wrong. Aviation is not a domain where “it mostly works” is a state you ship in.",
     result:
       "In production with Air Algérie crew. A native rebuild that reached feature parity with the web app without touching the backend — the same Supabase project and FastAPI services serve both.",
     whyItMatters:
@@ -632,16 +632,16 @@ export const projects: Project[] = [
     valueProp: "Operational flight plans pulled from a portal with no API and served as structured JSON.",
     architecture: {
       logic: ["Deno edge function", "PDF text extraction"],
-      api: ["Session auth against a Symfony app", "REST endpoints"],
-      integrations: ["skybook.aero"],
+      api: ["Session-based auth", "REST"],
+      integrations: ["Airline dispatch portal"],
       automation: ["Scheduled fetch and parse"],
     },
     problem:
       "A pilot's operational flight plan — fuel, weights, route, alternates — lives in a dispatch portal with no API and no export. Reading it on a phone meant logging into a desktop web app and scrolling a PDF minutes before departure.",
     approach:
-      "The edge function calls the portal's own REST endpoints rather than driving a browser: find the sector id in the 7-day schedule, pull the OFP PDF for it, extract the text and parse the operational figures out. It returns the parsed fields and the full plan text together, so the client can dig for the richer items itself.",
+      "The edge function talks to the portal directly rather than driving a browser: locate the flight in the schedule, pull its plan document, extract the text and parse the operational figures out. It returns the parsed fields and the full text together, so the client can dig for the richer items itself.",
     hardPart:
-      "The login. It is a Symfony app, so GET /login sets a session cookie and embeds a CSRF token, and the POST that follows must be sent with redirect set to manual — the auth cookies ride on the 302 response, and following the redirect throws them away. Earlier versions drove a headless Chromium on a VPS, which the mobile client could not even call: it is a Capacitor WebView on an https origin, and plain-HTTP requests are blocked outright. Moving to an HTTPS edge function removed that whole class of failure.",
+      "Authentication. The portal hands back its session across a redirect, so the request has to be made without following it — follow the redirect and the credentials are simply gone, with no error explaining why. Earlier versions drove a headless browser on a plain-HTTP box, which the mobile client could not call at all: it runs in a WebView on a secure origin and refuses mixed content outright. Moving to an HTTPS edge function removed that whole class of failure.",
     result:
       "Five architectures ended at one that needs no server: a Deno isolate that answers in a few seconds. In production behind Briefing Point Go.",
     links: {},
@@ -656,8 +656,8 @@ export const projects: Project[] = [
   },
   {
     slug: "amadeus-api",
-    title: "Amadeus Load API",
-    tagline: "Live load-control figures from an airline ground-ops portal, exposed to a mobile app.",
+    title: "Load Control API",
+    tagline: "Live load-control figures from an airline operations platform, exposed to a mobile app.",
     role: "Sole developer — integration, session handling, backend",
     year: "2026",
     status: "production",
@@ -667,13 +667,13 @@ export const projects: Project[] = [
     architecture: {
       logic: ["Session lifecycle and token refresh"],
       api: ["Small serverless backend"],
-      integrations: ["Amadeus Alt\u00e9a DCS"],
+      integrations: ["Airline operations platform"],
       automation: ["Automated document retrieval"],
     },
     problem:
       "Load control — boarding figures, weight and balance, the loadsheet sent at closeout — lives in a web application built for desktop ground agents. Crew who needed those numbers had no way to see them on a phone.",
     approach:
-      "A small backend authenticates against the operations portal with an authorised staff account, keeps the session alive across its several token types, and re-exposes the figures the app actually needs as a narrow JSON interface.",
+      "A small backend authenticates against the operations platform under an authorised account, keeps the session alive across its several token types, and re-exposes only the figures the app needs as a narrow JSON interface.",
     hardPart:
       "Session lifecycle. Authentication issues one kind of token, the application itself expects a second in the URL and a third as a cookie, and all of them expire on different schedules. Getting a single request to succeed is straightforward; keeping a session valid for hours without a browser holding it open is the actual work.",
     result:
@@ -683,8 +683,6 @@ export const projects: Project[] = [
     featured: false,
     hasCaseStudy: false,
     privateRepo: true,
-    whyItMatters:
-      "Built against a private operations portal with an authorised staff account. Not affiliated with or endorsed by Amadeus or the airline.",
   },
   {
     slug: "briefing-pdf-pipeline",

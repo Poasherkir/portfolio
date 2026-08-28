@@ -20,17 +20,21 @@ export function Section({
 }
 
 /**
- * Big centred section title that sticks under the header while the section's
- * content scrolls past beneath it. `spacer` is the gap that gives it something
- * to stick over — sections with their own tall content can set it to none.
+ * Centred section title.
+ *
+ * Not sticky by default. It used to pin under the header while the section
+ * scrolled past beneath it, which works only when the gap below is most of a
+ * viewport — with the shorter spacers most sections actually use, the pinned
+ * heading and the content underneath simply collided, and the heading has a
+ * text shadow rather than a background so there was nothing to hide it.
  */
 export function SectionHeader({
   id,
   eyebrow,
   title,
   desc,
-  sticky = true,
-  spacer = "mb-40 md:mb-72",
+  sticky = false,
+  spacer = "mb-12 md:mb-16",
   className,
 }: {
   id?: string;
