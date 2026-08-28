@@ -5,7 +5,14 @@
  * rotation.x must be positive — the board is modelled flat with caps at +Y and
  * the camera at +Z, so a negative angle shows the underside. 1.571 is face-on.
  */
-export type Section = "hero" | "flagship" | "projects" | "skills" | "services" | "contact";
+export type Section =
+  | "hero"
+  | "flagship"
+  | "projects"
+  | "skills"
+  | "capabilities"
+  | "services"
+  | "contact";
 
 /** Document order. Anchors are re-sorted from the real DOM at runtime. */
 export const SECTION_IDS: Section[] = [
@@ -13,6 +20,7 @@ export const SECTION_IDS: Section[] = [
   "flagship",
   "projects",
   "skills",
+  "capabilities",
   "services",
   "contact",
 ];
@@ -54,6 +62,12 @@ export const POSES: Record<Section, PoseSet> = {
     mobile: { position: [0, 1.02, -3.8], rotation: [0.9, 0.4, 0.18], scale: 0.935 },
   },
 
+  // Behind the capability grid: low and right, out from under the cards.
+  capabilities: {
+    desktop: { position: [1.9, -1.1, -2.2], rotation: [1.12, -0.42, -0.2], scale: 2.5 },
+    mobile: { position: [0, -2.3, -3.4], rotation: [1.14, -0.28, -0.12], scale: 0.9 },
+  },
+
   // Low and left, out from under the service cards.
   services: {
     desktop: { position: [-1.39, -0.87, -1.9], rotation: [1.2, 0.45, 0.22], scale: 2.461 },
@@ -74,11 +88,12 @@ export const POSES: Record<Section, PoseSet> = {
  */
 export const OPACITY: Record<Section, number> = {
   hero: 1,
-  flagship: 0.58,
-  projects: 0.62,
-  services: 0.62,
+  flagship: 0.3,
+  projects: 0.3,
+  services: 0.3,
   skills: 1,
-  contact: 0.52,
+  capabilities: 0.3,
+  contact: 0.3,
 };
 
 /**
@@ -92,6 +107,7 @@ export const FLOAT_AMOUNT: Record<Section, number> = {
   projects: 0.62,
   services: 0.68,
   skills: 0.22,
+  capabilities: 0.55,
   contact: 1,
 };
 

@@ -621,6 +621,72 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "ofp-api",
+    title: "OFP API",
+    tagline: "Turns an airline flight-planning portal with no API into clean JSON, on serverless.",
+    role: "Sole developer — reverse engineering, parser, edge function",
+    year: "2026",
+    status: "production",
+    tags: ["Backend", "Automation"],
+    stack: ["Deno", "Supabase Edge Functions", "TypeScript", "Python", "pdf-parse"],
+    valueProp: "Operational flight plans pulled from a portal with no API and served as structured JSON.",
+    architecture: {
+      logic: ["Deno edge function", "PDF text extraction"],
+      api: ["Session auth against a Symfony app", "REST endpoints"],
+      integrations: ["skybook.aero"],
+      automation: ["Scheduled fetch and parse"],
+    },
+    problem:
+      "A pilot's operational flight plan — fuel, weights, route, alternates — lives in a dispatch portal with no API and no export. Reading it on a phone meant logging into a desktop web app and scrolling a PDF minutes before departure.",
+    approach:
+      "The edge function calls the portal's own REST endpoints rather than driving a browser: find the sector id in the 7-day schedule, pull the OFP PDF for it, extract the text and parse the operational figures out. It returns the parsed fields and the full plan text together, so the client can dig for the richer items itself.",
+    hardPart:
+      "The login. It is a Symfony app, so GET /login sets a session cookie and embeds a CSRF token, and the POST that follows must be sent with redirect set to manual — the auth cookies ride on the 302 response, and following the redirect throws them away. Earlier versions drove a headless Chromium on a VPS, which the mobile client could not even call: it is a Capacitor WebView on an https origin, and plain-HTTP requests are blocked outright. Moving to an HTTPS edge function removed that whole class of failure.",
+    result:
+      "Five architectures ended at one that needs no server: a Deno isolate that answers in a few seconds. In production behind Briefing Point Go.",
+    links: {},
+    images: [],
+    featured: false,
+    hasCaseStudy: false,
+    privateRepo: true,
+    metrics: [
+      { label: "Architectures before this one", value: "4" },
+      { label: "Servers to maintain", value: "None" },
+    ],
+  },
+  {
+    slug: "amadeus-api",
+    title: "Amadeus Load API",
+    tagline: "Live load-control figures from an airline ground-ops portal, exposed to a mobile app.",
+    role: "Sole developer — integration, session handling, backend",
+    year: "2026",
+    status: "production",
+    tags: ["Backend", "Automation"],
+    stack: ["Python", "FastAPI", "Session auth", "REST"],
+    valueProp: "Passenger counts and loadsheets from a ground-operations portal, served to a mobile client.",
+    architecture: {
+      logic: ["Session lifecycle and token refresh"],
+      api: ["Small serverless backend"],
+      integrations: ["Amadeus Alt\u00e9a DCS"],
+      automation: ["Automated document retrieval"],
+    },
+    problem:
+      "Load control — boarding figures, weight and balance, the loadsheet sent at closeout — lives in a web application built for desktop ground agents. Crew who needed those numbers had no way to see them on a phone.",
+    approach:
+      "A small backend authenticates against the operations portal with an authorised staff account, keeps the session alive across its several token types, and re-exposes the figures the app actually needs as a narrow JSON interface.",
+    hardPart:
+      "Session lifecycle. Authentication issues one kind of token, the application itself expects a second in the URL and a third as a cookie, and all of them expire on different schedules. Getting a single request to succeed is straightforward; keeping a session valid for hours without a browser holding it open is the actual work.",
+    result:
+      "Live passenger and load figures inside Briefing Point Go, alongside the flight plan data from the OFP service.",
+    links: {},
+    images: [],
+    featured: false,
+    hasCaseStudy: false,
+    privateRepo: true,
+    whyItMatters:
+      "Built against a private operations portal with an authorised staff account. Not affiliated with or endorsed by Amadeus or the airline.",
+  },
+  {
     slug: "briefing-pdf-pipeline",
     title: "Aviation Briefing PDF Pipeline",
     tagline: "Turns raw airport briefing packs into one clean, printable document — automatically.",
