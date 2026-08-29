@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Github, Lock } from "lucide-react";
-import { featuredProjects, keycapList, privateSource } from "@/data/portfolio";
+import { featuredProjects, keycapList, privateSource, projects } from "@/data/portfolio";
 import { Section, SectionHeader } from "@/components/section";
 import {
   Modal,
@@ -43,7 +43,9 @@ export default function Projects() {
       <SectionHeader
         id="projects"
         title="Projects"
-        desc="Six shipped products. Three have full case studies."
+        // Counted from the data. Written out by hand it went stale the
+        // moment a project was added or removed.
+        desc={`${projects.length} shipped products, ${projects.filter((p) => p.hasCaseStudy).length} with full case studies.`}
       />
 
       <div className="grid grid-cols-1 gap-y-8 md:grid-cols-3">

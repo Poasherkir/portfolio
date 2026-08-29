@@ -19,8 +19,8 @@ const SETTINGS: Record<Quality, Omit<QualitySettings, "tier">> = {
   // light's point of view every frame, and it is the single most expensive
   // thing in the scene on a phone.
   low: { dpr: 1.5, shadows: false, shadowMap: 1024 },
-  medium: { dpr: 2, shadows: true, shadowMap: 1024 },
-  high: { dpr: 2.5, shadows: true, shadowMap: 4096 },
+  medium: { dpr: 1.75, shadows: true, shadowMap: 1024 },
+  high: { dpr: 2, shadows: true, shadowMap: 2048 },
 };
 
 /**

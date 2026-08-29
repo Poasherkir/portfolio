@@ -26,7 +26,10 @@ export default function CountUp({
   const match = value.match(/^(\D*)(\d[\d\s,]*)(.*)$/s);
   const target = match ? Number.parseInt(match[2].replace(/[\s,]/g, ""), 10) : null;
 
-  const [shown, setShown] = useState(0);
+  // null until the animation actually starts. Initialising to 0 meant the
+  // metric rendered as 0 for a frame — and on a busy main thread that frame
+  // can last long enough to read as a broken number.
+  const [shown, setShown] = useState<number | null>(null);
 
   useEffect(() => {
     if (!inView || target === null || reduced) return;
@@ -53,7 +56,7 @@ export default function CountUp({
     );
   }
 
-  const display = reduced || !inView ? target : shown;
+  const display = shown ?? target;
 
   return (
     <span ref={ref} className={className}>

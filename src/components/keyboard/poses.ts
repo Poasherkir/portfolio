@@ -36,49 +36,49 @@ type PoseSet = { desktop: Pose; mobile: Pose };
 export const POSES: Record<Section, PoseSet> = {
   // Low and right, clear of the hero copy.
   hero: {
-    desktop: { position: [1.8, -1.12, -1.8], rotation: [1.0, -0.5, -0.18], scale: 2.337 },
-    mobile: { position: [0, -1.17, -3.8], rotation: [1.05, -0.25, -0.06], scale: 0.9 },
+    desktop: { position: [3.94, -0.13, -1.8], rotation: [1.0, -0.5, -0.18], scale: 0.853 },
+    mobile: { position: [0, -1.64, -3.8], rotation: [1.05, -0.25, -0.06], scale: 0.529 },
   },
 
 
   // Centred and tipped toward the viewer. Every cap must stay hoverable here.
   skills: {
-    desktop: { position: [0, -0.17, -0.1], rotation: [1.16, 0, 0], scale: 1.541 },
+    desktop: { position: [0, -0.95, -0.1], rotation: [1.16, 0, 0], scale: 0.751 },
     // Pulled back rather than scaled down — the frustum widens with distance.
-    mobile: { position: [0, 0.42, -4.6], rotation: [1.2, 0, 0], scale: 0.691 },
+    mobile: { position: [0, -1.25, -4.6], rotation: [1.2, 0, 0], scale: 0.605 },
   },
 
 
 
   // Deep background — the flagship case study owns this section.
   flagship: {
-    desktop: { position: [1.6, -1, -3.6], rotation: [1.02, -0.44, -0.2], scale: 2.845 },
-    mobile: { position: [0, -1.08, -4.6], rotation: [1.06, -0.28, -0.1], scale: 0.993 },
+    desktop: { position: [4.77, -0.69, -3.6], rotation: [1.02, -0.44, -0.2], scale: 0.932 },
+    mobile: { position: [0, -1.91, -4.6], rotation: [1.06, -0.28, -0.1], scale: 0.504 },
   },
 
   // Receding: swung left and back so the project cards own the frame.
   projects: {
-    desktop: { position: [-1.48, 0.7, -2.6], rotation: [0.86, 0.62, 0.3], scale: 2.619 },
-    mobile: { position: [0, 1.02, -3.8], rotation: [0.9, 0.4, 0.18], scale: 0.935 },
+    desktop: { position: [-4.39, 0.5, -2.6], rotation: [0.86, 0.62, 0.3], scale: 0.858 },
+    mobile: { position: [0, 1.72, -3.8], rotation: [0.9, 0.4, 0.18], scale: 0.474 },
   },
 
   // Behind the capability grid: low and right, out from under the cards.
   capabilities: {
-    desktop: { position: [1.9, -1.1, -2.2], rotation: [1.12, -0.42, -0.2], scale: 2.5 },
-    mobile: { position: [0, -2.3, -3.4], rotation: [1.14, -0.28, -0.12], scale: 0.9 },
+    desktop: { position: [4.39, -0.41, -2.2], rotation: [1.12, -0.42, -0.2], scale: 0.796 },
+    mobile: { position: [0, -1.67, -3.4], rotation: [1.14, -0.28, -0.12], scale: 0.446 },
   },
 
   // Low and left, out from under the service cards.
   services: {
-    desktop: { position: [-1.39, -0.87, -1.9], rotation: [1.2, 0.45, 0.22], scale: 2.461 },
-    mobile: { position: [0, -0.97, -3.2], rotation: [1.2, 0.3, 0.12], scale: 0.891 },
+    desktop: { position: [-4.13, -0.53, -1.9], rotation: [1.2, 0.45, 0.22], scale: 0.806 },
+    mobile: { position: [0, -1.64, -3.2], rotation: [1.2, 0.3, 0.12], scale: 0.452 },
   },
 
 
   // Teardown: pitched almost face-on while the caps drift off the board.
   contact: {
-    desktop: { position: [1.1, -0.2, -1.2], rotation: [1.44, 0.18, 0.4], scale: 2.207 },
-    mobile: { position: [0, -0.78, -2.6], rotation: [1.4, 0.14, 0.28], scale: 0.816 },
+    desktop: { position: [3.17, -0.06, -1.2], rotation: [1.44, 0.18, 0.4], scale: 0.798 },
+    mobile: { position: [0, -1.21, -2.6], rotation: [1.4, 0.14, 0.28], scale: 0.442 },
   },
 };
 

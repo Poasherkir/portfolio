@@ -84,7 +84,9 @@ export function keycapTexture(cap: Keycap, tint: string, ink: string) {
   const hit = cache.get(cap.id);
   if (hit) return hit;
 
-  const S = 1024;
+  // 30 caps at 1024 is ~126 MB of texture before mipmaps, for a cap that
+  // draws around 100 px on screen. 512 is still heavily oversampled.
+  const S = 512;
   const canvas = document.createElement("canvas");
   canvas.width = S;
   canvas.height = S;
