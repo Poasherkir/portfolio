@@ -5,17 +5,11 @@ import { ReactLenis } from "lenis/react";
 import type { ReactNode } from "react";
 
 /**
- * Lenis smooth scroll.
+ * Same tree either way — only the options change. Swapping the tree for
+ * reduced motion is a hydration mismatch.
  *
- * The tree is the same either way and only the options change. Returning
- * `children` bare for reduced motion looked tidier but swapped the element
- * tree between server and client, which is a hydration mismatch.
- *
- * `lerp` and `duration` are mutually exclusive in Lenis — passing both means
- * the easing curve is quietly ignored in favour of the lerp. Only lerp is set
- * here, and at a value that keeps the page close to the wheel: below about
- * 0.1 the content visibly lags the input, which reads as sluggish rather than
- * smooth.
+ * `lerp` and `duration` are mutually exclusive in Lenis; passing both makes
+ * the easing silently lose to the lerp.
  */
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const [reduced, setReduced] = useState(false);
@@ -34,8 +28,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       options={{
         lerp: reduced ? 1 : 0.13,
         smoothWheel: !reduced,
-        // Touch devices already have native momentum; layering Lenis on top of
-        // it is what makes phone scrolling feel like it is fighting back.
+        // Touch already has native momentum; stacking Lenis on it fights back.
         syncTouch: false,
         wheelMultiplier: 1,
       }}

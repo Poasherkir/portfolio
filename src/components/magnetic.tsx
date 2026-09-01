@@ -4,12 +4,8 @@ import { useCallback, useRef, type ReactNode } from "react";
 import { useReducedMotion } from "motion/react";
 
 /**
- * Pulls its child a little toward the pointer while the pointer is over it.
- *
- * Kept deliberately small — a button that chases the cursor far enough to
- * notice is a button that is hard to click, which is the opposite of the point.
- * Transform is written directly rather than through state, so this costs one
- * compositor property per frame and never re-renders React.
+ * Pulls its child slightly toward the pointer. Transform is written straight
+ * to the node, so this never re-renders React.
  */
 export default function Magnetic({
   children,
@@ -29,8 +25,7 @@ export default function Magnetic({
     (e: React.PointerEvent<HTMLSpanElement>) => {
       const el = ref.current;
       if (!el || reduced) return;
-      // Coarse pointers have no hover, so the effect would only ever fire as a
-      // jump on tap.
+      // No hover on coarse pointers — it would only fire as a jump on tap.
       if (e.pointerType !== "mouse") return;
       if (frame.current) return;
 
@@ -40,8 +35,7 @@ export default function Magnetic({
         const r = el.getBoundingClientRect();
         const dx = (clientX - (r.left + r.width / 2)) * strength;
         const dy = (clientY - (r.top + r.height / 2)) * strength;
-        // No transition while tracking: rAF already updates every frame, and
-        // a transition on top of that lags the cursor and feels rubbery.
+        // rAF already updates every frame; a transition on top of it lags.
         el.style.transition = "none";
         el.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0)`;
       });
@@ -52,8 +46,7 @@ export default function Magnetic({
   const onLeave = useCallback(() => {
     const el = ref.current;
     if (!el) return;
-    // The ease only applies to the return, which is the part that should look
-    // like the element settling back rather than snapping.
+    // Ease the return only.
     el.style.transition = "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)";
     el.style.transform = "translate3d(0, 0, 0)";
   }, []);

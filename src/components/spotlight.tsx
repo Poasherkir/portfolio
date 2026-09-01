@@ -4,13 +4,9 @@ import { useCallback, useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * A soft light that follows the pointer across a group of cards.
- *
- * The position is written straight to a CSS custom property rather than to
- * React state — a mousemove handler that calls setState re-renders the whole
- * subtree on every pointer event, which is how this effect usually ends up
- * costing more than the rest of the page combined. Here it is one style write,
- * and the paint is done by the compositor.
+ * A soft light following the pointer across a group of cards. Position goes
+ * to a CSS custom property, not React state — a mousemove that calls setState
+ * re-renders the subtree on every pointer event.
  */
 export default function Spotlight({
   children,
@@ -63,9 +59,7 @@ export default function Spotlight({
         } as React.CSSProperties
       }
     >
-      {/* Sits above the cards but below their content, so it lights the
-          surfaces without washing out the type. Pointer-events off, or it
-          would eat every hover it is meant to react to. */}
+      {/* Above the cards, pointer-events off so it does not eat the hovers. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] transition-opacity duration-300"

@@ -4,11 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 
 /**
- * Counts a metric up when it scrolls into view.
- *
- * Values arrive as display strings ("~70", "343", "None"), so the digits are
- * pulled out and the prefix/suffix put back afterwards. Anything with no digits
- * in it is rendered as-is rather than animated.
+ * Counts a metric up on scroll-in. Values arrive as display strings ("~70",
+ * "None"), so digits are extracted and the prefix/suffix restored. Anything
+ * with no digits renders as-is.
  */
 export default function CountUp({
   value,
@@ -26,9 +24,8 @@ export default function CountUp({
   const match = value.match(/^(\D*)(\d[\d\s,]*)(.*)$/s);
   const target = match ? Number.parseInt(match[2].replace(/[\s,]/g, ""), 10) : null;
 
-  // null until the animation actually starts. Initialising to 0 meant the
-  // metric rendered as 0 for a frame — and on a busy main thread that frame
-  // can last long enough to read as a broken number.
+  // null until the animation starts. Initialising to 0 rendered the metric
+  // as 0 for a frame, which reads as a broken number.
   const [shown, setShown] = useState<number | null>(null);
 
   useEffect(() => {
@@ -39,7 +36,7 @@ export default function CountUp({
 
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
-      // Ease out, so it decelerates onto the final value instead of stopping dead.
+      // Ease out onto the final value.
       setShown(Math.round(target * (1 - Math.pow(1 - t, 3))));
       if (t < 1) raf = requestAnimationFrame(tick);
     };

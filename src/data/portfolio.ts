@@ -297,11 +297,7 @@ export const foundations =
 /* Capabilities                                                                */
 /* -------------------------------------------------------------------------- */
 
-/**
- * The skills list is organised by technology. This is the same work organised
- * by what a client is actually buying — every entry names the project it can
- * be checked against, so nothing here is a claim without a receipt.
- */
+/** The same work as skillGroups, grouped by outcome. Each names its project. */
 export const capabilities: {
   id: string;
   title: string;

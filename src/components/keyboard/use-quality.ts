@@ -15,21 +15,16 @@ export type QualitySettings = {
 };
 
 const SETTINGS: Record<Quality, Omit<QualitySettings, "tier">> = {
-  // No shadow pass at all. That pass re-renders all thirty caps from the
-  // light's point of view every frame, and it is the single most expensive
-  // thing in the scene on a phone.
+  // The shadow pass re-renders all 30 caps from the light every frame.
   low: { dpr: 1.5, shadows: false, shadowMap: 1024 },
   medium: { dpr: 1.75, shadows: true, shadowMap: 1024 },
   high: { dpr: 2, shadows: true, shadowMap: 2048 },
 };
 
 /**
- * Picks a quality tier from what the device actually reports rather than from
- * viewport width alone — a cheap phone held sideways is still a cheap phone,
- * and a 13" laptop is not.
- *
- * Everything here is a hint and any of it can be missing, so the checks are
- * ordered cheapest-signal-first and fall through to medium.
+ * Tier from what the device reports, not viewport width — a cheap phone in
+ * landscape is still a cheap phone. Every signal is optional, so the checks
+ * fall through to medium.
  */
 export function useQuality(): QualitySettings {
   // Server and first paint get medium: it looks correct everywhere and avoids
