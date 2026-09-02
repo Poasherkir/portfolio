@@ -605,7 +605,7 @@ export const projects: Project[] = [
       "Serving the full Experimental Sciences archive offline, with new uploads reaching students through a silent background delta-sync rather than an app update.",
     whyItMatters:
       "Revision happens where the connection does not reach. An archive that needs the network to open is an archive that is closed at exactly the moment it is needed.",
-    links: {},
+    links: { repo: "https://github.com/Poasherkir/bac-archive" },
     images: [],
     featured: true,
     hasCaseStudy: true,
@@ -681,6 +681,42 @@ export const projects: Project[] = [
     privateRepo: true,
   },
   {
+    slug: "bac-dz",
+    title: "Bac DZ",
+    tagline: "Study companion for Algerian Baccalaureate students — curriculum, exams, planner and paid tiers.",
+    role: "Sole developer — Flutter app, Supabase backend, React admin console",
+    year: "2026",
+    status: "production",
+    tags: ["Mobile", "Backend", "Web"],
+    stack: ["Flutter", "Dart", "Supabase", "PostgreSQL", "React", "TypeScript"],
+    valueProp: "A full study platform for Algerian Bac students, with subscriptions and an admin console.",
+    architecture: {
+      client: ["Flutter", "Arabic RTL", "Runtime theming"],
+      logic: ["Subscription gating", "Quiz scoring", "Spaced repetition"],
+      data: ["Supabase Postgres", "Row-level security"],
+      api: ["Supabase Auth"],
+      integrations: ["Manual payment review"],
+      automation: ["Remote maintenance, force-update and ban gates"],
+    },
+    problem:
+      "Algerian Bac students juggle a curriculum, past papers, revision timing and their own morale across a dozen apps and group chats, on phones that are often offline and almost always Arabic-first.",
+    approach:
+      "One Flutter app over a Supabase backend: subjects broken into units and lessons, official past papers by filière, per-unit quizzes with scoring, a planner with a persistent Pomodoro timer, XP and badges, and offline downloads. Free and premium lessons are gated by subscription, and a separate React console handles content, users and payment review.",
+    hardPart:
+      "Shipping a paid product into a market with no usable card infrastructure. Subscriptions run on manual payment review with expiry handling, which means the app has to behave correctly for a user whose payment is pending, approved, rejected or lapsed — and keep working offline through all four. Remote maintenance, force-update and ban gates exist because a mistake reaches every student at once.",
+    result:
+      "In production, with a tools hub of more than thirty student utilities and a runtime-switchable theme set.",
+    links: {},
+    images: [],
+    featured: false,
+    hasCaseStudy: true,
+    privateRepo: true,
+    metrics: [
+      { label: "Student tools", value: "30+" },
+      { label: "Themes", value: "8" },
+    ],
+  },
+  {
     slug: "briefing-pdf-pipeline",
     title: "Aviation Briefing PDF Pipeline",
     tagline: "Turns raw airport briefing packs into one clean, printable document — automatically.",
@@ -749,7 +785,7 @@ export const projects: Project[] = [
   {
     slug: "livreurpro",
     title: "LivreurPro",
-    tagline: "Route-optimisation PWA for delivery riders — built by someone who did the job.",
+    tagline: "Offline-first Flutter app for delivery riders — built by someone who did the job.",
     role: "Sole developer",
     year: "Ongoing",
     status: "active",
@@ -765,7 +801,7 @@ export const projects: Project[] = [
       "A PWA rather than a store app: installable, works on the cheap Android phones riders actually carry, no store gatekeeping and no install friction for a workforce that turns over. It sequences a day of drops into a route that stops the backtracking.",
     hardPart: "",
     result: "",
-    links: {},
+    links: { repo: "https://github.com/Poasherkir/delivery-os" },
     images: [],
     featured: true,
     hasCaseStudy: true,
@@ -844,7 +880,7 @@ export const faq: { q: string; a: string }[] = [
 /* -------------------------------------------------------------------------- */
 
 /**
- * The repositories are private — production apps with real user data, crew
+ * Most repositories are private — production apps with real user data, crew
  * rosters and payment flows. Stated plainly and once, framed as the deliberate
  * position it is, with a route to a live walkthrough so it ends in a
  * conversation rather than a dead end.
@@ -857,7 +893,7 @@ export const privateSource = {
   notice:
     "Source code is private where projects handle real user data. Architecture walkthroughs and scoped read-only access are available for serious enquiries.",
   reason:
-    "These are live products handling real user data — crew rosters, student records, payments — so the source stays private. I will happily walk you through the architecture, the code and the decisions on a call, or share a scoped read-only repo for a serious enquiry.",
+    "Anything holding real user data — crew rosters, student records, payments — stays private. Several others are public on GitHub. For the closed ones I will walk you through the architecture and the code on a call, or arrange scoped read-only access.",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -929,7 +965,7 @@ export const workProof: string[] = [
  */
 export const engineering = {
   title: "How the code is actually written",
-  body: "The repositories are private because they are live products holding real user data. What I can do is show you the inside of one.",
+  body: "Where a project holds real user data the source stays private. The rest is on GitHub, and I will walk you through the inside of the others.",
   practices: [
     {
       title: "Server-enforced permissions",

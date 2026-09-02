@@ -6,9 +6,10 @@ ship with.
 
 Live: **<https://malikboudine.vercel.app>**
 
-This is the only public repository on my account. Every project the site talks
-about — Briefing Point Go, TechSub, BAC Archive — is a live product holding real
-user data, so those stay private. This repo is the code you can read instead.
+Most of the work behind this site is closed — Briefing Point Go, TechSub and
+the aviation services all hold real user data. [BAC Archive](https://github.com/Poasherkir/bac-archive)
+and [Delivery OS](https://github.com/Poasherkir/delivery-os) are public, and so
+is this repo.
 
 ---
 
