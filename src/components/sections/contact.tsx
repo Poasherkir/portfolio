@@ -41,7 +41,7 @@ export default function ContactSection() {
                   { icon: Mail, label: "Languages", value: "EN · FR · AR" },
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label} className="bg-card p-5">
-                    <Icon className="h-4 w-4 text-brand" aria-hidden />
+                    <Icon className="h-4 w-4 text-muted-foreground" aria-hidden />
                     <dt className="eyebrow mt-3">{label}</dt>
                     <dd className="mt-1.5 text-sm font-medium">{value}</dd>
                   </div>

@@ -45,7 +45,7 @@ export default function Services() {
                 key={service.id}
                 className="flex h-full flex-col rounded-xl border border-border bg-card/85 p-7 backdrop-blur-sm transition-colors hover:border-brand/40"
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-brand/30 bg-brand/10 text-brand">
+                <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-foreground/[0.04] text-foreground">
                   <Icon className="h-5 w-5" />
                 </span>
 
@@ -63,14 +63,14 @@ export default function Services() {
                   <summary className="-my-2 flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 py-2 text-sm font-medium transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background">
                     What&apos;s included
                     <ChevronDown
-                      className="h-4 w-4 shrink-0 text-brand transition-transform duration-300 group-open/d:rotate-180"
+                      className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 group-open/d:rotate-180"
                       aria-hidden
                     />
                   </summary>
                   <ul className="mt-5 space-y-2.5">
                     {service.includes.map((line) => (
                       <li key={line} className="flex gap-2.5 text-sm text-muted-foreground">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden />
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground/35" aria-hidden />
                         {line}
                       </li>
                     ))}
