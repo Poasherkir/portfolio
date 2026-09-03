@@ -62,7 +62,7 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
       <div className="instrument-grid absolute inset-0 opacity-40" />
       <div
         className="absolute -right-1/4 -top-1/3 h-[36rem] w-[36rem] rounded-full opacity-20 blur-[90px]"
-        style={{ background: "radial-gradient(circle, hsl(var(--brand)) 0%, transparent 65%)" }}
+        style={{ background: "radial-gradient(circle, hsl(var(--foreground)) 0%, transparent 65%)" }}
       />
       {children}
     </div>
@@ -118,9 +118,9 @@ function AviationPortrait({ project, className }: { project: Project; className?
     <Frame className={className}>
       {/* Horizon line — the instrument the whole site's motif comes from. */}
       <svg viewBox="0 0 400 240" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice">
-        <circle cx="200" cy="118" r="98" fill="none" stroke="hsl(var(--brand))" strokeOpacity="0.16" />
-        <circle cx="200" cy="118" r="70" fill="none" stroke="hsl(var(--brand))" strokeOpacity="0.1" />
-        <line x1="72" y1="118" x2="328" y2="118" stroke="hsl(var(--brand))" strokeOpacity="0.28" />
+        <circle cx="200" cy="118" r="98" fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.16" />
+        <circle cx="200" cy="118" r="70" fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.1" />
+        <line x1="72" y1="118" x2="328" y2="118" stroke="hsl(var(--foreground))" strokeOpacity="0.28" />
         {[-40, -20, 20, 40].map((d) => (
           <line
             key={d}
@@ -145,7 +145,7 @@ function AviationPortrait({ project, className }: { project: Project; className?
               key={i}
               className="h-1.5 w-1.5 rounded-[1px]"
               style={{
-                background: "hsl(var(--brand))",
+                background: "hsl(var(--foreground))",
                 // Front rows brightest, for depth.
                 opacity: 0.85 - (Math.floor(i / cols) / Math.max(rows, 1)) * 0.55,
               }}
@@ -183,7 +183,7 @@ function ArchivePortrait({ project, className }: { project: Project; className?:
               key={i}
               className="h-[7px] w-[5px] rounded-[1px]"
               style={{
-                background: "hsl(var(--brand))",
+                background: "hsl(var(--foreground))",
                 // A steady vertical gradient — a shelf of paper, seen edge-on.
                 opacity: 0.28 + ((i % cols) / cols) * 0.5,
               }}
@@ -237,7 +237,7 @@ function PipelinePortrait({ className }: { className?: string }) {
               y={p.y + p.h / 2}
               textAnchor="middle"
               fontSize="7"
-              fill="hsl(var(--brand))"
+              fill="hsl(var(--foreground))"
               fillOpacity="0.35"
               transform={`rotate(-32 ${p.x + p.w / 2} ${p.y + p.h / 2})`}
             >
@@ -252,11 +252,11 @@ function PipelinePortrait({ className }: { className?: string }) {
           y1="96"
           x2="232"
           y2="96"
-          stroke="hsl(var(--brand))"
+          stroke="hsl(var(--foreground))"
           strokeOpacity="0.6"
           strokeDasharray="4 4"
         />
-        <path d="M232 96 l-7 -4 v8 z" fill="hsl(var(--brand))" fillOpacity="0.8" />
+        <path d="M232 96 l-7 -4 v8 z" fill="hsl(var(--foreground))" fillOpacity="0.8" />
         <text
           x="196"
           y="86"
@@ -278,7 +278,7 @@ function PipelinePortrait({ className }: { className?: string }) {
           rx="2"
           fill="#ffffff"
           fillOpacity="0.1"
-          stroke="hsl(var(--brand))"
+          stroke="hsl(var(--foreground))"
           strokeOpacity="0.55"
         />
         {[62, 72, 82, 92, 102, 112, 122].map((y, i) => (
@@ -317,10 +317,10 @@ function RoutePortrait({ className }: { className?: string }) {
   return (
     <Frame className={className}>
       <svg viewBox="0 0 380 200" className="absolute inset-0 h-full w-full">
-        <path d={path} fill="none" stroke="hsl(var(--brand))" strokeOpacity="0.55" strokeWidth="1.5" />
+        <path d={path} fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.55" strokeWidth="1.5" />
         {stops.map(([x, y], i) => (
           <g key={i}>
-            <circle cx={x} cy={y} r="6" fill="#0d0d0d" stroke="hsl(var(--brand))" strokeOpacity="0.8" />
+            <circle cx={x} cy={y} r="6" fill="#0d0d0d" stroke="hsl(var(--foreground))" strokeOpacity="0.8" />
             <text
               x={x}
               y={y + 2.5}
@@ -356,7 +356,7 @@ function ComparePortrait({ className }: { className?: string }) {
               className="w-full rounded-[2px]"
               style={{
                 height: `${v * 100}%`,
-                background: "hsl(var(--brand))",
+                background: "hsl(var(--foreground))",
                 opacity: 0.25 + v * 0.5,
               }}
             />

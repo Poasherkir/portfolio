@@ -31,7 +31,7 @@ function Item({ text }: { text: string }) {
   return (
     <li className="flex shrink-0 items-center gap-10 whitespace-nowrap font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
       {text}
-      <span className="h-1 w-1 rounded-full bg-brand" aria-hidden />
+      <span className="h-1 w-1 rounded-full bg-foreground/30" aria-hidden />
     </li>
   );
 }
