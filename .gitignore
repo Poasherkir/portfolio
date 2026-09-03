@@ -16,3 +16,7 @@ next-env.d.ts
 # Editor
 .vscode
 .idea
+
+# Raw screenshot drops — processed copies live in public/assets/projects/
+/bac archive/
+/breifeing poing/

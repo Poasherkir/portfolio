@@ -466,46 +466,33 @@ export const projects: Project[] = [
     tags: ["Mobile", "Backend", "Automation"],
     stack: ["Flutter", "Dart", "go_router", "Supabase", "FastAPI", "Hive", "dio", "fl_chart"],
     valueProp: "Electronic Flight Bag for aviation crew workflows.",
-    /* TODO: re-enable once the screenshots are in public/assets/projects/.
-
-    // // Real screens from the production build.
-    // screens: [
-    //   {
-    //     src: "/assets/projects/bpg-home.webp",
-    //     alt: "Briefing Point Go home screen showing a layover in SRT, the next flight, and a pre-departure check scored 19 LOW",
-    //     caption: "Duty status and a scored pre-departure check",
-    //   },
-    //   {
-    //     src: "/assets/projects/bpg-roster.webp",
-    //     alt: "Roster screen with Today, Classic, Monthly, Grid and Swap views, a check-in button, the next flight and rest minimums",
-    //     caption: "Roster views, check-in and rest minimums",
-    //   },
-    //   {
-    //     src: "/assets/projects/bpg-tools.webp",
-    //     alt: "Tools screen listing flight calculation, time calculation, operations, airport data, logbook and other tool groups",
-    //     caption: "Tools grouped by task",
-    //   },
-    //   {
-    //     src: "/assets/projects/bpg-airports.webp",
-    //     alt: "Airport lookup screen with a search field for ICAO, IATA or name and a list of recently viewed airports",
-    //     caption: "Airport lookup by ICAO, IATA or name",
-    //   },
-    //   {
-    //     src: "/assets/projects/bpg-settings.webp",
-    //     alt: "Settings screen showing online status, credential storage and offline database sync state",
-    //     caption: "Offline database sync and credential storage",
-    //   },
-    // ],
-    // architecture: {
-    //   client: ["Flutter", "Dart", "go_router", "fl_chart"],
-    //   logic: ["ChangeNotifier controllers", "AppScope"],
-    //   api: ["FastAPI (Amadeus load/pax, OFP)", "dio"],
-    //   data: ["Supabase Postgres", "Hive offline cache", "flutter_secure_storage"],
-    //   integrations: ["METAR/TAF", "ADS-B", "CTOT & delays", "eCrew", "Amadeus"],
-    //   automation: ["Remote config — force update or block a build"],
-    //   deploy: ["Shared nginx origin with the web app"],
-    // },
-    */
+    screens: [
+      {
+        src: "/assets/projects/bpg-duty.webp",
+        alt: "Briefing Point Go home screen showing no scheduled duty and a yearly cumulative cosmic radiation dose of 116.9 microsieverts",
+        caption: "Duty status and cumulative radiation dose",
+      },
+      {
+        src: "/assets/projects/bpg-roster.webp",
+        alt: "Roster screen with Today, Classic, Monthly and Grid views, a check-in button, the next flight and rest minimums",
+        caption: "Roster views, check-in and rest minimums",
+      },
+      {
+        src: "/assets/projects/bpg-tools.webp",
+        alt: "Tools screen listing flight calculation, time calculation, operations, airport data and logbook tool groups",
+        caption: "Tools grouped by task",
+      },
+      {
+        src: "/assets/projects/bpg-airports.webp",
+        alt: "Airport lookup screen with a search field for ICAO, IATA or name and a list of recently viewed airports",
+        caption: "Airport lookup by ICAO, IATA or name",
+      },
+      {
+        src: "/assets/projects/bpg-settings.webp",
+        alt: "Settings screen showing online status, credential storage and offline database sync state",
+        caption: "Offline sync and credential storage",
+      },
+    ],
     problem:
       "A pilot assembles a duty day from a dozen disconnected sources: roster, operational flight plan, load and passenger figures, slot times and delays, weather, NOTAMs, radiation exposure. On a phone, in an airport, minutes before pushback. Anything not in one place does not get read.",
     approach:
@@ -595,6 +582,28 @@ export const projects: Project[] = [
       automation: ["Python importer — idempotent and resumable", "HTML/JS admin dashboard"],
       deploy: ["Public APK — anon key assumed compromised by design"],
     },
+    screens: [
+      {
+        src: "/assets/projects/bac-subjects.webp",
+        alt: "BAC Archive home screen in Arabic, listing subjects with the number of years available for each",
+        caption: "Browse by subject, 19 years each",
+      },
+      {
+        src: "/assets/projects/bac-years.webp",
+        alt: "Maths subject screen listing Baccalaureate years from 2026 down, each with paper and solution PDFs",
+        caption: "Paper and solution per year",
+      },
+      {
+        src: "/assets/projects/bac-viewer.webp",
+        alt: "Built-in PDF viewer showing page one of a 2026 Baccalaureate maths paper",
+        caption: "Built-in viewer, works offline",
+      },
+      {
+        src: "/assets/projects/bac-theme.webp",
+        alt: "Appearance sheet offering system, light and dark themes",
+        caption: "System, light and dark",
+      },
+    ],
     problem:
       "Algerian bac students revise from photocopies and PDFs scattered across messaging apps, frequently on a connection that cannot be relied on. Anything that needs the network to open is useless in the room where the studying actually happens.",
     approach:
