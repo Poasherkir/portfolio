@@ -157,8 +157,11 @@ const CAM_Z = 9;
  */
 function coverScale(section: Section, z: number, aspect: number, isMobile: boolean) {
   const t = (isMobile ? COVER_MOBILE : COVER)[section];
+  // A hidden or zero-height canvas reports 0x0, which makes aspect 0 or
+  // Infinity and would size the board to nothing or to nonsense.
+  const a = Number.isFinite(aspect) && aspect > 0.05 ? Math.min(aspect, 6) : 1.6;
   const halfH = Math.tan(((FOV * Math.PI) / 180) / 2) * (CAM_Z - z);
-  const halfW = halfH * aspect;
+  const halfW = halfH * a;
   return Math.min((t.w * 2 * halfW) / BOARD_W, (t.h * 2 * halfH) / BOARD_H);
 }
 
