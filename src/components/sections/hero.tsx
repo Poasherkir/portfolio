@@ -23,9 +23,11 @@ export default function Hero() {
       <div className="grid md:grid-cols-2">
         <div
           className={cn(
-            "z-[2] min-h-[calc(100svh-3rem)] md:h-[calc(100dvh-4rem)]",
+            "z-[2] min-h-[100svh]",
             "col-span-1 flex flex-col items-start justify-center",
-            "px-gutter pt-28 sm:pb-16 md:py-20 lg:py-24"
+            // Clears the fixed header, and the column may grow past the viewport
+            // rather than centring content taller than itself.
+            "px-gutter pb-20 pt-[calc(4rem+clamp(2rem,6vh,5rem))]"
           )}
         >
           <BlurIn delay={offset + 0.15}>

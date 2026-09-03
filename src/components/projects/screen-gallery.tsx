@@ -52,14 +52,14 @@ export default function ScreenGallery({
   return (
     <div
       className={cn(
-        "absolute inset-0 overflow-hidden bg-[#0d0d0d] dark:bg-[#0c0c0c]",
+        "absolute inset-0 overflow-hidden bg-secondary dark:bg-[#0c0c0c]",
         className
       )}
     >
       <div className="instrument-grid absolute inset-0 opacity-30" />
       <div
         className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[80px]"
-        style={{ background: "radial-gradient(circle, hsl(var(--brand)) 0%, transparent 65%)" }}
+        style={{ background: "radial-gradient(circle, hsl(var(--foreground)) 0%, transparent 65%)" }}
       />
 
       <div className="absolute inset-0 flex items-center justify-center gap-3 px-6 pt-10 sm:gap-5">

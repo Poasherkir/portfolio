@@ -54,7 +54,7 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
   return (
     <div
       className={cn(
-        "absolute inset-0 overflow-hidden bg-[#0d0d0d] dark:bg-[#0c0c0c]",
+        "absolute inset-0 overflow-hidden bg-secondary dark:bg-[#0c0c0c]",
         className
       )}
       aria-hidden
@@ -73,7 +73,7 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
 function Caption({ left, right }: { left: string; right?: string }) {
   return (
     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5">
-      <p className="font-mono text-[0.7rem] uppercase leading-relaxed tracking-[0.16em] text-white/55 sm:text-[0.62rem] sm:tracking-[0.18em]">
+      <p className="font-mono text-[0.7rem] uppercase leading-relaxed tracking-[0.16em] text-foreground/55 sm:text-[0.62rem] sm:tracking-[0.18em]">
         {left}
       </p>
       {right && (
@@ -97,6 +97,12 @@ function DataPortrait({ project, className }: { project: Project; className?: st
       return <RoutePortrait className={className} />;
     case "bankidz":
       return <ComparePortrait className={className} />;
+    case "ofp-api":
+      return <FlightPlanPortrait className={className} />;
+    case "amadeus-api":
+      return <LoadSheetPortrait className={className} />;
+    case "bac-dz":
+      return <StudyPortrait className={className} />;
     default:
       return <GenericPortrait project={project} className={className} />;
   }
@@ -360,7 +366,7 @@ function ComparePortrait({ className }: { className?: string }) {
                 opacity: 0.25 + v * 0.5,
               }}
             />
-            <div className="h-px w-full bg-white/15" />
+            <div className="h-px w-full bg-foreground/15" />
           </div>
         ))}
       </div>
@@ -369,11 +375,152 @@ function ComparePortrait({ className }: { className?: string }) {
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/* OFP API — a plan document parsed into the figures a pilot needs             */
+/* -------------------------------------------------------------------------- */
+
+function FlightPlanPortrait({ className }: { className?: string }) {
+  // The real parsed keys, so the picture is the output rather than a mock.
+  const fields = [
+    ["TRIP FUEL", "4957"],
+    ["ETOW", "63262"],
+    ["FL", "340"],
+    ["ALTN", "2173"],
+  ];
+
+  return (
+    <Frame className={className}>
+      <div className="absolute inset-0 flex items-center justify-center gap-6 p-8 sm:gap-10">
+        {/* The document going in: text it cannot read as data. */}
+        <div className="flex w-[26%] max-w-[104px] flex-col gap-[3px] rounded-sm border border-foreground/20 p-2.5">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <span
+              key={i}
+              className="h-[2px] rounded-full bg-foreground/25"
+              style={{ width: `${[92, 74, 88, 60, 80, 46, 84, 68, 38][i]}%` }}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center gap-1">
+          <span className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-foreground/45">
+            parse
+          </span>
+          <svg viewBox="0 0 44 8" className="h-2 w-11" aria-hidden>
+            <path d="M0 4h36" stroke="hsl(var(--brand))" strokeWidth="1.2" strokeDasharray="3 2.5" />
+            <path d="M36 1l6 3-6 3z" fill="hsl(var(--brand))" />
+          </svg>
+        </div>
+
+        {/* The structured result coming out. */}
+        <div className="flex w-[42%] max-w-[168px] flex-col gap-1.5">
+          {fields.map(([k, v]) => (
+            <div
+              key={k}
+              className="flex items-baseline justify-between gap-2 rounded-sm border border-foreground/15 bg-foreground/[0.04] px-2 py-1"
+            >
+              <span className="font-mono text-[0.5rem] uppercase tracking-[0.1em] text-foreground/50">
+                {k}
+              </span>
+              <span className="font-mono text-[0.62rem] tabular-nums text-foreground/85">{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Caption left="Operational flight plan → structured JSON" right="API" />
+    </Frame>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Load Control API — the closeout figures, as a loadsheet                     */
+/* -------------------------------------------------------------------------- */
+
+function LoadSheetPortrait({ className }: { className?: string }) {
+  const rows = [
+    ["PAX", "162"],
+    ["BAGS", "1 840"],
+    ["ZFW", "54 684"],
+    ["TOW", "63 262"],
+  ];
+
+  return (
+    <Frame className={className}>
+      <div className="absolute inset-0 flex items-center justify-center p-8">
+        <div className="w-full max-w-[240px] overflow-hidden rounded border border-foreground/20">
+          <div className="flex items-center justify-between border-b border-foreground/20 bg-foreground/[0.06] px-3 py-1.5">
+            <span className="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-foreground/60">
+              Loadsheet
+            </span>
+            <span className="h-1 w-1 rounded-full bg-brand" />
+          </div>
+          {rows.map(([k, v], i) => (
+            <div
+              key={k}
+              className={cn(
+                "flex items-baseline justify-between px-3 py-[7px]",
+                i < rows.length - 1 && "border-b border-foreground/10"
+              )}
+            >
+              <span className="font-mono text-[0.55rem] uppercase tracking-[0.12em] text-foreground/50">
+                {k}
+              </span>
+              <span className="font-mono text-[0.7rem] tabular-nums text-foreground/85">{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Caption left="Live load figures, ground ops → mobile" right="API" />
+    </Frame>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Bac DZ — a curriculum, and how far through it you are                       */
+/* -------------------------------------------------------------------------- */
+
+function StudyPortrait({ className }: { className?: string }) {
+  const units = [72, 100, 45, 88, 30, 64];
+
+  return (
+    <Frame className={className}>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-8">
+        <div className="flex w-full max-w-[240px] flex-col gap-2.5">
+          {units.map((pct, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <span className="w-8 shrink-0 font-mono text-[0.5rem] uppercase tracking-[0.1em] text-foreground/40">
+                U{i + 1}
+              </span>
+              <span className="h-[3px] flex-1 overflow-hidden rounded-full bg-foreground/12">
+                <span
+                  className="block h-full rounded-full"
+                  style={{
+                    width: `${pct}%`,
+                    // Only a finished unit earns the accent.
+                    background: pct === 100 ? "hsl(var(--brand))" : "hsl(var(--foreground) / 0.45)",
+                  }}
+                />
+              </span>
+              <span className="w-7 shrink-0 text-right font-mono text-[0.5rem] tabular-nums text-foreground/40">
+                {pct}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Caption left="Curriculum, quizzes and planner · Arabic RTL" right="Study" />
+    </Frame>
+  );
+}
+
 function GenericPortrait({ project, className }: { project: Project; className?: string }) {
   return (
     <Frame className={className}>
       <div className="absolute inset-0 flex items-center justify-center p-8">
-        <p className="font-display text-3xl font-semibold leading-none tracking-tighter text-white/15">
+        <p className="font-display text-3xl font-semibold leading-none tracking-tighter text-foreground/12">
           {project.title}
         </p>
       </div>
