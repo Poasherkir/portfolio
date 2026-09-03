@@ -4,10 +4,9 @@ import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
-import { RoundedBox } from "@react-three/drei";
 import { keycaps, type Keycap } from "@/data/portfolio";
 import { capAndInk, keycapTexture } from "./keycap-texture";
-import { CAP_GEOMETRY } from "./keycap-geometry";
+import { CAP_GEOMETRY, roundedBoxGeometry } from "./keycap-geometry";
 import { floatAmountAt, opacityAt, poseAt, type Anchor } from "./poses";
 
 const COLS = 6;
@@ -17,6 +16,10 @@ const PITCH = 0.86;
 const ROW_STAGGER = 0.14;
 const BASE_W = COLS * PITCH + ROW_STAGGER * 3 + 0.5;
 const BASE_D = ROWS * PITCH + 0.5;
+
+/** Built once and shared — the case and plate never change size. */
+const CASE_GEOMETRY = roundedBoxGeometry(BASE_W, 0.44, BASE_D, 0.14, 5);
+const PLATE_GEOMETRY = roundedBoxGeometry(BASE_W - 0.22, 0.14, BASE_D - 0.22, 0.05, 3);
 
 /** Exponential damping — frame-rate independent, unlike a raw lerp factor. */
 function damp(current: number, target: number, lambda: number, dt: number) {
@@ -295,10 +298,8 @@ export default function Keyboard({
   return (
     <group ref={root} dispose={null}>
       {/* Case */}
-      <RoundedBox
-        args={[BASE_W, 0.44, BASE_D]}
-        radius={0.14}
-        smoothness={5}
+      <mesh
+        geometry={CASE_GEOMETRY}
         position={[0, -0.24, 0]}
         castShadow
         receiveShadow
@@ -311,23 +312,17 @@ export default function Keyboard({
           clearcoatRoughness={0.4}
           envMapIntensity={0.75}
         />
-      </RoundedBox>
+      </mesh>
 
       {/* Plate the caps sit on — darker, so the caps read against it */}
-      <RoundedBox
-        args={[BASE_W - 0.22, 0.14, BASE_D - 0.22]}
-        radius={0.05}
-        smoothness={3}
-        position={[0, -0.03, 0]}
-        receiveShadow
-      >
+      <mesh geometry={PLATE_GEOMETRY} position={[0, -0.03, 0]} receiveShadow>
         <meshStandardMaterial
           color="#0e0e0e"
           roughness={0.7}
           metalness={0.3}
           envMapIntensity={0.35}
         />
-      </RoundedBox>
+      </mesh>
 
       {keycaps.map((row, r) =>
         row.map((cap, c) => (

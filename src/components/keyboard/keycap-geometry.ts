@@ -90,3 +90,60 @@ function applyPlanarUVs(geometry: THREE.BufferGeometry) {
 }
 
 applyPlanarUVs(CAP_GEOMETRY);
+
+/**
+ * Rounded box, extruded from a rounded rectangle.
+ *
+ * three has no rounded box and drei's is the only thing that library was
+ * pulled in for. Building it here drops the dependency entirely.
+ *
+ * The rectangle is drawn in XY and extruded along Z, then rotated so the
+ * extrusion runs up the Y axis — which is the orientation the case and plate
+ * are placed in.
+ */
+export function roundedBoxGeometry(
+  width: number,
+  height: number,
+  depth: number,
+  radius: number,
+  curveSegments = 5
+) {
+  // The bevel grows the shape outward by bevelSize on every side, so the
+  // rectangle is inset by that much first — otherwise the finished box comes
+  // out 2 x bevel too big on both horizontal axes.
+  const bevel = Math.min(height * 0.18, radius * 0.5);
+  // Never let the corner radius exceed half the shorter side, or the shape
+  // self-intersects and the extrude comes out inside-out.
+  const inset = Math.max(0, bevel);
+  const w = Math.max(0.001, width / 2 - inset);
+  const d = Math.max(0.001, depth / 2 - inset);
+  const r = Math.max(0.001, Math.min(radius - inset, Math.min(w, d) - 0.001));
+
+  const shape = new THREE.Shape();
+  shape.moveTo(-w + r, -d);
+  shape.lineTo(w - r, -d);
+  shape.quadraticCurveTo(w, -d, w, -d + r);
+  shape.lineTo(w, d - r);
+  shape.quadraticCurveTo(w, d, w - r, d);
+  shape.lineTo(-w + r, d);
+  shape.quadraticCurveTo(-w, d, -w, d - r);
+  shape.lineTo(-w, -d + r);
+  shape.quadraticCurveTo(-w, -d, -w + r, -d);
+
+  // The bevel softens the top and bottom edges the way the rounded rectangle
+  // softens the vertical ones, so the box reads as moulded rather than cut.
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: Math.max(0.001, height - bevel * 2),
+    bevelEnabled: bevel > 0.0005,
+    bevelThickness: bevel,
+    bevelSize: bevel,
+    bevelSegments: Math.max(1, Math.round(curveSegments / 2)),
+    curveSegments,
+  });
+
+  // Extrusion runs along +Z; stand it up so it runs along +Y, then centre it.
+  geo.rotateX(-Math.PI / 2);
+  geo.center();
+  geo.computeVertexNormals();
+  return geo;
+}
