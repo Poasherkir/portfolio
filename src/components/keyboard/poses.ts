@@ -112,11 +112,55 @@ export const FLOAT_AMOUNT: Record<Section, number> = {
 };
 
 /**
- * Global size multiplier. Apparent size is scale / (cameraZ - poseZ), so this
- * is equivalent to moving every pose closer without retuning each one.
- * Mobile gets less — the frustum is far narrower and crops sooner.
+ * How much of the viewport the board should cover, per section.
+ *
+ * The camera's field of view is vertical, so a fixed world-space scale makes
+ * the board shrink on short windows and balloon on tall ones — measured, it
+ * ranged from 27% of the screen on a wide monitor to 94% on a tablet held
+ * upright. These are solved against the live viewport every frame instead, so
+ * the board is the same size everywhere.
+ *
+ * `w` is the share of viewport width; `h` caps the share of height, which is
+ * what stops a tall narrow window turning the board into a wall.
  */
-const BOARD_SCALE = { desktop: 1, mobile: 1 };
+const COVER: Record<Section, { w: number; h: number }> = {
+  hero: { w: 0.4, h: 0.85 },
+  flagship: { w: 0.37, h: 0.8 },
+  projects: { w: 0.37, h: 0.8 },
+  skills: { w: 0.44, h: 0.86 },
+  capabilities: { w: 0.36, h: 0.78 },
+  services: { w: 0.37, h: 0.8 },
+  contact: { w: 0.4, h: 0.82 },
+};
+
+/** Mobile is portrait and the copy stacks above, so it takes more width and far less height. */
+const COVER_MOBILE: Record<Section, { w: number; h: number }> = {
+  hero: { w: 0.78, h: 0.36 },
+  flagship: { w: 0.7, h: 0.32 },
+  projects: { w: 0.7, h: 0.32 },
+  skills: { w: 0.86, h: 0.4 },
+  capabilities: { w: 0.68, h: 0.3 },
+  services: { w: 0.7, h: 0.32 },
+  contact: { w: 0.72, h: 0.34 },
+};
+
+/** Board footprint in world units, from the 6x5 grid in keyboard.tsx. */
+const BOARD_W = 5.2;
+const BOARD_H = 4.3;
+/** Must match the Canvas camera. */
+const FOV = 34;
+const CAM_Z = 9;
+
+/**
+ * Scale that puts the board at its target share of the viewport, at the depth
+ * this pose sits at. Whichever axis binds first wins.
+ */
+function coverScale(section: Section, z: number, aspect: number, isMobile: boolean) {
+  const t = (isMobile ? COVER_MOBILE : COVER)[section];
+  const halfH = Math.tan(((FOV * Math.PI) / 180) / 2) * (CAM_Z - z);
+  const halfW = halfH * aspect;
+  return Math.min((t.w * 2 * halfW) / BOARD_W, (t.h * 2 * halfH) / BOARD_H);
+}
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -163,19 +207,25 @@ export function measureAnchors(): Anchor[] {
 }
 
 /** The interpolated pose for a given scroll offset. */
-export function poseAt(anchors: Anchor[], scrollY: number, isMobile: boolean): Pose {
+export function poseAt(
+  anchors: Anchor[],
+  scrollY: number,
+  isMobile: boolean,
+  aspect: number
+): Pose {
   const key = isMobile ? "mobile" : "desktop";
-  const sized = (pose: Pose): Pose => ({
+  // The pose's own scale is ignored — size comes from the viewport.
+  const sizedFor = (section: Section) => (pose: Pose): Pose => ({
     ...pose,
-    scale: pose.scale * BOARD_SCALE[key],
+    scale: coverScale(section, pose.position[2], aspect, isMobile),
   });
-  if (anchors.length === 0) return sized(POSES.hero[key]);
-  if (anchors.length === 1) return sized(POSES[anchors[0].section][key]);
+  if (anchors.length === 0) return sizedFor("hero")(POSES.hero[key]);
+  if (anchors.length === 1) return sizedFor(anchors[0].section)(POSES[anchors[0].section][key]);
 
-  if (scrollY <= anchors[0].at) return sized(POSES[anchors[0].section][key]);
+  if (scrollY <= anchors[0].at) return sizedFor(anchors[0].section)(POSES[anchors[0].section][key]);
 
   const last = anchors[anchors.length - 1];
-  if (scrollY >= last.at) return sized(POSES[last.section][key]);
+  if (scrollY >= last.at) return sizedFor(last.section)(POSES[last.section][key]);
 
   for (let i = 0; i < anchors.length - 1; i++) {
     const a = anchors[i];
@@ -183,11 +233,16 @@ export function poseAt(anchors: Anchor[], scrollY: number, isMobile: boolean): P
     if (scrollY >= a.at && scrollY < b.at) {
       const span = b.at - a.at;
       const t = span <= 0 ? 0 : (scrollY - a.at) / span;
-      return sized(lerpPose(POSES[a.section][key], POSES[b.section][key], smooth(t)));
+      // Scale is interpolated between the two sections' own solved sizes, so
+      // the transition stays smooth instead of stepping at the boundary.
+      const blended = lerpPose(POSES[a.section][key], POSES[b.section][key], smooth(t));
+      const sa = coverScale(a.section, blended.position[2], aspect, isMobile);
+      const sb = coverScale(b.section, blended.position[2], aspect, isMobile);
+      return { ...blended, scale: lerp(sa, sb, smooth(t)) };
     }
   }
 
-  return sized(POSES[last.section][key]);
+  return sizedFor(last.section)(POSES[last.section][key]);
 }
 
 /** Samples a per-section table at a scroll offset, easing between neighbours. */

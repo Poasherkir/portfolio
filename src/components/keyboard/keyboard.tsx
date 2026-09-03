@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import type { MotionValue } from "motion/react";
 import { RoundedBox } from "@react-three/drei";
 import { keycaps, type Keycap } from "@/data/portfolio";
@@ -231,6 +231,9 @@ export default function Keyboard({
 }: KeyboardProps) {
   const root = useRef<THREE.Group>(null);
   const settled = useRef(false);
+  // Drives the board's size, so it holds the same share of the frame whether
+  // the window is a tall phone or a short ultrawide.
+  const aspect = useThree((s) => s.viewport.aspect);
   /** How far the caps have drifted off the board, 0..1, driven by scroll. */
   const floatRef = useRef(0);
 
@@ -260,7 +263,7 @@ export default function Keyboard({
     // Scrubbed, not switched: the pose is interpolated from the live scroll
     // offset every frame, so the board moves continuously with the page rather
     // than lurching when a section boundary trips.
-    const target = poseAt(anchorsRef.current ?? [], window.scrollY, isMobile);
+    const target = poseAt(anchorsRef.current ?? [], window.scrollY, isMobile, aspect);
 
     // Same anchors, same interpolation — so how present the board is stays in
     // step with where it is, instead of drifting apart as the page grows.
