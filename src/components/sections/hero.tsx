@@ -24,16 +24,15 @@ export default function Hero() {
         <div
           className={cn(
             "z-[2] min-h-[calc(100svh-3rem)] md:h-[calc(100dvh-4rem)]",
-            "col-span-1",
-            "flex flex-col items-start justify-center",
-            "px-5 pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28"
+            "col-span-1 flex flex-col items-start justify-center",
+            "px-gutter pt-28 sm:pb-16 md:py-20 lg:py-24"
           )}
         >
           <BlurIn delay={offset + 0.15}>
             <p className="eyebrow">{hero.eyebrow}</p>
           </BlurIn>
 
-          <h1 className="mt-5">
+          <h1 className="mt-6">
             <span className="sr-only">
               {profile.name} — {hero.displayLines.join(" ")}
             </span>
@@ -41,28 +40,33 @@ export default function Hero() {
               <BlurIn key={line} delay={offset + 0.3 + i * 0.11}>
                 <span
                   aria-hidden
-                  className={cn(
-                    "block font-display leading-[0.94] tracking-tight",
-                    "text-5xl sm:text-6xl lg:text-7xl xl:text-[5.5rem]",
-                    i === hero.displayLines.length - 1
-                      ? "text-brand"
-                      : "text-slate-900 dark:text-slate-50"
-                  )}
+                  className="block font-display text-display-2xl text-foreground"
                 >
-                  {line}
+                  {/* Only the last word carries the accent — a whole red line
+                      at this size is a block of colour, not emphasis. */}
+                  {line === hero.displayLines[hero.displayLines.length - 1] ? (
+                    <>
+                      {line.replace(hero.accentWord, "")}
+                      <span className="text-brand">{hero.accentWord}</span>
+                    </>
+                  ) : (
+                    line
+                  )}
                 </span>
               </BlurIn>
             ))}
           </h1>
 
           <BlurIn delay={offset + 0.72}>
-            <p className="mt-7 max-w-lg text-sm font-normal leading-relaxed text-muted-foreground sm:text-base">
+            <p className="copy-halo mt-8 max-w-[46ch] text-body-lg text-muted-foreground">
               {hero.subhead}
             </p>
           </BlurIn>
 
+          {/* One primary. The secondary is a link, so the eye has an order to
+              follow instead of two buttons of equal weight. */}
           <BlurIn delay={offset + 0.85}>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Magnetic>
                 <Button asChild size="lg">
                   <Link href={hero.primaryCta.href}>
@@ -71,37 +75,56 @@ export default function Hero() {
                   </Link>
                 </Button>
               </Magnetic>
-              <Magnetic>
-                <Button asChild size="lg" variant="outline">
-                  <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
-                </Button>
-              </Magnetic>
 
-              <div className="flex items-center gap-2">
-                {/* asChild, not <Link><Button> — nesting a button inside an
-                    anchor is invalid HTML, and the inner control ends up with
-                    no accessible name of its own. */}
+              <Button asChild variant="link" size="lg">
+                <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
+              </Button>
+
+              <div className="flex items-center gap-1">
                 {socials.map((s) => (
-                  <Button key={s.title} asChild variant="outline" size="icon">
-                    <Link href={s.href} target="_blank" rel="noreferrer" aria-label={s.title}>
-                      <SocialIcon name={s.icon} className="h-4 w-4" />
-                    </Link>
-                  </Button>
+                  <Link
+                    key={s.title}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={s.title}
+                    className="grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.05] hover:text-foreground"
+                  >
+                    <SocialIcon name={s.icon} className="h-4 w-4" />
+                  </Link>
                 ))}
               </div>
             </div>
           </BlurIn>
 
+          {/* The delivery, in order. Structure where the logos are scattered. */}
+          <BlurIn delay={offset + 0.95}>
+            <ol className="mt-14 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-6">
+              {hero.pipeline.map((stage, i) => (
+                <li key={stage} className="flex items-center gap-3">
+                  <span className="font-mono text-meta uppercase text-muted-foreground">
+                    {stage}
+                  </span>
+                  {i < hero.pipeline.length - 1 && (
+                    <span aria-hidden className="text-foreground/25">
+                      /
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </BlurIn>
+
           {/* Rendered only while it is actually true — set to null when booked. */}
           {hero.availability && (
-            <BlurIn delay={offset + 0.98}>
+            <BlurIn delay={offset + 1.02}>
               <p className="mt-7 flex items-center gap-2.5 text-xs text-muted-foreground">
-                <span className="relative flex h-2 w-2 shrink-0" aria-hidden>
+                <span className="relative flex h-1.5 w-1.5 shrink-0" aria-hidden>
                   <span className="absolute inset-0 animate-blip rounded-full bg-brand" />
                   <span className="absolute inset-0 rounded-full bg-brand opacity-40 blur-[3px]" />
                 </span>
                 {hero.availability}
-                <span className="hidden text-muted-foreground/60 sm:inline">
+                <span className="hidden text-muted-foreground/70 sm:inline">
                   · {profile.location} · {profile.timezone}
                 </span>
               </p>

@@ -96,13 +96,21 @@ export const hero = {
   eyebrow: "Full-stack · Mobile · Automation",
   /** The big display type, one line per entry. */
   displayLines: ["I build", "software", "that ships."],
+  /** Only the closing word is accented, so the emphasis lands somewhere. */
+  accentWord: "ships.",
   subhead:
-    "I build production apps end to end. Flutter on mobile, React on web, Supabase and Python behind them — architecture through to the signed release.",
+    "Production apps, end to end. Flutter on mobile, React on web, Supabase and Python behind them — architecture through to the signed release.",
   /** Set to null when booked up. */
   availability: "Available for selected freelance projects",
-  primaryCta: { label: "View my work", href: "/projects" },
-  secondaryCta: { label: "Let's work together", href: "/contact" },
+  primaryCta: { label: "View the work", href: "/projects" },
+  secondaryCta: { label: "Start a project", href: "/contact" },
+  /**
+   * The shape of a delivery, stated once. Turns the loose technology list into
+   * something ordered — this is what a client is buying, in sequence.
+   */
+  pipeline: ["Interface", "Logic", "Data", "Automation", "Release"],
 };
+
 
 /** Every line here is verifiable. */
 export const proofStrip: string[] = [

@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { cn } from "@/lib/utils";
-import { profile } from "@/data/portfolio";
+import { navLinks, profile } from "@/data/portfolio";
 import ThemeToggle from "./theme-toggle";
 import SoundToggle from "./sound-toggle";
 import NavOverlay from "./nav-overlay";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
 
@@ -56,8 +58,41 @@ export default function Header() {
             </span>
           </Link>
 
+          {/* Route links inline on desktop. The overlay is a fallback for
+              narrow screens, not the only way to move around the site. */}
+          <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+            {navLinks
+              .filter((l) => !l.href.includes("#"))
+              .map((link) => {
+                const active =
+                  link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "relative rounded-full px-3.5 py-2 text-sm transition-colors",
+                      active
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {link.title}
+                    {active && (
+                      <motion.span
+                        layoutId="nav-active"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                        className="absolute inset-x-3.5 -bottom-0.5 h-px bg-brand"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
+          </nav>
+
           <div className="flex items-center gap-1">
-            <span className="mr-2 hidden font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground lg:inline">
+            <span className="mr-2 hidden font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground xl:inline">
               {profile.location} · {profile.timezone}
             </span>
             <SoundToggle />
@@ -67,7 +102,7 @@ export default function Header() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="nav-overlay"
-              className="ml-1 flex h-10 items-center gap-2.5 rounded-lg px-3 text-sm transition-colors hover:bg-accent"
+              className="ml-1 flex h-10 items-center gap-2.5 rounded-full px-3 text-sm transition-colors hover:bg-foreground/[0.05] lg:hidden"
             >
               <span className="hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] sm:inline">
                 {open ? "Close" : "Menu"}
