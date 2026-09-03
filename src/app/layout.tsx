@@ -99,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${display.variable} ${mono.variable} font-display`}
+      className={`${sans.variable} ${display.variable} ${mono.variable} font-display grain`}
       suppressHydrationWarning
     >
       <body>

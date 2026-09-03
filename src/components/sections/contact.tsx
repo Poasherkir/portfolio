@@ -1,113 +1,98 @@
 import Link from "next/link";
-import { Clock, Globe, Mail } from "lucide-react";
-import { contactCopy, hero, profile, socials } from "@/data/portfolio";
-import { Section, SectionHeader } from "@/components/section";
-import { Reveal } from "@/components/reveal";
+import { ArrowUpRight, Clock, Globe, Mail } from "lucide-react";
+import { contactCopy, profile, socials } from "@/data/portfolio";
+import { Section } from "@/components/section";
+import { Reveal, WipeReveal } from "@/components/reveal";
 import SocialIcon from "@/components/layout/social-icon";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/contact-form";
 
-/** The form, plus the answers people want before filling one in. */
+/**
+ * The close. Large type carries it; the form sits beside rather than under, so
+ * the page ends on a statement instead of on a field.
+ */
 export default function ContactSection() {
   return (
-    <Section id="contact" className="mx-auto max-w-7xl pb-24">
-      <SectionHeader
-        id="contact"
-        className="relative"
-        spacer="mb-14"
-        title={
-          <>
-            LET&apos;S WORK <br /> TOGETHER
-          </>
-        }
-      />
+    <Section id="contact" className="pt-section pb-section-sm">
+      <div className="container">
+        <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
+          <div>
+            <WipeReveal>
+              <p className="eyebrow">{contactCopy.eyebrow}</p>
+            </WipeReveal>
 
-      <div className="z-10 mx-4 grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12">
-        <Card className="rounded-xl bg-white/70 backdrop-blur-sm dark:bg-black/70">
-          <CardHeader>
-            <CardTitle className="font-display text-3xl">{contactCopy.title}</CardTitle>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {contactCopy.body}
-            </p>
-          </CardHeader>
-          <CardContent>
-            <ContactForm />
-          </CardContent>
-        </Card>
+            <Reveal delay={0.05}>
+              <h2 className="heading-halo mt-7 max-w-[14ch] font-display text-display-xl">
+                {contactCopy.headline}{" "}
+                <span className="text-brand">{contactCopy.headlineAccent}</span>
+              </h2>
+            </Reveal>
 
-        <Reveal delay={0.1} className="md:pt-4">
-          <dl className="space-y-7">
-            <div className="flex gap-4">
-              <Clock className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-              <div>
-                <dt className="font-display text-base font-semibold tracking-tight">
-                  Response time
-                </dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  {contactCopy.responseTime}
-                </dd>
-              </div>
-            </div>
+            <Reveal delay={0.1}>
+              <p className="copy-halo mt-8 max-w-lg text-body-lg text-muted-foreground">
+                {contactCopy.body}
+              </p>
+            </Reveal>
 
-            <div className="flex gap-4">
-              <Globe className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-              <div>
-                <dt className="font-display text-base font-semibold tracking-tight">
-                  Working remotely
-                </dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                  {profile.location} · {profile.timezone} — a full working day of overlap with
-                  Europe, mornings with North America. {profile.legal}
-                </dd>
-              </div>
-            </div>
+            <Reveal delay={0.16}>
+              <dl className="mt-12 grid max-w-lg grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">
+                {[
+                  { icon: Clock, label: "Reply time", value: "One working day" },
+                  { icon: Globe, label: "Working from", value: `${profile.location.split(",")[0]} · ${profile.timezone}` },
+                  { icon: Mail, label: "Languages", value: "EN · FR · AR" },
+                ].map(({ icon: Icon, label, value }) => (
+                  <div key={label} className="bg-card p-5">
+                    <Icon className="h-4 w-4 text-brand" aria-hidden />
+                    <dt className="eyebrow mt-3">{label}</dt>
+                    <dd className="mt-1.5 text-sm font-medium">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
 
-            {/* The mailto block appears the moment an address is set. */}
             {profile.email && (
-              <div className="flex gap-4">
-                <Mail className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                <div>
-                  <dt className="font-display text-base font-semibold tracking-tight">
-                    Prefer email?
-                  </dt>
-                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    Write to{" "}
-                    <a
-                      href={`mailto:${profile.email}`}
-                      className="text-foreground underline underline-offset-4 transition-colors hover:text-brand"
-                    >
-                      {profile.email}
-                    </a>{" "}
-                    directly — it reaches the same inbox as the form.
-                  </dd>
+              <Reveal delay={0.2}>
+                <div className="mt-12">
+                  <p className="eyebrow">Or just email me</p>
+                  <a
+                    href={`mailto:${profile.email}`}
+                    className="group mt-3 inline-flex items-baseline gap-3 font-display text-display-md transition-colors hover:text-brand"
+                  >
+                    {profile.email}
+                    <ArrowUpRight className="h-5 w-5 shrink-0 self-center transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+                  </a>
                 </div>
-              </div>
+              </Reveal>
             )}
-          </dl>
 
-          {hero.availability && (
-            <p className="mt-8 flex items-center gap-2.5 border-t border-border pt-8 text-sm text-muted-foreground">
-              <span className="relative flex h-2 w-2 shrink-0" aria-hidden>
-                <span className="absolute inset-0 animate-blip rounded-full bg-brand" />
-                <span className="absolute inset-0 rounded-full bg-brand opacity-40 blur-[3px]" />
-              </span>
-              {hero.availability}
-            </p>
-          )}
-
-          {socials.length > 0 && (
-            <div className="mt-6 flex items-center gap-2">
-              {socials.map((s) => (
-                <Button key={s.title} asChild variant="outline" size="icon">
-                  <Link href={s.href} target="_blank" rel="noreferrer" aria-label={s.title}>
+            <Reveal delay={0.24}>
+              <div className="mt-10 flex flex-wrap items-center gap-6">
+                {socials.map((s) => (
+                  <Link
+                    key={s.title}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
                     <SocialIcon name={s.icon} className="h-4 w-4" />
+                    {s.title}
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
                   </Link>
-                </Button>
-              ))}
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.12} className="lg:pt-2">
+            <div className="rounded-xl border border-border bg-card p-7 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_12px_32px_-12px_rgba(16,24,40,0.12)] md:p-8">
+              <h3 className="font-display text-display-sm">{contactCopy.formTitle}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{contactCopy.responseTime}</p>
+              <div className="mt-7">
+                <ContactForm />
+              </div>
             </div>
-          )}
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </Section>
   );

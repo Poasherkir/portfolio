@@ -998,11 +998,16 @@ export const engineering = {
 };
 
 export const contactCopy = {
-  title: "Have a product to build?",
-  body: "Tell me what you're building, what's currently broken, or what you want to automate. I come back with an approach, a timeline and a price — or tell you honestly that I am not the right person for it.",
+  eyebrow: "Available for selected work",
+  headline: "Have something worth building?",
+  headlineAccent: "Let's ship it.",
+  body:
+    "Tell me what you are building, what is broken, or what you want automated. You get an approach, a timeline and a price — or an honest no if I am not the right person for it.",
+  formTitle: "Start a conversation",
   cta: "Start a conversation",
   responseTime: "I reply within one working day.",
 };
+
 
 /* -------------------------------------------------------------------------- */
 /* Content checklist — dev-only overlay, never rendered in production.          */

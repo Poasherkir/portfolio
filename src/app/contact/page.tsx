@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <PageHeader eyebrow="Contact" title={contactCopy.title} lead={contactCopy.body} />
+      <PageHeader eyebrow="Contact" title={contactCopy.headline} lead={contactCopy.body} />
 
       <Section className="py-16 md:py-24">
         <div className="container">

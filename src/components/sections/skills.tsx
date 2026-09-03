@@ -1,65 +1,78 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { foundations, skillGroups } from "@/data/portfolio";
-import { Section, SectionHeader } from "@/components/section";
-import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+import { Section } from "@/components/section";
+import { Reveal, RevealGroup, RevealItem, WipeReveal } from "@/components/reveal";
 
-/** The board flies into the stage here; /stack has the exhaustive list. */
+/**
+ * A technical inventory rather than a logo wall. The 3D board flies into the
+ * stage below and is the playful way in; this is the version you can read.
+ */
 export default function Skills() {
   return (
-    <Section id="skills" className="pb-24 pt-24 md:pb-32 md:pt-32">
-      {/* Header and stage are click-through, so the board behind them stays
-          hoverable. Nothing in here is interactive anyway. */}
-      <div className="container pointer-events-none">
-        <SectionHeader
-          id="skills"
-          title="Tech Stack"
-          desc="Every key is something I have shipped with. Hover one, or press it on your keyboard."
-        />
-      </div>
-
-      {/* Clear space the keyboard flies into, and the element the choreography
-          actually keys off — see measureAnchors. */}
-      <div
-        data-kbd-anchor="skills"
-        className="pointer-events-none h-[46vh] md:h-[60vh]"
-        aria-hidden
-      />
-
+    <Section id="skills" className="py-section">
       <div className="container">
-        <RevealGroup className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {skillGroups.map((group) => (
-            <RevealItem key={group.title} className="bg-background/88 p-6 backdrop-blur-md">
-              <h3 className="eyebrow">{group.title}</h3>
-              <ul className="mt-4 space-y-2">
-                {/* Top four only. The full matrix lives on /stack — repeating
-                    all thirty here is what made this section a wall. */}
-                {group.items.slice(0, 4).map((item) => (
-                  <li key={item.name} className="text-sm font-medium leading-snug">
-                    {item.name}
-                  </li>
-                ))}
-              </ul>
-              {group.items.length > 4 && (
-                <p className="mt-3 font-mono text-xs text-muted-foreground">
-                  +{group.items.length - 4} more
-                </p>
-              )}
+        <div className="pointer-events-none">
+          <WipeReveal>
+            <p className="eyebrow">System capabilities</p>
+          </WipeReveal>
+          <Reveal delay={0.05}>
+            <h2 className="heading-halo mt-5 max-w-3xl font-display text-display-lg">
+              The stack behind the products.
+            </h2>
+          </Reveal>
+        </div>
+
+        {/* Clear space the board flies into. */}
+        <div
+          className="pointer-events-none h-[42vh] md:h-[56vh]"
+          data-kbd-anchor="skills"
+          aria-hidden
+        />
+
+        <RevealGroup className="border-t border-border">
+          {skillGroups.map((group, i) => (
+            <RevealItem
+              key={group.title}
+              className="group grid grid-cols-1 gap-x-10 gap-y-3 border-b border-border py-7 md:grid-cols-[5rem_14rem_minmax(0,1fr)] md:py-9"
+            >
+              {/* The number is the only place the accent appears in this list. */}
+              <span className="font-mono text-meta uppercase text-brand">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              <h3 className="font-display text-display-sm leading-tight transition-transform duration-500 ease-out md:group-hover:translate-x-1">
+                {group.title}
+              </h3>
+
+              <div>
+                <p className="text-body text-muted-foreground">{group.blurb}</p>
+                <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                  {group.items.map((item) => (
+                    <li
+                      key={item.name}
+                      className="font-mono text-[0.78rem] tracking-tight text-foreground/70"
+                    >
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </RevealItem>
           ))}
         </RevealGroup>
 
-        <Reveal delay={0.1}>
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-            <p className="max-w-xl font-mono text-xs leading-relaxed text-muted-foreground">
+        <Reveal delay={0.08}>
+          <div className="mt-10 flex flex-wrap items-baseline justify-between gap-6">
+            <p className="max-w-xl font-mono text-[0.78rem] leading-relaxed text-muted-foreground">
               {foundations}
             </p>
             <Link
               href="/stack"
-              className="group inline-flex min-h-[44px] shrink-0 items-center gap-2 text-sm font-medium text-brand transition-colors hover:text-brand/80"
+              className="group inline-flex items-center gap-2 border-b border-foreground/25 pb-1 text-sm font-medium transition-colors hover:border-brand hover:text-brand"
             >
-              See the full stack
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              Full stack breakdown
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
           </div>
         </Reveal>

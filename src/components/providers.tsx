@@ -12,7 +12,7 @@ export function Providers({ children }: { children: ReactNode }) {
     // light theme exists for people who go and ask for it.
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       enableSystem={false}
       disableTransitionOnChange
     >

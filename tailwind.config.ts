@@ -10,6 +10,25 @@ const config = {
       screens: { "2xl": "1320px" },
     },
     extend: {
+      fontSize: {
+        // Fluid editorial scale. Each step interpolates between a phone and a
+        // wide desktop, so headings never need a breakpoint to look right.
+        "display-2xl": ["clamp(3rem, 9vw, 7.5rem)", { lineHeight: "0.92", letterSpacing: "-0.035em" }],
+        "display-xl": ["clamp(2.5rem, 6.5vw, 5rem)", { lineHeight: "0.96", letterSpacing: "-0.03em" }],
+        "display-lg": ["clamp(2rem, 4.6vw, 3.5rem)", { lineHeight: "1.02", letterSpacing: "-0.025em" }],
+        "display-sm": ["clamp(1.35rem, 2.2vw, 1.6rem)", { lineHeight: "1.25", letterSpacing: "-0.012em" }],
+        "display-md": ["clamp(1.6rem, 3vw, 2.25rem)", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        "body-lg": ["clamp(1.02rem, 1.15vw, 1.18rem)", { lineHeight: "1.62" }],
+        "body": ["1rem", { lineHeight: "1.65" }],
+        "meta": ["0.72rem", { lineHeight: "1.5", letterSpacing: "0.16em" }],
+      },
+      spacing: {
+        // One vertical rhythm for section padding, so the page breathes evenly.
+        section: "clamp(5rem, 11vw, 9.5rem)",
+        "section-sm": "clamp(3.5rem, 7vw, 6rem)",
+        gutter: "clamp(1.25rem, 4vw, 3rem)",
+        13: "3.25rem",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
@@ -61,11 +80,6 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 3px)",
         sm: "calc(var(--radius) - 6px)",
-      },
-      fontSize: {
-        "display-sm": ["clamp(2.25rem, 6vw, 4.5rem)", { lineHeight: "1.0", letterSpacing: "-0.01em" }],
-        "display-md": ["clamp(2.75rem, 9vw, 5rem)", { lineHeight: "0.98", letterSpacing: "-0.015em" }],
-        "display-lg": ["clamp(3.25rem, 12vw, 8rem)", { lineHeight: "0.92", letterSpacing: "-0.02em" }],
       },
       keyframes: {
         "fade-up": {

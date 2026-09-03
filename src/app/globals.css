@@ -5,74 +5,74 @@
 @layer base {
   /* Light theme — "daylight cockpit": cool paper, same instrument cyan. */
   :root {
-    --background: 0 0% 97%;
-    --foreground: 0 0% 9%;
+    --background: 40 22% 97%;
+    --foreground: 222 24% 11%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --card: 40 30% 99%;
+    --card-foreground: 222 24% 11%;
+    --popover: 40 30% 99%;
+    --popover-foreground: 222 24% 11%;
 
-    --primary: 0 0% 11%;
+    --primary: 222 24% 13%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 0 0% 94%;
-    --secondary-foreground: 0 0% 11%;
+    --secondary: 40 14% 93%;
+    --secondary-foreground: 222 24% 13%;
 
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 38%;
-    --accent: 0 0% 94%;
-    --accent-foreground: 0 0% 11%;
+    --muted: 40 14% 93%;
+    --muted-foreground: 220 10% 40%;
+    --accent: 40 14% 93%;
+    --accent-foreground: 222 24% 13%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 0 0% 9%;
+    --border: 40 12% 87%;
+    --input: 40 12% 87%;
+    --ring: 222 24% 11%;
 
-    --brand: 356 74% 45%;
+    --brand: 356 70% 45%;
     --brand-foreground: 0 0% 100%;
-    --signal: 356 74% 45%;
+    --signal: 356 70% 45%;
 
     --radius: 0.5rem;
 
-    --grid-line: 0 0% 4%;
-    --grid-alpha: 0.05;
+    --grid-line: 222 24% 11%;
+    --grid-alpha: 0.035;
   }
 
   /* Dark theme — default. Black ground, red signal. */
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
+    --background: 222 26% 6%;
+    --foreground: 210 24% 97%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 98%;
+    --card: 222 22% 9%;
+    --card-foreground: 210 24% 97%;
+    --popover: 222 22% 10%;
+    --popover-foreground: 210 24% 97%;
 
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 8%;
-    --secondary: 0 0% 14%;
+    --secondary: 222 18% 15%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 13%;
-    --muted-foreground: 0 0% 72%;
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 98%;
+    --muted: 222 18% 14%;
+    --muted-foreground: 215 16% 72%;
+    --accent: 222 18% 15%;
+    --accent-foreground: 210 24% 97%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 0 0% 80%;
+    --border: 222 16% 19%;
+    --input: 222 16% 19%;
+    --ring: 210 24% 80%;
 
-    --brand: 358 78% 60%;
+    --brand: 356 76% 59%;
     --brand-foreground: 0 0% 8%;
-    --signal: 358 78% 60%;
+    --signal: 356 76% 59%;
 
-    --grid-line: 358 78% 60%;
-    --grid-alpha: 0.06;
+    --grid-line: 210 24% 97%;
+    --grid-alpha: 0.04;
   }
 }
 
@@ -116,7 +116,12 @@
 @layer components {
   /* Thin uppercase label used above every section title and on stat tiles. */
   .eyebrow {
-    @apply font-mono text-[0.7rem] font-normal uppercase tracking-[0.22em] text-brand;
+    @apply font-mono text-[0.68rem] font-medium uppercase tracking-[0.2em] text-muted-foreground;
+  }
+
+  /* Red is reserved. This is the opt-in for the few labels that earn it. */
+  .eyebrow-accent {
+    @apply font-mono text-[0.68rem] font-medium uppercase tracking-[0.2em] text-brand;
   }
 
   /* Legibility halo for type that sits over the 3D board.
@@ -140,6 +145,23 @@
     text-shadow:
       0 1px 10px hsl(var(--background) / 0.92),
       0 0 3px hsl(var(--background) / 0.8);
+  }
+
+  /* Fine grain over the whole page. Flat colour at this size reads as screen;
+     a little noise reads as paper. Kept far below the threshold where it
+     becomes visible as texture — it should only be felt. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grain::after { opacity: 0.018; }
   }
 
   /* Hairline grid used behind the hero and the services band. */
