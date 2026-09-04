@@ -1,4 +1,4 @@
-import Keyboard3D from "@/components/keyboard";
+import AnimatedBackground from "@/components/animated-background";
 import Hero from "@/components/sections/hero";
 import ProofStrip from "@/components/sections/proof-strip";
 import Flagship from "@/components/sections/flagship";
@@ -17,7 +17,7 @@ export default function HomePage() {
   return (
     <>
       {/* Home page only — the choreography is written against these sections. */}
-      <Keyboard3D />
+      <AnimatedBackground />
       <Hero />
       <ProofStrip />
       <Flagship />
