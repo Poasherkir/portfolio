@@ -490,7 +490,8 @@ const AnimatedBackground = () => {
       cancelAnimationFrame(frame);
     };
   }, []);
-// Reveal keyboard on load
+
+  // Reveal keyboard on load
   useEffect(() => {
     // replaceState, not router.push. Pushing added a history entry for every
     // section the visitor scrolled past, so Back walked them up the page one
