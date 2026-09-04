@@ -48,7 +48,7 @@ export default function Projects() {
         desc={`${projects.length} shipped products, ${projects.filter((p) => p.hasCaseStudy).length} with full case studies.`}
       />
 
-      <div className="grid grid-cols-1 gap-y-8 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {featuredProjects.map((project) => (
           <ProjectModal key={project.slug} project={project} />
         ))}
@@ -59,26 +59,38 @@ export default function Projects() {
 
 function ProjectModal({ project }: { project: Project }) {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex">
       <Modal>
         <ModalTrigger
           label={`Open case study for ${project.title}`}
-          className="group/modal-btn flex justify-center bg-transparent"
+          className="group/modal-btn block w-full bg-transparent text-left"
         >
+          {/* Width comes from the grid column. The fixed pixel widths this
+              replaced were narrower than the column on a wide screen, so the
+              row of tiles never lined up with anything else on the page. */}
           <div
-            className="relative mx-auto h-auto w-[90vw] overflow-hidden rounded-lg sm:w-[350px] md:w-[400px]"
+            className="relative w-full overflow-hidden rounded-lg border border-border"
             style={{ aspectRatio: "3/2" }}
           >
-            <div className="absolute inset-0 transition-transform duration-300 hover:scale-[1.05]">
+            <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover/modal-btn:scale-[1.04]">
               <ProjectVisual project={project} />
             </div>
 
-            <div className="pointer-events-none absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-t from-black via-black/85 to-transparent">
-              <div className="flex h-full flex-col items-start justify-end p-6">
-                <div className="text-left text-lg text-white">{project.title}</div>
-                <div className="w-fit rounded-lg bg-white px-2 text-xs text-black">
+            {/* Reads over artwork of any brightness, so it stays black here
+                rather than following the theme. */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/90 to-transparent pt-16">
+              <div className="flex flex-col items-start gap-2 p-5">
+                <span className="rounded bg-white/95 px-1.5 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-black">
                   {STATUS_LABEL[project.status]}
-                </div>
+                </span>
+                <h3 className="text-left font-display text-lg font-semibold leading-tight text-white">
+                  {project.title}
+                </h3>
+                {/* A title alone does not say what any of these are. One line
+                    does, and it is the line already written for each. */}
+                <p className="line-clamp-2 text-left text-[0.8rem] leading-snug text-white/70">
+                  {project.valueProp}
+                </p>
               </div>
             </div>
           </div>
