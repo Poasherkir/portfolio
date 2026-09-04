@@ -56,10 +56,10 @@ export default function Skills() {
                   {group.items.map((item) => (
                     <li
                       key={item.name}
-                      className="flex items-center gap-x-5 font-mono text-[0.78rem] tracking-tight text-foreground/75"
+                      className="flex items-center gap-x-5 font-mono text-[0.78rem] tracking-tight text-foreground/75 [&:last-child>span]:hidden"
                     >
                       {item.name}
-                      <span aria-hidden className="h-3 w-px bg-border last:hidden" />
+                      <span aria-hidden className="h-3 w-px bg-foreground/20" />
                     </li>
                   ))}
                 </ul>
