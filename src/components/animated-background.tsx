@@ -9,11 +9,24 @@ import { sleep } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { playPress, playRelease } from "./keyboard/keyboard-audio";
 
 gsap.registerPlugin(ScrollTrigger);
+
+/**
+ * How the board travels between sections. Longer and more decelerating than
+ * the default, so it arrives rather than stops. Reduced-motion cuts it to a
+ * near-instant move — the board still goes where it should, without the trip.
+ */
+const REDUCED =
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const MOVE = REDUCED
+  ? { duration: 0.001, ease: "none" }
+  : { duration: 1.5, ease: "power3.out" };
 
 const AnimatedBackground = () => {
   const { isLoading, bypassLoading } = usePreloader();
@@ -41,10 +54,16 @@ const AnimatedBackground = () => {
   const keycapAnimationsRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
 
   const [keyboardRevealed, setKeyboardRevealed] = useState(false);
-  const router = useRouter();
 
   // --- Event Handlers ---
 
+  /**
+   * Selects the cap under the pointer.
+   *
+   * Shared by hover and by mouseDown. A phone has no hover at all, so without
+   * the second the keyboard is decoration there — every cap inert, the
+   * read-out never shown.
+   */
   const handleMouseHover = (e: SplineEvent) => {
     if (!splineApp || selectedSkillRef.current?.name === e.target.name) return;
 
@@ -100,6 +119,17 @@ const AnimatedBackground = () => {
       }
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
+
+    // Touch has no hover. Spline maps a tap to mouseDown, so this is what
+    // makes the board work at all on a phone.
+    splineApp.addEventListener("mouseDown", (e) => {
+      handleMouseHover(e);
+      const skill = SKILLS[e.target.name as SkillNames];
+      if (skill) {
+        splineApp.setVariable("heading", skill.label);
+        splineApp.setVariable("desc", skill.shortDescription);
+      }
+    });
   };
 
   // --- Animation Setup Helpers ---
@@ -124,16 +154,16 @@ const AnimatedBackground = () => {
         onEnter: () => {
           setActiveSection(targetSection);
           const state = getKeyboardState({ section: targetSection, isMobile });
-          gsap.to(kbd.scale, { ...state.scale, duration: 1 });
-          gsap.to(kbd.position, { ...state.position, duration: 1 });
-          gsap.to(kbd.rotation, { ...state.rotation, duration: 1 });
+          gsap.to(kbd.scale, { ...state.scale, duration: MOVE.duration, ease: MOVE.ease });
+          gsap.to(kbd.position, { ...state.position, duration: MOVE.duration, ease: MOVE.ease });
+          gsap.to(kbd.rotation, { ...state.rotation, duration: MOVE.duration, ease: MOVE.ease });
         },
         onLeaveBack: () => {
           setActiveSection(prevSection);
           const state = getKeyboardState({ section: prevSection, isMobile, });
-          gsap.to(kbd.scale, { ...state.scale, duration: 1 });
-          gsap.to(kbd.position, { ...state.position, duration: 1 });
-          gsap.to(kbd.rotation, { ...state.rotation, duration: 1 });
+          gsap.to(kbd.scale, { ...state.scale, duration: MOVE.duration, ease: MOVE.ease });
+          gsap.to(kbd.position, { ...state.position, duration: MOVE.duration, ease: MOVE.ease });
+          gsap.to(kbd.rotation, { ...state.rotation, duration: MOVE.duration, ease: MOVE.ease });
         },
       },
     });
@@ -424,10 +454,50 @@ const AnimatedBackground = () => {
     };
   }, [activeSection, splineApp]);
 
-  // Reveal keyboard on load/route change
+  /**
+   * Parallax on the container, not on the board's own rotation.
+   *
+   * The section timelines already tween kbd.rotation, and a second writer on
+   * the same property fights them. Moving the element instead keeps the two
+   * completely independent, and it is a compositor transform rather than a
+   * scene-graph change, so it costs nothing per frame.
+   */
   useEffect(() => {
-    const hash = activeSection === "hero" ? "#" : `#${activeSection}`;
-    router.push("/" + hash, { scroll: false });
+    const el = splineContainer.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Coarse pointers have no hover to track.
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
+    let frame = 0;
+    const onMove = (e: PointerEvent) => {
+      if (frame) return;
+      const { clientX, clientY } = e;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const dx = (clientX / window.innerWidth - 0.5) * 2;
+        const dy = (clientY / window.innerHeight - 0.5) * 2;
+        // Small on purpose: enough that the board feels attached to the
+        // cursor, not so much that it reads as a separate animation.
+        el.style.transform = `translate3d(${(dx * 14).toFixed(2)}px, ${(dy * 10).toFixed(2)}px, 0)`;
+      });
+    };
+
+    el.style.transition = "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)";
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+// Reveal keyboard on load
+  useEffect(() => {
+    // replaceState, not router.push. Pushing added a history entry for every
+    // section the visitor scrolled past, so Back walked them up the page one
+    // section at a time instead of leaving the site. This keeps the address
+    // bar honest without touching the stack.
+    const hash = activeSection === "hero" ? "" : `#${activeSection}`;
+    window.history.replaceState(null, "", "/" + hash);
 
     if (!splineApp || isLoading || keyboardRevealed) return;
     updateKeyboardTransform();
