@@ -12,6 +12,7 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { playPress, playRelease } from "./keyboard/keyboard-audio";
+import { recapScene } from "./keyboard/recap-scene";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -434,6 +435,9 @@ const AnimatedBackground = () => {
         onLoad={(app: Application) => {
           setSplineApp(app);
           bypassLoading();
+          // Three caps in the scene carry logos for stacks that are not mine.
+          // Their faces are repainted here; see recap-scene.ts.
+          void recapScene(app);
         }}
         scene="/assets/skills-keyboard.spline"
       />

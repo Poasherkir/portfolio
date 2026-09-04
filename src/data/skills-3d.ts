@@ -173,8 +173,8 @@ export const SKILLS: Record<SkillNames, Skill> = {
   [SkillNames.LARAVEL]: {
     id: 17,
     name: "laravel",
-    label: "Laravel",
-    shortDescription: "PHP'nin en şık framework'ü, elegant syntax 🎯🔴",
+    label: "Flutter",
+    shortDescription: "My primary mobile stack. Android and iOS from one codebase, architecture through to a signed store build.",
     color: "#ff2d20",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg",
   },
@@ -205,8 +205,8 @@ export const SKILLS: Record<SkillNames, Skill> = {
   [SkillNames.REDIS]: {
     id: 21,
     name: "redis",
-    label: "Redis",
-    shortDescription: "Yıldırım hızında in-memory veri deposu ⚡🔴",
+    label: "Dart",
+    shortDescription: "The language behind every Flutter app I ship, from state layers to release tooling.",
     color: "#dc382d",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg",
   },
@@ -245,8 +245,8 @@ export const SKILLS: Record<SkillNames, Skill> = {
   [SkillNames.AWS]: {
     id: 26,
     name: "aws",
-    label: "AWS",
-    shortDescription: "Bulut bilişimin dev gücü ☁️🌩️",
+    label: "Supabase",
+    shortDescription: "Postgres, auth, storage and row-level security. The backend under most of my products.",
     color: "#ff9900",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
   },
