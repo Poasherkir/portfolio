@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -16,11 +16,17 @@ export function BlurIn({
   delay?: number;
   duration?: number;
 }) {
+  const reduced = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ filter: "blur(12px)", opacity: 0, y: 8 }}
+      initial={
+        reduced
+          ? { filter: "blur(0px)", opacity: 1, y: 0 }
+          : { filter: "blur(12px)", opacity: 0, y: 8 }
+      }
       animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={reduced ? INSTANT : { duration, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -45,6 +51,7 @@ export function WipeReveal({
   delay?: number;
   duration?: number;
 }) {
+  const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -55,15 +62,15 @@ export function WipeReveal({
           y:48 pushes anything shorter than 48px fully outside its own clip
           box, so it never intersects and never reveals. */}
       <motion.div
-        initial={{ opacity: 0, y: "60%" }}
+        initial={reduced ? { opacity: 1, y: "0%" } : { opacity: 0, y: "60%" }}
         whileInView={{ opacity: 1, y: "0%" }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+        transition={reduced ? INSTANT : { duration, delay, ease: [0.22, 1, 0.36, 1] }}
       >
         {children}
       </motion.div>
 
-      {mounted && (
+      {mounted && !reduced && (
         <motion.div
           aria-hidden
           initial={{ left: "0%" }}
@@ -82,6 +89,27 @@ const defaultVariants: Variants = {
   visible: { opacity: 1, y: 0 },
 };
 
+/**
+ * Reduced motion has to be handled here, in JS.
+ *
+ * The blanket rule in globals.css collapses animation-duration and
+ * transition-duration, which covers anything driven by CSS. None of this is:
+ * Motion writes transform, opacity and filter as inline styles from its own
+ * frame loop, and a CSS duration has no bearing on that. So a visitor who had
+ * asked for less motion still got every blur, slide and wipe on the site,
+ * because these wrappers are on nearly every element of it.
+ *
+ * Still the same element and the same props either way — swapping the tree on
+ * a media query is a hydration mismatch.
+ */
+const staticVariants: Variants = {
+  hidden: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0 },
+};
+
+/** No travel, and short enough to read as "already there". */
+const INSTANT = { duration: 0 } as const;
+
 /** Generic scroll-in wrapper. */
 export function Reveal({
   children,
@@ -96,14 +124,15 @@ export function Reveal({
   duration?: number;
   as?: "div" | "li" | "section";
 }) {
+  const reduced = useReducedMotion();
   const Comp = motion[as];
   return (
     <Comp
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-10%" }}
-      variants={defaultVariants}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+      variants={reduced ? staticVariants : defaultVariants}
+      transition={reduced ? INSTANT : { duration, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -121,12 +150,13 @@ export function RevealGroup({
   className?: string;
   stagger?: number;
 }) {
+  const reduced = useReducedMotion();
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-8%" }}
-      variants={{ visible: { transition: { staggerChildren: stagger } } }}
+      variants={{ visible: { transition: { staggerChildren: reduced ? 0 : stagger } } }}
       className={className}
     >
       {children}
@@ -141,10 +171,11 @@ export function RevealItem({
   children: ReactNode;
   className?: string;
 }) {
+  const reduced = useReducedMotion();
   return (
     <motion.div
-      variants={defaultVariants}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      variants={reduced ? staticVariants : defaultVariants}
+      transition={reduced ? INSTANT : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
