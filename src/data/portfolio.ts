@@ -753,7 +753,7 @@ export const projects: Project[] = [
       "In production, with a tools hub of more than thirty student utilities and a runtime-switchable theme set.",
     links: {},
     images: [],
-    featured: false,
+    featured: true,
     hasCaseStudy: true,
     privateRepo: true,
     metrics: [
@@ -823,7 +823,7 @@ export const projects: Project[] = [
     result: "",
     links: {},
     images: [],
-    featured: true,
+    featured: false,
     hasCaseStudy: true,
     privateRepo: true,
   },
