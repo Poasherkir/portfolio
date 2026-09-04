@@ -29,6 +29,13 @@ const AnimatedBackground = () => {
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [activeSection, setActiveSection] = useState<Section>("hero");
 
+  // The borrowed choreography moves and turns the board but never fades it,
+  // so on a text-heavy section it sits at full strength over the copy.
+  // Hero and skills are where it is meant to be looked at; everywhere else
+  // it is background and gets out of the way.
+  const boardOpacity =
+    activeSection === "hero" ? 1 : activeSection === "skills" ? 0.42 : 0.3;
+
   // Animation controllers refs
   const bongoAnimationRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
   const keycapAnimationsRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
@@ -429,7 +436,8 @@ const AnimatedBackground = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Spline
-        className="w-full h-full fixed"
+        className="w-full h-full fixed transition-opacity duration-700 ease-out"
+        style={{ opacity: boardOpacity }}
         ref={splineContainer}
         onLoad={(app: Application) => {
           setSplineApp(app);
