@@ -63,6 +63,8 @@ const AnimatedBackground = () => {
   // Animation controllers refs
   const bongoAnimationRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
   const keycapAnimationsRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
+  /** The staggered opening reveal, held so it can be stopped part way. */
+  const revealTimeline = useRef<gsap.core.Timeline | undefined>(undefined);
 
   const [keyboardRevealed, setKeyboardRevealed] = useState(false);
 
@@ -215,27 +217,41 @@ const AnimatedBackground = () => {
       return { start: () => { }, stop: () => { } };
     }
 
-    let interval: NodeJS.Timeout;
-    const start = () => {
-      let i = 0;
-      framesParent.visible = true;
-      interval = setInterval(() => {
-        if (i % 2) {
-          frame1.visible = false;
-          frame2.visible = true;
-        } else {
-          frame1.visible = true;
-          frame2.visible = false;
-        }
-        i++;
-      }, 100);
+    // Two frames alternating at 10Hz — a flipbook, so the cadence is the
+    // point and is kept. Driven by rAF rather than setInterval: an interval
+    // goes on flipping scene objects in a tab nobody is looking at, where rAF
+    // simply stops until the tab comes back.
+    const FRAME_MS = 100;
+    let raf = 0;
+    let last = 0;
+    let odd = false;
+
+    const step = (now: number) => {
+      if (now - last >= FRAME_MS) {
+        last = now;
+        odd = !odd;
+        frame1.visible = !odd;
+        frame2.visible = odd;
+      }
+      raf = requestAnimationFrame(step);
     };
+
+    const start = () => {
+      if (raf) return;
+      last = 0;
+      odd = false;
+      framesParent.visible = true;
+      raf = requestAnimationFrame(step);
+    };
+
     const stop = () => {
-      clearInterval(interval);
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
       framesParent.visible = false;
       frame1.visible = false;
       frame2.visible = false;
     };
+
     return { start, stop };
   };
 
@@ -310,27 +326,59 @@ const AnimatedBackground = () => {
 
     await sleep(900);
 
+    // One timeline for the whole reveal.
+    //
+    // This was a setTimeout per keycap, spawned from inside forEach(async ...)
+    // — around fifty floating promises with nothing holding them. Nothing
+    // could stop them, so a visitor who changed the width or left the page
+    // part way through the reveal left timers still firing into a scene that
+    // had moved on. A timeline staggers on the same clock as every other
+    // animation here and dies when told to.
+    revealTimeline.current?.kill();
+    const tl = gsap.timeline();
+    revealTimeline.current = tl;
+
+    const STAGGER = 0.07;
+
     if (isMobile) {
-      const mobileKeyCaps = allObjects.filter((obj) => obj.name === "keycap-mobile");
-      mobileKeyCaps.forEach((keycap) => { keycap.visible = true; });
+      allObjects
+        .filter((obj) => obj.name === "keycap-mobile")
+        .forEach((keycap) => {
+          keycap.visible = true;
+        });
     } else {
-      const desktopKeyCaps = allObjects.filter((obj) => obj.name === "keycap-desktop");
-      desktopKeyCaps.forEach(async (keycap, idx) => {
-        await sleep(idx * 70);
-        keycap.visible = true;
-      });
+      allObjects
+        .filter((obj) => obj.name === "keycap-desktop")
+        .forEach((keycap, idx) => {
+          tl.call(
+            () => {
+              keycap.visible = true;
+            },
+            undefined,
+            idx * STAGGER
+          );
+        });
     }
 
-    keycaps.forEach(async (keycap, idx) => {
+    keycaps.forEach((keycap, idx) => {
       keycap.visible = false;
-      await sleep(idx * 70);
-      keycap.visible = true;
-      gsap.fromTo(
-        keycap.position,
-        { y: 200 },
-        { y: 50, duration: 0.5, delay: 0.1, ease: "bounce.out" }
+      tl.call(
+        () => {
+          keycap.visible = true;
+        },
+        undefined,
+        idx * STAGGER
       );
     });
+
+    if (keycaps.length) {
+      tl.fromTo(
+        keycaps.map((k) => k.position),
+        { y: 200 },
+        { y: 50, duration: 0.5, ease: "bounce.out", stagger: STAGGER },
+        0.1
+      );
+    }
   };
 
   // --- Effects ---
@@ -346,9 +394,10 @@ const AnimatedBackground = () => {
     bongoAnimationRef.current = getBongoAnimation();
     keycapAnimationsRef.current = getKeycapsAnimation();
     return () => {
-      bongoAnimationRef.current?.stop()
-      keycapAnimationsRef.current?.stop()
-    }
+      bongoAnimationRef.current?.stop();
+      keycapAnimationsRef.current?.stop();
+      revealTimeline.current?.kill();
+    };
 
   }, [splineApp, isMobile]);
 
@@ -484,7 +533,14 @@ const AnimatedBackground = () => {
    * The section timelines already tween kbd.rotation, and a second writer on
    * the same property fights them. Moving the element instead keeps the two
    * completely independent, and it is a compositor transform rather than a
-   * scene-graph change, so it costs nothing per frame.
+   * scene-graph change.
+   *
+   * The smoothing is done here rather than handed to a CSS transition. A
+   * transition plus a per-frame write means restarting a 600ms curve sixty
+   * times a second, so the browser recomputes it on every one of those frames
+   * and the board arrives late and soft. One loop closing a fixed fraction of
+   * the gap per frame is both cheaper and tighter, and it stops itself once
+   * there is nothing left to close.
    */
   useEffect(() => {
     const el = splineContainer.current;
@@ -493,25 +549,45 @@ const AnimatedBackground = () => {
     // Coarse pointers have no hover to track.
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
+    // Where the pointer wants the board, and where it currently is. The gap
+    // between them is closed a fixed fraction per frame, which is what makes
+    // the board trail the cursor instead of snapping to it.
+    let targetX = 0, targetY = 0, curX = 0, curY = 0;
     let frame = 0;
-    const onMove = (e: PointerEvent) => {
-      if (frame) return;
-      const { clientX, clientY } = e;
-      frame = requestAnimationFrame(() => {
+
+    const AMOUNT_X = 14;
+    const AMOUNT_Y = 10;
+    // Per-frame catch-up. Lower is heavier.
+    const EASE = 0.075;
+
+    const tick = () => {
+      curX += (targetX - curX) * EASE;
+      curY += (targetY - curY) * EASE;
+
+      if (Math.abs(targetX - curX) < 0.05 && Math.abs(targetY - curY) < 0.05) {
+        // Close enough to be indistinguishable. Land exactly and let the loop
+        // stop rather than leaving a rAF running for the life of the page.
+        curX = targetX;
+        curY = targetY;
+        el.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
         frame = 0;
-        const dx = (clientX / window.innerWidth - 0.5) * 2;
-        const dy = (clientY / window.innerHeight - 0.5) * 2;
-        // Small on purpose: enough that the board feels attached to the
-        // cursor, not so much that it reads as a separate animation.
-        el.style.transform = `translate3d(${(dx * 14).toFixed(2)}px, ${(dy * 10).toFixed(2)}px, 0)`;
-      });
+        return;
+      }
+
+      el.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
+      frame = requestAnimationFrame(tick);
     };
 
-    el.style.transition = "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)";
+    const onMove = (e: PointerEvent) => {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 2 * AMOUNT_X;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 2 * AMOUNT_Y;
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => {
       window.removeEventListener("pointermove", onMove);
-      cancelAnimationFrame(frame);
+      if (frame) cancelAnimationFrame(frame);
     };
   }, []);
 
