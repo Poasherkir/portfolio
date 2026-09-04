@@ -12,6 +12,7 @@ import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { initKeyboardAudio, playPress, playRelease } from "./keyboard/keyboard-audio";
+import BoardPlaceholder from "./keyboard/board-placeholder";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -605,7 +606,12 @@ const AnimatedBackground = () => {
   }, [splineApp, isLoading, activeSection]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    // The scene and its runtime are a few hundred kilobytes. Until they land
+    // this stands in the same corner at the same attitude, so the swap does not
+    // jump — which is what the placeholder was written for, before the Spline
+    // scene replaced the board it was written for and left it orphaned. The
+    // string it replaces here rendered as unstyled body text.
+    <Suspense fallback={<BoardPlaceholder />}>
       <Spline
         className="pointer-events-auto w-full h-full fixed transition-opacity duration-700 ease-out"
         style={{ opacity: boardOpacity }}
