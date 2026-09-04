@@ -716,6 +716,33 @@ export const projects: Project[] = [
       integrations: ["Manual payment review"],
       automation: ["Remote maintenance, force-update and ban gates"],
     },
+    screens: [
+      {
+        src: "/assets/projects/bacdz-home.webp",
+        alt: "Bac DZ home screen in Arabic with a ring counting 270 days to the 2027 Baccalaureate session, tiles for rank, streak, XP and level, and three goals for the day each with a progress bar",
+        caption: "Days to the exam session, and the day's goals",
+      },
+      {
+        src: "/assets/projects/bacdz-papers.webp",
+        alt: "Past paper browser asking the student to pick a stream, with cards for mathematics, experimental sciences, management and economics, technical mathematics, foreign languages, and literature and philosophy, above a notice that the device is offline and a saved copy is being shown",
+        caption: "Past papers by stream, still readable from a saved copy offline",
+      },
+      {
+        src: "/assets/projects/bacdz-tools.webp",
+        alt: "Tools screen with a search field and tiles for a formula library, scientific calculator, Pomodoro timer, average calculator, error notebook and notes, a Pro exam simulation shown locked, and an academic section holding a grade predictor and a success probability calculator",
+        caption: "The tools hub, with the Pro utilities gated in place",
+      },
+      {
+        src: "/assets/projects/bacdz-settings.webp",
+        alt: "Settings screen showing XP, level, streak and plan tiles above a profile card marked as the free tier, with rows for study preferences, notifications, appearance and focus settings",
+        caption: "Account, plan tier and study preferences",
+      },
+      {
+        src: "/assets/projects/bacdz-themes.webp",
+        alt: "Colour theme picker rendered in light mode, showing ten themes as live preview cards including galaxy, night gold, midnight, pixel hero, turquoise, onyx, purple, emerald, mocha and crimson",
+        caption: "Ten themes, each previewed as it will actually look",
+      },
+    ],
     problem:
       "Algerian Bac students juggle a curriculum, past papers, revision timing and their own morale across a dozen apps and group chats, on phones that are often offline and almost always Arabic-first.",
     approach:
