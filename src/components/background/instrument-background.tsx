@@ -52,6 +52,24 @@ const FAR = field(120, 12345, 0.45);
 const MID = field(62, 67890, 0.8);
 const NEAR = field(24, 24680, 1.3);
 
+/**
+ * Shared twinkle phases.
+ *
+ * Every star used to carry its own infinite opacity animation: 182 of them
+ * across the two twinkling layers, all running for as long as the page is
+ * open, each needing its own style recalculation every frame. Five shared
+ * phases per layer bring that to ten.
+ *
+ * The stars are already in random order, so taking every fifth one scatters a
+ * phase across the whole sky and the field still shimmers rather than pulsing
+ * as a block.
+ */
+const PHASES = 5;
+
+function Star({ s }: { s: Star }) {
+  return <circle cx={s.x} cy={s.y} r={s.r / 10} fill="#ffffff" opacity={s.o} />;
+}
+
 function Layer({ stars, twinkle }: { stars: Star[]; twinkle: boolean }) {
   return (
     <svg
@@ -60,21 +78,22 @@ function Layer({ stars, twinkle }: { stars: Star[]; twinkle: boolean }) {
       preserveAspectRatio="none"
       aria-hidden
     >
-      {stars.map((s, i) => (
-        <circle
-          key={i}
-          cx={s.x}
-          cy={s.y}
-          r={s.r / 10}
-          fill="#ffffff"
-          opacity={s.o}
-          style={
-            twinkle
-              ? { animation: `twinkle 4.5s ease-in-out ${s.delay}s infinite` }
-              : undefined
-          }
-        />
-      ))}
+      {twinkle
+        ? Array.from({ length: PHASES }, (_, phase) => (
+            <g
+              key={phase}
+              style={{
+                animation: `twinkle 4.5s ease-in-out ${(phase * 4.5) / PHASES}s infinite`,
+              }}
+            >
+              {stars
+                .filter((_, i) => i % PHASES === phase)
+                .map((s, i) => (
+                  <Star key={i} s={s} />
+                ))}
+            </g>
+          ))
+        : stars.map((s, i) => <Star key={i} s={s} />)}
     </svg>
   );
 }

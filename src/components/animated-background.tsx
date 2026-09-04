@@ -1,6 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Application, SplineEvent } from "@splinetool/runtime";
+import { useLenis } from "lenis/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
@@ -40,6 +41,16 @@ const AnimatedBackground = () => {
   const playReleaseSound = playRelease;
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
+  /**
+   * Lenis animates the scroll position on its own rAF loop. ScrollTrigger,
+   * left alone, reads native scroll events and its own ticker, so the two ran
+   * on separate clocks and drifted: triggers fired a little early or late and
+   * the board's moves never quite lined up with the page under them. This is
+   * the whole reason scrolling felt unsteady. Now every Lenis frame drives the
+   * update, and there is one clock.
+   */
+  useLenis(ScrollTrigger.update);
+
   const [activeSection, setActiveSection] = useState<Section>("hero");
 
   // The borrowed choreography moves and turns the board but never fades it,
@@ -150,7 +161,6 @@ const AnimatedBackground = () => {
         trigger: triggerId,
         start,
         end,
-        scrub: true,
         onEnter: () => {
           setActiveSection(targetSection);
           const state = getKeyboardState({ section: targetSection, isMobile });
@@ -330,6 +340,9 @@ const AnimatedBackground = () => {
     if (!splineApp) return;
     handleSplineInteractions();
     setupScrollAnimations();
+    // Measured while the scene, fonts and artwork were still loading, so the
+    // positions are stale the moment the page settles.
+    ScrollTrigger.refresh();
     bongoAnimationRef.current = getBongoAnimation();
     keycapAnimationsRef.current = getKeycapsAnimation();
     return () => {

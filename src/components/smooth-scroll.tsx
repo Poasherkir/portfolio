@@ -26,8 +26,14 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     <ReactLenis
       root
       options={{
-        lerp: reduced ? 1 : 0.13,
+        // 0.13 took long enough to catch up that a flick felt like it was
+        // being resisted. This still smooths the step between wheel notches
+        // without the page lagging behind the hand.
+        lerp: reduced ? 1 : 0.19,
         smoothWheel: !reduced,
+        // Without this an in-page anchor is a native jump that teleports the
+        // page and leaves Lenis to work out where it went.
+        anchors: true,
         // Touch already has native momentum; stacking Lenis on it fights back.
         syncTouch: false,
         wheelMultiplier: 1,
