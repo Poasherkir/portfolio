@@ -4,9 +4,18 @@ import { AnimatePresence, motion } from "motion/react";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { profile } from "@/data/portfolio";
 
-type PreloaderState = { isLoading: boolean; percent: number };
+type PreloaderState = {
+  isLoading: boolean;
+  percent: number;
+  /** Skip the intro immediately — the 3D scene calls this once it is ready. */
+  bypassLoading: () => void;
+};
 
-const PreloaderContext = createContext<PreloaderState>({ isLoading: false, percent: 100 });
+const PreloaderContext = createContext<PreloaderState>({
+  isLoading: false,
+  percent: 100,
+  bypassLoading: () => {},
+});
 export const usePreloader = () => useContext(PreloaderContext);
 
 const DURATION_MS = 1400;
@@ -84,7 +93,9 @@ export default function Preloader({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <PreloaderContext.Provider value={{ isLoading, percent }}>
+    <PreloaderContext.Provider
+      value={{ isLoading, percent, bypassLoading: () => setIsLoading(false) }}
+    >
       <AnimatePresence mode="wait">
         {isLoading && (
           <motion.div
