@@ -59,7 +59,18 @@ export type Project = {
 export type SkillGroup = {
   title: string;
   blurb: string;
-  items: { name: string; note?: string }[];
+  items: {
+    name: string;
+    note?: string;
+    /**
+     * Devicon files in /public/assets/devicon, set only where the entry names
+     * a real product. Two where the entry names two. Everything else here is
+     * a discipline rather than a tool and deliberately carries none — there is
+     * no logo for aviation data or for admin dashboards, and borrowing a
+     * neighbouring one to fill the gap would be a lie.
+     */
+    icons?: string[];
+  }[];
 };
 
 export type Service = {

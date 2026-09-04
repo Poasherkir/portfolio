@@ -52,14 +52,37 @@ export default function Skills() {
 
               <div>
                 <p className="text-body text-muted-foreground">{group.blurb}</p>
-                <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                <ul className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2.5">
                   {group.items.map((item) => (
+                    // The rule separating one entry from the next is a
+                    // pseudo-element rather than a real span, so the logos can
+                    // sit alongside it without a :last-child selector picking
+                    // the wrong one.
                     <li
                       key={item.name}
-                      className="flex items-center gap-x-5 font-mono text-[0.78rem] tracking-tight text-foreground/75 [&:last-child>span]:hidden"
+                      className="flex items-center gap-x-2 font-mono text-[0.78rem] tracking-tight text-foreground/75 after:ml-2 after:h-3 after:w-px after:bg-foreground/20 after:content-[''] last:after:hidden"
                     >
+                      {item.icons ? (
+                        item.icons.map((file) => (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            key={file}
+                            src={`/assets/devicon/${file}`}
+                            alt=""
+                            aria-hidden
+                            loading="lazy"
+                            className="h-4 w-4 shrink-0 object-contain"
+                          />
+                        ))
+                      ) : (
+                        // Keeps every entry on the same rhythm without
+                        // claiming a technology the entry is not.
+                        <span
+                          aria-hidden
+                          className="h-1 w-1 shrink-0 rounded-full bg-foreground/25"
+                        />
+                      )}
                       {item.name}
-                      <span aria-hidden className="h-3 w-px bg-foreground/20" />
                     </li>
                   ))}
                 </ul>
