@@ -180,9 +180,20 @@ const AnimatedBackground = () => {
     gsap.set(kbd.position, heroState.position);
 
     // Section transitions
-    createSectionTimeline("#skills", "skills", "hero");
-    createSectionTimeline("#projects", "projects", "skills", "top 70%");
-    createSectionTimeline("#contact", "contact", "projects", "top 30%");
+    // In document order. These carry the section to fall back to when the
+    // visitor scrolls back out of them, so the chain has to match the page:
+    // hero, projects, stack, contact. It previously read hero, stack,
+    // projects, which is the order of the site this choreography came from.
+    // Here it meant scrolling up out of the stack handed the board back to
+    // the hero pose — full size, dead centre, full opacity — directly on top
+    // of the Projects heading.
+    //
+    // Projects starts at "top bottom" rather than part way up: there is a
+    // block of copy between the hero and the grid, and the board has to be
+    // clear of it before it is read, not while.
+    createSectionTimeline("#projects", "projects", "hero", "top bottom");
+    createSectionTimeline("#skills", "skills", "projects");
+    createSectionTimeline("#contact", "contact", "skills", "top 30%");
   };
 
   const getBongoAnimation = () => {
