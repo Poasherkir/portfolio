@@ -7,6 +7,7 @@ import {
   skillAreas,
   type SkillLevel,
 } from "@/data/roadmap";
+import { TECH_LOGOS } from "@/data/tech-logos";
 import PageHeader from "@/components/page-header";
 import { Section } from "@/components/section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
@@ -138,6 +139,20 @@ export default function StackPage() {
                           className={cn("h-1.5 w-1.5 shrink-0 rounded-full", LEVEL_DOT[item.level])}
                           aria-hidden
                         />
+                        {/* The dot stays: it is what carries the level. The
+                            logo is added next to it where the entry names a
+                            product that has one, which is a third of this
+                            list — the rest is practice, and has none. */}
+                        {TECH_LOGOS[item.name] && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={`/assets/devicon/${TECH_LOGOS[item.name]}`}
+                            alt=""
+                            aria-hidden
+                            loading="lazy"
+                            className="h-3.5 w-3.5 shrink-0 object-contain"
+                          />
+                        )}
                         {item.name}
                         {item.note && (
                           <span className="font-mono text-[0.65rem] opacity-70">{item.note}</span>
