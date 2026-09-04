@@ -10,7 +10,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
 import { Section, getKeyboardState } from "./animated-background-config";
-import { playPress, playRelease } from "./keyboard/keyboard-audio";
+import { initKeyboardAudio, playPress, playRelease } from "./keyboard/keyboard-audio";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -507,12 +507,15 @@ const AnimatedBackground = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Spline
-        className="w-full h-full fixed transition-opacity duration-700 ease-out"
+        className="pointer-events-auto w-full h-full fixed transition-opacity duration-700 ease-out"
         style={{ opacity: boardOpacity }}
         ref={splineContainer}
         onLoad={(app: Application) => {
           setSplineApp(app);
           bypassLoading();
+          // Creates the AudioContext and arms it on the first real gesture.
+          // Without this the play calls below are silent.
+          initKeyboardAudio();
         }}
         scene="/assets/skills-keyboard.spline"
       />

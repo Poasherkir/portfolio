@@ -41,9 +41,14 @@ export default function Skills() {
                 {String(i + 1).padStart(2, "0")}
               </span>
 
-              <h3 className="font-display text-display-sm leading-tight transition-transform duration-500 ease-out md:group-hover:translate-x-1">
-                {group.title}
-              </h3>
+              <div>
+                <h3 className="font-display text-display-sm leading-tight transition-transform duration-500 ease-out md:group-hover:translate-x-1">
+                  {group.title}
+                </h3>
+                <span className="mt-1.5 block font-mono text-meta uppercase text-muted-foreground/70">
+                  {group.items.length} tools
+                </span>
+              </div>
 
               <div>
                 <p className="text-body text-muted-foreground">{group.blurb}</p>
@@ -51,9 +56,10 @@ export default function Skills() {
                   {group.items.map((item) => (
                     <li
                       key={item.name}
-                      className="font-mono text-[0.78rem] tracking-tight text-foreground/70"
+                      className="flex items-center gap-x-5 font-mono text-[0.78rem] tracking-tight text-foreground/75"
                     >
                       {item.name}
+                      <span aria-hidden className="h-3 w-px bg-border last:hidden" />
                     </li>
                   ))}
                 </ul>
