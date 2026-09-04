@@ -10,6 +10,8 @@ import Footer from "@/components/layout/footer";
 import ScrollProgress from "@/components/layout/scroll-progress";
 import InstrumentBackground from "@/components/background/instrument-background";
 import SmoothScroll from "@/components/smooth-scroll";
+import MobileCta from "@/components/mobile-cta";
+import PrivacyNotice from "@/components/privacy-notice";
 import DevChecklist from "@/components/dev-checklist";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
@@ -126,6 +128,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
             <Footer />
           </SmoothScroll>
+          <MobileCta />
+          <PrivacyNotice />
           <DevChecklist />
         </Providers>
         <Analytics />

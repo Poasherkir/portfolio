@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
@@ -16,6 +17,7 @@ const BUDGETS = [
 ];
 
 export default function ContactForm() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   // Spam control #1: how long the form was on screen. Bots submit instantly.
@@ -42,13 +44,13 @@ export default function ContactForm() {
         throw new Error(json.error ?? "Something went wrong.");
       }
 
-      toast({
-        variant: "success",
-        title: "Message sent.",
-        description: "I reply within one working day.",
-      });
       form.reset();
       openedAt.current = Date.now();
+      // A page rather than a toast: the submission gets a URL the visitor can
+      // see and return to, and something a conversion can point at. Only the
+      // success path changed — the request and every error branch above are
+      // untouched.
+      router.push("/thank-you");
     } catch (err) {
       toast({
         variant: "destructive",

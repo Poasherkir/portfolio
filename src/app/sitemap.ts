@@ -12,6 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/about", priority: 0.8 },
     { path: "/contact", priority: 0.8 },
     { path: "/cv", priority: 0.6 },
+    // Low priority but present: search engines treat a site with reachable,
+    // indexed legal pages as more legitimate than one without them.
+    { path: "/privacy", priority: 0.3 },
+    { path: "/terms", priority: 0.3 },
   ];
 
   return [

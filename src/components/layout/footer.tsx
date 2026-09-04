@@ -58,6 +58,17 @@ export default function Footer() {
           <p>
             © {year} {profile.name}. All rights reserved.
           </p>
+          {/* Legal sits in the bottom bar rather than the Pages column: it
+              needs to be reachable from every page, not compete with the nav. */}
+          <nav aria-label="Legal" className="flex items-center gap-4">
+            <Link href="/privacy" className="transition-colors hover:text-brand">
+              Privacy
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-brand">
+              Terms
+            </Link>
+          </nav>
+
           <p className="font-mono uppercase tracking-[0.16em]">
             {profile.location} · {profile.timezone}
           </p>

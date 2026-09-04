@@ -31,7 +31,7 @@ export default async function OpengraphImage() {
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "linear-gradient(rgba(34,211,238,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.07) 1px, transparent 1px)",
+              "linear-gradient(rgba(230,57,70,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(230,57,70,0.06) 1px, transparent 1px)",
             backgroundSize: "64px 64px",
             display: "flex",
           }}
@@ -45,7 +45,7 @@ export default async function OpengraphImage() {
             width: 640,
             height: 640,
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(34,211,238,0.30) 0%, rgba(7,12,20,0) 65%)",
+            background: "radial-gradient(circle, rgba(230,57,70,0.28) 0%, rgba(10,10,10,0) 65%)",
             display: "flex",
           }}
         />
