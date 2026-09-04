@@ -20,3 +20,10 @@ next-env.d.ts
 # Raw screenshot drops — processed copies live in public/assets/projects/
 /bac archive/
 /breifeing poing/
+
+# Reference download — not our code, must never be committed
+/portfolio-main/
+
+# Reference sources kept locally, never published from this repo
+/portfolio-main/
+/add/

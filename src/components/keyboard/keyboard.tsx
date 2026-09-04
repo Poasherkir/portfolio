@@ -290,7 +290,7 @@ export default function Keyboard({
     g.rotation.y = damp(g.rotation.y, target.rotation[1] + idle + parallaxY, 4, dt);
     g.rotation.z = damp(g.rotation.z, target.rotation[2], 4, dt);
 
-    const s = damp(g.scale.x, target.scale, settled.current ? 9 : 2.4, dt);
+    const s = damp(g.scale.x, target.scale, settled.current ? 9 : 4.2, dt);
     g.scale.setScalar(s);
     if (!settled.current && s > target.scale * 0.95) settled.current = true;
   });
