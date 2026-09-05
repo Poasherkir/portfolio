@@ -78,7 +78,10 @@ function ProjectModal({ project }: { project: Project }) {
 
             {/* Reads over artwork of any brightness, so it stays black here
                 rather than following the theme. */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/90 to-transparent pt-16">
+            {/* Above the artwork. The centre phone in the stage layout carries z-10,
+                  and this caption had no z-index at all, so the phone won and stood
+                  in front of the title and the description. */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/95 to-transparent pt-20">
               <div className="flex flex-col items-start gap-2 p-5">
                 <span className="rounded bg-white/95 px-1.5 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-black">
                   {STATUS_LABEL[project.status]}

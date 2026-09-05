@@ -2,6 +2,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 import ScreenGallery from "./screen-gallery";
+import BrowserFrame from "./browser-frame";
 
 /**
  * Cover art. Uses real screenshots where they exist; otherwise draws a figure
@@ -27,15 +28,33 @@ export default function ProjectVisual({
   }
 
   if (cover) {
+    // Staged the same way the phones are, rather than bled to the edges of the
+    // card. A browser screenshot stretched corner to corner sits flat next to
+    // framed devices and reads as a stretched image; the frame and the backdrop
+    // are what make it read as a product shot.
     return (
-      <Image
-        src={cover.src}
-        alt={cover.alt}
-        fill
-        priority={priority}
-        sizes={sizes}
-        className={cn("object-cover object-top", className)}
-      />
+      <div
+        className={cn(
+          "absolute inset-0 overflow-hidden bg-secondary dark:bg-[#0c0c0c]",
+          className
+        )}
+      >
+        <div className="instrument-grid absolute inset-0 opacity-30" />
+        <div
+          className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-[80px]"
+          style={{
+            background: "radial-gradient(circle, hsl(var(--foreground)) 0%, transparent 65%)",
+          }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center px-7 pb-14 pt-8">
+          <BrowserFrame
+            src={cover.src}
+            alt={cover.alt}
+            priority={priority}
+            sizes={sizes}
+          />
+        </div>
+      </div>
     );
   }
 

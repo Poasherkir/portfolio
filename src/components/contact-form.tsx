@@ -22,6 +22,8 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   /** Set when the server says it cannot deliver but tells us where to write. */
   const [fallbackEmail, setFallbackEmail] = useState<string | null>(null);
+  /** The message they already typed, ready to hand to their mail client. */
+  const [fallbackHref, setFallbackHref] = useState<string>("");
   // Spam control #1: how long the form was on screen. Bots submit instantly.
   const openedAt = useRef(Date.now());
 
@@ -60,7 +62,24 @@ export default function ContactForm() {
       // A failed send used to end here, with an apology and nowhere to go. If
       // the server handed back an address, offer it — the visitor came to say
       // something and should not have to go hunting for a second route.
-      setFallbackEmail(typeof fallback === "string" ? fallback : null);
+      const address = typeof fallback === "string" ? fallback : null;
+      setFallbackEmail(address);
+      if (address) {
+        // Carry what they typed into the mail client rather than making them
+        // write it a second time. They came here to say something; losing it
+        // to a server problem is the worst possible outcome.
+        const lines = [
+          data.company ? `Company: ${data.company}` : null,
+          data.budget ? `Budget: ${data.budget}` : null,
+          data.company || data.budget ? "" : null,
+          String(data.message ?? ""),
+        ].filter((l) => l !== null);
+        setFallbackHref(
+          `mailto:${address}` +
+            `?subject=${encodeURIComponent(`Project enquiry — ${data.name ?? ""}`)}` +
+            `&body=${encodeURIComponent(lines.join(String.fromCharCode(10)))}`
+        );
+      }
       toast({
         variant: "destructive",
         title: "Could not send that.",
@@ -154,14 +173,18 @@ export default function ContactForm() {
         >
           <p className="font-medium text-foreground">That did not send.</p>
           <p className="mt-1 text-muted-foreground">
-            Something on my end is not working. Send it straight to{" "}
-            <a
-              href={`mailto:${fallbackEmail}`}
-              className="text-brand underline underline-offset-4"
-            >
-              {fallbackEmail}
-            </a>{" "}
-            and it will reach me just the same.
+            Something on my end is not working — nothing you did. Your message is
+            still here.
+          </p>
+          <a
+            href={fallbackHref || `mailto:${fallbackEmail}`}
+            className="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-brand px-5 text-sm font-medium text-brand-foreground transition-transform active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            Open it in your email instead
+          </a>
+          <p className="mt-2 text-xs text-muted-foreground">
+            That opens your mail app with everything already filled in, addressed
+            to {fallbackEmail}.
           </p>
         </div>
       )}

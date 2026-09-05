@@ -135,22 +135,33 @@ export default function StackPage() {
                         )}
                         title={`${LEVEL_LABEL[item.level]} — ${LEVEL_BLURB[item.level]}`}
                       >
-                        <span
-                          className={cn("h-1.5 w-1.5 shrink-0 rounded-full", LEVEL_DOT[item.level])}
-                          aria-hidden
-                        />
-                        {/* The dot stays: it is what carries the level. The
-                            logo is added next to it where the entry names a
-                            product that has one, which is a third of this
-                            list — the rest is practice, and has none. */}
-                        {TECH_LOGOS[item.name] && (
+                        {/* One leading mark per pill, never two. The logo
+                            replaces the dot rather than joining it: with both,
+                            a pill that has a logo started its text further
+                            along than one that does not, and a wrapped row of
+                            them read as misaligned.
+                            
+                            Nothing is lost by dropping the dot here. The level
+                            is already in the pill's own colour, in its title
+                            and in the label read out to screen readers — and
+                            the dot was the same grey for "working" and
+                            "roadmap" anyway, so it never separated those two. */}
+                        {TECH_LOGOS[item.name] ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={`/assets/devicon/${TECH_LOGOS[item.name]}`}
                             alt=""
                             aria-hidden
                             loading="lazy"
-                            className="h-3.5 w-3.5 shrink-0 object-contain"
+                            className="h-4 w-4 shrink-0 object-contain"
+                          />
+                        ) : (
+                          <span
+                            className={cn(
+                              "h-1.5 w-1.5 shrink-0 rounded-full",
+                              LEVEL_DOT[item.level]
+                            )}
+                            aria-hidden
                           />
                         )}
                         {item.name}

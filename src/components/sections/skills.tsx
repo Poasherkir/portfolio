@@ -71,7 +71,7 @@ export default function Skills() {
                             alt=""
                             aria-hidden
                             loading="lazy"
-                            className="h-4 w-4 shrink-0 object-contain"
+                            className="h-[0.95rem] w-[0.95rem] shrink-0 object-contain"
                           />
                         ))
                       ) : (
