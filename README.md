@@ -53,8 +53,8 @@ the field is simply omitted rather than filled with something plausible.
 | --- | --- |
 | Framework | Next.js 15 (App Router), React 19, TypeScript |
 | Styling | Tailwind CSS 3.4, CSS custom properties for theming |
-| 3D | React Three Fiber 9 + drei 10 + three.js 0.171 |
-| Animation | `motion` (Framer Motion 12) |
+| 3D | Spline runtime (`@splinetool/react-spline`), three.js underneath |
+| Animation | `motion` (Framer Motion 12) for the page, GSAP + ScrollTrigger for the board |
 | Smooth scroll | Lenis |
 | Theming | `next-themes`, dark by default |
 | Icons | `lucide-react`, plus vendored [Devicon](https://devicon.dev) SVGs (MIT) |
@@ -69,76 +69,64 @@ primitives, no CDN assets. Everything the page needs is in the bundle or in
 
 ## The 3D keyboard
 
-The centrepiece, and the part worth reading if you only read one thing. It lives
-in [`src/components/keyboard/`](src/components/keyboard/).
+The centrepiece. A Spline scene loaded through
+[`src/components/animated-background.tsx`](src/components/animated-background.tsx),
+with the keycaps carrying technologies I actually ship with.
 
-Thirty keycaps, each carrying a real technology logo, arranged on a modelled
-board. You can hover a cap to see what it is and what I used it in, click one to
-pin that read-out, or press the matching key on your actual keyboard. Each press
-makes a sound. The board is choreographed against the page: it drifts, tips,
-comes apart into floating caps as you scroll, and reassembles into a keyboard
-over the tech-stack section.
+Hover or tap a cap and it lifts and names itself. The board is choreographed
+against the page — it moves, turns and dims section by section, and comes apart
+into floating caps over the contact section.
 
-### How the caps are made
+The scene, its controller and the media-query hook came from
+[ferhatolmez/portfolio](https://github.com/ferhatolmez/portfolio), used with
+Ferhat Ölmez's permission. [`NOTICE.md`](NOTICE.md) records what is his, what I
+changed, and the fact that the permission was given to me rather than to anyone
+copying from here.
 
-Each cap is an `ExtrudeGeometry` with a bevel and a dished top, generated once
-and shared across all thirty instances (`keycap-geometry.ts`). The logo is not a
-decal or a separate plane — a **planar UV projection** is applied to the cap
-mesh, and the logo is painted into a canvas texture that maps onto it
-(`keycap-texture.ts`). An earlier version floated a separate legend plane just
-above each cap; it was abandoned because it z-fights and breaks the moment the
-cap rotates.
+### Scroll choreography
 
-Cap and ink colours are chosen as a **pair** (`capAndInk()`), not independently.
-A logo on a keycap of a similar hue vanishes — a blue Flutter mark on a blue cap
-is invisible — so the ink is picked for contrast against the chosen cap colour,
-and monochrome variants are recoloured on the fly.
+`animated-background-config.ts` holds a pose per section — position, rotation,
+scale, for desktop and mobile separately. A ScrollTrigger per section moves the
+board to the next pose on enter, and back on the way out.
 
-Devicon ships `-original` (full colour) and `-plain` (single path) variants.
-This uses `-plain` wherever it exists (23 of 30), because recolouring an
-`-original` SVG fills in its cut-outs: the HTML5 "5" and the Next.js "N" become
-solid blobs.
+Two things about that are worth knowing, because both were bugs:
 
-### Lighting
+The fallback chain has to match the page's real order. Each timeline carries the
+section to return to when you scroll back out of it, and the order here is hero,
+projects, stack, contact — not the order of the site it was adapted from. Get it
+wrong and scrolling up out of the stack hands the board back to the hero pose,
+full size and dead centre, on top of whatever is there.
 
-`RoomEnvironment` is generated locally and run through `PMREMGenerator` to give
-the physical materials something to reflect. Without an environment map a
-`MeshPhysicalMaterial` reads as flat gouache. drei's `<Environment>` presets do
-the same job but fetch an `.hdr` from a CDN; this one costs one render at
-startup and no network.
-
-Tone mapping is Khronos **neutral**, not ACES. ACES rolls bright saturated
-colour toward white, which turned every brand colour pastel.
+Lenis and ScrollTrigger have to share a clock. Lenis animates scroll on its own
+rAF loop; ScrollTrigger left alone reads native scroll events and its own
+ticker. Unconnected they drift, and the board lands early or late against the
+page it is following. `useLenis(ScrollTrigger.update)` is what ties them.
 
 ### Sound
 
-Modal synthesis in `keyboard-audio.ts` — no audio files. A press is a bank of
-six resonant filters (168–5600 Hz) excited by a noise burst; a release is three.
-Output goes through a `tanh` waveshaper for soft clipping.
+Modal synthesis in
+[`keyboard-audio.ts`](src/components/keyboard/keyboard-audio.ts) — no audio
+files. A press is a bank of six resonant filters (168–5600 Hz) excited by a
+noise burst; a release is three. Output goes through a `tanh` waveshaper for
+soft clipping.
+
+The context is created on the first real gesture, not at load, because a browser
+will not let it start any earlier. Nothing plays until you click something.
 
 Two things learned the hard way: high-Q bandpass filters throw away most of the
 input energy, so mode gains are *not* output amplitudes and a makeup gain is
-required (measured with an `OfflineAudioContext`, not guessed). And a
+required — measured with an `OfflineAudioContext`, not guessed. And a
 `DynamicsCompressor` made it **quieter**, not louder, because it ducks exactly
 the transient that makes a keypress sound like a keypress.
 
-### Choreography
+### The earlier board
 
-`poses.ts` holds a keyframe per section — position, rotation, scale — plus a
-presence (opacity) value and a drift ceiling. The scene interpolates
-continuously between whichever two keyframes the current scroll position falls
-between, so the board is always moving rather than snapping at boundaries.
-
-Anchors are **measured from the real DOM** and sorted by measured position, not
-by the order they are declared in. A section can nominate a different trigger
-element with `data-kbd-anchor` — the stack section does this, because its pose
-should peak when the empty stage is on screen, not when its sticky heading is,
-and those are most of a viewport apart.
-
-Opacity and drift are keyed to sections rather than to a fraction of total
-scroll for a specific reason: a hard-coded "fade out at 55% of the page" stop
-silently lands somewhere else the moment a section is added. Anything tied to
-page length will drift out of tune as the page grows.
+`src/components/keyboard/` still holds a hand-built three.js version — extruded
+keycap geometry, canvas-generated logo textures, a locally generated
+`RoomEnvironment`, its own pose table. It is not rendered. Nothing imports
+`keyboard-scene.tsx` any more, so it costs nothing at runtime, but it is history
+rather than documentation. `keyboard-audio.ts` and `board-placeholder.tsx` are
+the two files in there that are still live.
 
 ---
 
@@ -172,8 +160,12 @@ src/
     api/contact/route.ts    contact form handler
     projects/[slug]/        generated case-study pages
     opengraph-image.tsx     OG image, generated at build time
+    privacy/ terms/          legal pages
+    thank-you/              where the contact form lands on success
+    icon.tsx apple-icon.tsx  favicons, generated at build time
   components/
-    keyboard/               the 3D scene — geometry, textures, audio, poses
+    animated-background*    the Spline board and its scroll choreography
+    keyboard/               keypress audio, plus the retired three.js board
     sections/               one file per home-page section
     projects/               cards, grid, generated cover visuals
     layout/                 header, footer, nav overlay, toggles
@@ -253,6 +245,11 @@ spam handling, none of which is a CAPTCHA:
 The payload is validated with Zod before anything else happens, and all user
 input is HTML-escaped before it reaches the email template.
 
+**Without `RESEND_API_KEY` the form returns 503 and delivers nothing.** It fails
+loudly rather than silently: the response carries the address to write to
+instead, and the form shows it in a panel that stays put rather than a toast
+that takes it away after four seconds.
+
 ---
 
 ## Deployment
@@ -277,44 +274,62 @@ build step outside `next build`.
 A short list of decisions in here that look arbitrary but are not, so future-me
 does not "simplify" them back into bugs.
 
-- **The canvas sits at `z-0`, never a negative z-index.** Content behind an
-  opaque ancestor background is excluded from hit-testing, so a canvas at
-  `-z-10` receives no pointer events at all and hover silently never fires.
+- **The board's canvas has to re-enable pointer events for itself.** `main`
+  carries `canvas-overlay-mode`, which sets `pointer-events: none` so clicks in
+  empty space fall through to the scene behind, and restores them for links,
+  buttons, fields and headings. A canvas is none of those, so it inherits
+  `none` and every hover and tap dies on it. It sets `pointer-events: auto`
+  explicitly.
+
+- **Lenis and ScrollTrigger must share a clock.** Lenis animates scroll on its
+  own rAF loop; ScrollTrigger otherwise reads native scroll events and its own
+  ticker. Unconnected they drift and the board lands early or late against the
+  page. `useLenis(ScrollTrigger.update)` ties them together.
+
+- **The section fallback chain follows the page, not the file.** Each timeline
+  carries the section to return to when you scroll back out of it. The page runs
+  hero, projects, stack, contact. Get that order wrong and scrolling up out of
+  the stack hands the board back to the hero pose — full size, dead centre —
+  over the projects grid.
+
+- **Scene animation runs on rAF, never `setInterval`.** An interval goes on
+  mutating scene objects in a tab nobody is looking at; rAF stops until the tab
+  comes back.
+
+- **Smoothing belongs in the rAF loop, not in a CSS transition.** A transition
+  plus a per-frame write means restarting the same curve sixty times a second,
+  which the browser recomputes every time. Closing a fixed fraction of the gap
+  per frame is cheaper and tighter — and the loop stops itself when there is
+  nothing left to close.
+
+- **The starfield twinkles in groups, not per star.** One infinite opacity
+  animation per star was 182 of them running for as long as the page stayed
+  open. Five shared phases per layer is ten. It also fixed something quiet: the
+  animation overrode each star's own `opacity`, so every star was swinging
+  through the same brightness range.
 
 - **Scroll height is cached, never read in the frame loop.** Touching
   `scrollHeight` forces a synchronous layout; doing it every frame while Lenis
   is writing scroll positions thrashes layout badly enough to take frame time
   from 17 ms to 32 ms.
 
-- **The board fades with one CSS opacity on the canvas element, not with
-  `transparent` materials.** Making thirty caps transparent pushes them into
-  three's alpha-blended pass where they sort unreliably against each other — the
-  result reads as *blur* the moment caps overlap. One composited opacity keeps
+- **The board fades with one CSS opacity on the canvas element**, not with
+  transparent materials. Making the caps transparent pushes them into an
+  alpha-blended pass where they sort unreliably against each other, and the
+  result reads as blur the moment caps overlap. One composited opacity keeps
   every cap crisply opaque and costs a single GPU operation.
 
-- **A cap's static offset lives on an outer group, its animation on an inner
-  one.** Animating a mesh's `position` directly fights React re-applying the
-  `position` prop on every render.
-
-- **Blob URLs for SVG textures are revoked *after* the draw, not in a `finally`.**
-  Chrome rasterises SVGs lazily: the image reports as decoded but is unpaintable
-  if its blob URL is already gone. This was the actual cause of "the keycaps have
-  no logos".
-
-- **Devicon SVGs carry only a `viewBox`, no width/height**, which gives them zero
-  intrinsic size, which makes `drawImage` paint nothing at all — silently.
-  Dimensions are injected from the viewBox before drawing.
-
-- **Every `rotation.x` in `poses.ts` is positive.** The board is modelled lying
-  flat with caps toward +Y and the camera on +Z; a negative rotation turns it
-  over and renders the underside.
+- **Technology logos are mapped by exact name, never by pattern.** A prefix
+  match looks harmless and then puts Java's logo on JavaScript, Spring's on
+  anything starting "spring", and React's on React Router. The map lives in
+  [`src/data/tech-logos.ts`](src/data/tech-logos.ts).
 
 - **Random values use a seeded PRNG (mulberry32).** `Math.random()` in a
   component body produces different values on server and client and fails
   hydration.
 
-- **Don't name a module-level export `process`.** It shadows Node's global inside
-  that module and quietly breaks every `process.env` read in the same file.
+- **Don't name a module-level export `process`.** It shadows Node's global
+  inside that module and quietly breaks every `process.env` read in the file.
 
 ---
 

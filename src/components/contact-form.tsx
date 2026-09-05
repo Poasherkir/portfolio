@@ -20,6 +20,8 @@ export default function ContactForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  /** Set when the server says it cannot deliver but tells us where to write. */
+  const [fallbackEmail, setFallbackEmail] = useState<string | null>(null);
   // Spam control #1: how long the form was on screen. Bots submit instantly.
   const openedAt = useRef(Date.now());
 
@@ -30,6 +32,8 @@ export default function ContactForm() {
 
     setLoading(true);
     setErrors({});
+    setFallbackEmail(null);
+    let fallback: unknown = null;
 
     try {
       const res = await fetch("/api/contact", {
@@ -38,6 +42,7 @@ export default function ContactForm() {
         body: JSON.stringify({ ...data, elapsedMs: Date.now() - openedAt.current }),
       });
       const json = await res.json();
+      fallback = json.fallbackEmail;
 
       if (!res.ok) {
         if (json.fieldErrors) setErrors(json.fieldErrors);
@@ -52,6 +57,10 @@ export default function ContactForm() {
       // untouched.
       router.push("/thank-you");
     } catch (err) {
+      // A failed send used to end here, with an apology and nowhere to go. If
+      // the server handed back an address, offer it — the visitor came to say
+      // something and should not have to go hunting for a second route.
+      setFallbackEmail(typeof fallback === "string" ? fallback : null);
       toast({
         variant: "destructive",
         title: "Could not send that.",
@@ -134,6 +143,28 @@ export default function ContactForm() {
           )}
         </Button>
       </div>
+
+      {/* Only appears when the send actually failed. A toast is gone in a few
+          seconds and takes the address with it; this stays until the message
+          is on its way by some other route. */}
+      {fallbackEmail && (
+        <div
+          role="alert"
+          className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm"
+        >
+          <p className="font-medium text-foreground">That did not send.</p>
+          <p className="mt-1 text-muted-foreground">
+            Something on my end is not working. Send it straight to{" "}
+            <a
+              href={`mailto:${fallbackEmail}`}
+              className="text-brand underline underline-offset-4"
+            >
+              {fallbackEmail}
+            </a>{" "}
+            and it will reach me just the same.
+          </p>
+        </div>
+      )}
     </form>
   );
 }

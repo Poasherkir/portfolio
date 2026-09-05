@@ -82,14 +82,22 @@ export async function POST(req: Request) {
   if (!to) {
     console.error("[contact] No destination address: set CONTACT_TO_EMAIL or profile.email.");
     return Response.json(
-      { error: "The contact form is not connected yet. Please reach out on GitHub." },
+      {
+        error: "The form cannot deliver right now. Please email me directly.",
+        fallbackEmail: null,
+      },
       { status: 503 }
     );
   }
   if (!process.env.RESEND_API_KEY) {
-    console.error("[contact] RESEND_API_KEY is missing.");
+    console.error("[contact] RESEND_API_KEY is missing — the form cannot send.");
     return Response.json(
-      { error: "The contact form is not connected yet. Please reach out on GitHub." },
+      {
+        error: "The form cannot deliver right now. Please email me directly.",
+        // The address is already printed on this page; handing it back lets
+        // the form turn a dead end into a working one.
+        fallbackEmail: to,
+      },
       { status: 503 }
     );
   }
@@ -122,12 +130,18 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error("[contact] Resend error:", error);
-      return Response.json({ error: "Delivery failed. Please email me directly." }, { status: 502 });
+      return Response.json(
+        { error: "Delivery failed. Please email me directly.", fallbackEmail: to },
+        { status: 502 }
+      );
     }
 
     return Response.json({ ok: true });
   } catch (err) {
     console.error("[contact] Unexpected error:", err);
-    return Response.json({ error: "Delivery failed. Please email me directly." }, { status: 500 });
+    return Response.json(
+      { error: "Delivery failed. Please email me directly.", fallbackEmail: to },
+      { status: 500 }
+    );
   }
 }
