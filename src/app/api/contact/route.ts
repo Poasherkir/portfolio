@@ -20,11 +20,16 @@ const Payload = z.object({
 const MIN_ELAPSED_MS = 2500;
 
 /**
- * Very small in-memory rate limit: 3 messages per IP per 10 minutes.
- * Serverless instances are ephemeral, so this is a speed bump rather than a
- * guarantee — the honeypot and timing check do most of the work.
+ * Very small in-memory rate limit. Serverless instances are ephemeral, so this
+ * is a speed bump rather than a guarantee — the honeypot and the timing check
+ * do the real work.
+ *
+ * Deliberately loose, because an IP is not a person. Mobile carriers put
+ * thousands of subscribers behind one address, so a tight per-IP limit does not
+ * stop a determined sender — it blocks the next unrelated visitor on the same
+ * network, who has no idea why and no reason to try again.
  */
-const RATE_LIMIT = { max: 3, windowMs: 10 * 60 * 1000 };
+const RATE_LIMIT = { max: 8, windowMs: 10 * 60 * 1000 };
 const hits = new Map<string, number[]>();
 
 function rateLimited(ip: string) {
@@ -44,6 +49,8 @@ function escapeHtml(value: string) {
 }
 
 export async function POST(req: Request) {
+  const destination = process.env.CONTACT_TO_EMAIL ?? profile.email;
+
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
@@ -51,7 +58,12 @@ export async function POST(req: Request) {
 
   if (rateLimited(ip)) {
     return Response.json(
-      { error: "Too many messages from this connection. Try again shortly." },
+      {
+        error: "Too many messages from this connection. Try again shortly.",
+        // Without this a throttled visitor gets a red box and no way forward.
+        // They still have something to say; give them the other route.
+        fallbackEmail: destination,
+      },
       { status: 429 }
     );
   }
@@ -78,7 +90,7 @@ export async function POST(req: Request) {
     return Response.json({ ok: true });
   }
 
-  const to = process.env.CONTACT_TO_EMAIL ?? profile.email;
+  const to = destination;
   if (!to) {
     console.error("[contact] No destination address: set CONTACT_TO_EMAIL or profile.email.");
     return Response.json(
