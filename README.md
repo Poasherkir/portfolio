@@ -113,20 +113,15 @@ soft clipping.
 The context is created on the first real gesture, not at load, because a browser
 will not let it start any earlier. Nothing plays until you click something.
 
+It sits in `src/components/keyboard/` alongside `board-placeholder.tsx` because
+the folder once held a hand-built three.js board, replaced by the Spline scene
+and deleted. Those two files are what outlived it.
+
 Two things learned the hard way: high-Q bandpass filters throw away most of the
 input energy, so mode gains are *not* output amplitudes and a makeup gain is
 required — measured with an `OfflineAudioContext`, not guessed. And a
 `DynamicsCompressor` made it **quieter**, not louder, because it ducks exactly
 the transient that makes a keypress sound like a keypress.
-
-### The earlier board
-
-`src/components/keyboard/` still holds a hand-built three.js version — extruded
-keycap geometry, canvas-generated logo textures, a locally generated
-`RoomEnvironment`, its own pose table. It is not rendered. Nothing imports
-`keyboard-scene.tsx` any more, so it costs nothing at runtime, but it is history
-rather than documentation. `keyboard-audio.ts` and `board-placeholder.tsx` are
-the two files in there that are still live.
 
 ---
 
@@ -160,18 +155,19 @@ src/
     api/contact/route.ts    contact form handler
     projects/[slug]/        generated case-study pages
     opengraph-image.tsx     OG image, generated at build time
-    privacy/ terms/          legal pages
+    privacy/ terms/         legal pages
     thank-you/              where the contact form lands on success
-    icon.tsx apple-icon.tsx  favicons, generated at build time
+    icon.tsx apple-icon.tsx favicons, generated at build time
   components/
     animated-background*    the Spline board and its scroll choreography
-    keyboard/               keypress audio, plus the retired three.js board
+    keyboard/               keypress audio and the loading silhouette
     sections/               one file per home-page section
     projects/               cards, grid, generated cover visuals
     layout/                 header, footer, nav overlay, toggles
     background/             starfield and nebula backdrop
     ui/                     small primitives (button, card, badge, …)
   data/portfolio.ts         all site content
+  data/tech-logos.ts        skill name to Devicon file, mapped exactly
   types/                    shared types
 public/assets/devicon/      vendored Devicon SVGs (MIT)
 ```
