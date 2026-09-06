@@ -915,7 +915,7 @@ export const faq: { q: string; a: string }[] = [
   },
   {
     q: "What do I get at the end?",
-    a: "Signed builds, the backend and its schema, an admin dashboard your team runs, and documentation in English or French.",
+    a: "Signed builds, the backend and its schema, an admin dashboard your team runs, and the documentation to operate all three.",
   },
 ];
 
