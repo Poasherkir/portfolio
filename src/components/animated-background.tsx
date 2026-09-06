@@ -632,7 +632,7 @@ const AnimatedBackground = () => {
     // string it replaces here rendered as unstyled body text.
     <Suspense fallback={<BoardPlaceholder />}>
       <Spline
-        className="pointer-events-auto w-full h-full fixed transition-opacity duration-700 ease-out"
+        className="pointer-events-auto w-full h-full fixed transition-opacity duration-700 ease-out print:hidden"
         style={{ opacity: boardOpacity }}
         ref={splineContainer}
         onLoad={(app: Application) => {

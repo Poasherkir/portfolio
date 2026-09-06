@@ -108,7 +108,10 @@ export default function InstrumentBackground() {
   const nearY = useTransform(scrollYProgress, [0, 1], ["0%", "26%"]);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden print:hidden"
+    >
       {/* Deep space ground. Light theme keeps a clean paper wash instead — a
           starfield on white reads as dirt, not as space. */}
       <div className="absolute inset-0 bg-[#f6f8fb] dark:bg-[#080808]" />

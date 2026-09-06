@@ -232,6 +232,16 @@
     padding-block: 1rem !important;
     break-inside: avoid;
   }
+
+  /* Backstop for the decorative layers. Each one also carries print:hidden at
+     its own call site; this catches anything added later that forgets to. A
+     canvas is a real element rather than a CSS background, so unlike the
+     gradients it prints whether or not the browser is set to print
+     backgrounds — as a full sheet of keyboard over page one. */
+  canvas,
+  [aria-hidden="true"][class*="fixed"][class*="inset-0"] {
+    display: none !important;
+  }
 }
 
 /* ---------------------------------------------------------------------------
