@@ -225,7 +225,10 @@ export default async function CaseStudyPage({ params }: Params) {
         {/* Cover */}
         <div className="container -mt-px">
           <div className="relative aspect-[21/9] w-full overflow-hidden rounded-b-xl border-x border-b border-border">
-            <ProjectVisual project={project} priority />
+            {/* Full bleed here. The banner is 21:9 and the browser frame's
+                body is a fixed 16:10, so framed it stands taller than the
+                space and loses its title bar off the top. */}
+            <ProjectVisual project={project} priority framed={false} />
           </div>
         </div>
 

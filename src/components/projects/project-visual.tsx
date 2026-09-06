@@ -14,17 +14,40 @@ export default function ProjectVisual({
   className,
   priority = false,
   sizes = "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw",
+  framed = true,
 }: {
   project: Project;
   className?: string;
   priority?: boolean;
   sizes?: string;
+  /**
+   * Whether a landscape cover gets the staged browser frame.
+   *
+   * True suits a card, where the frame is what stops a web screenshot reading
+   * as a stretched image next to framed phones. False suits a wide hero
+   * banner: the frame has a fixed 16:10 body, so in a 21:9 box it is taller
+   * than the space and the title bar is clipped off the top.
+   */
+  framed?: boolean;
 }) {
   const cover = project.images[0];
 
   // A phone screenshot letterboxed into 16:10 shows almost nothing.
   if (!cover && project.screens?.length) {
     return <ScreenGallery screens={project.screens} priority={priority} className={className} />;
+  }
+
+  if (cover && !framed) {
+    return (
+      <Image
+        src={cover.src}
+        alt={cover.alt}
+        fill
+        priority={priority}
+        sizes={sizes}
+        className={cn("object-cover object-top", className)}
+      />
+    );
   }
 
   if (cover) {
