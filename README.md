@@ -57,7 +57,7 @@ the field is simply omitted rather than filled with something plausible.
 | Animation | `motion` (Framer Motion 12) for the page, GSAP + ScrollTrigger for the board |
 | Smooth scroll | Lenis |
 | Theming | `next-themes`, dark by default |
-| Icons | `lucide-react`, plus vendored [Devicon](https://devicon.dev) SVGs (MIT) |
+| Icons | `lucide-react`, plus vendored [Devicon](https://devicon.dev) marks (MIT) |
 | Mail | Resend, validated with Zod |
 | Analytics | `@vercel/analytics` |
 
@@ -169,7 +169,7 @@ src/
   data/portfolio.ts         all site content
   data/tech-logos.ts        skill name to Devicon file, mapped exactly
   types/                    shared types
-public/assets/devicon/      vendored Devicon SVGs (MIT)
+public/assets/devicon/      vendored Devicon marks, MIT (one raster, see below)
 ```
 
 ---
@@ -319,6 +319,13 @@ does not "simplify" them back into bugs.
   match looks harmless and then puts Java's logo on JavaScript, Spring's on
   anything starting "spring", and React's on React Router. The map lives in
   [`src/data/tech-logos.ts`](src/data/tech-logos.ts).
+
+- **One Devicon mark is a raster, and that is deliberate.** Tux is a 712-path
+  illustration with gradients weighing 189 KB — two thirds of the entire 3D
+  scene, for a logo drawn at sixteen pixels. Optimising the vector only reached
+  114 KB. `linux-original.webp` at 128px is 4.3 KB and identical at any size
+  this site draws it. The `-plain` variant is small but monochrome, and would
+  leave Linux the only greyscale logo in a row of colour.
 
 - **Random values use a seeded PRNG (mulberry32).** `Math.random()` in a
   component body produces different values on server and client and fails

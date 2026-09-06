@@ -20,7 +20,13 @@ export const TECH_LOGOS: Record<string, string> = {
   "GitHub": "github-original.svg",
   "GitHub Actions": "github-original.svg",
   "GitHub Projects": "github-original.svg",
-  "Linux / terminal": "linux-original.svg",
+  // The only entry here that is not an SVG. Devicon's full-colour Tux is a
+  // 712-path illustration with gradients that weighs 189 KB — two thirds of
+  // the entire 3D scene, for one mark drawn at sixteen pixels. Optimising the
+  // vector only reached 114 KB. Rasterised at 128px it is 4.3 KB and identical
+  // at any size this is ever drawn. The plain variant is small but monochrome,
+  // and would leave Linux the only greyscale logo in a row of colour.
+  "Linux / terminal": "linux-original.webp",
   "Bash": "bash-original.svg",
   "React": "react-original.svg",
   // React Native's own mark is the React atom, so this one is not a stand-in.
