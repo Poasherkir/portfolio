@@ -292,7 +292,7 @@ export const experience: Experience[] = [
     description: [
       "Ships production Flutter apps end to end: mobile client, Supabase backend, React admin dashboard and a signed release pipeline — alone.",
       "Flagship work is Briefing Point Go, an Electronic Flight Bag in production with Air Algérie crew, integrating METAR weather, ADS-B tracking and authenticated crew roster data.",
-      "Works and delivers in English, French and Arabic, invoicing international clients legally.",
+      "Invoices international clients and receives foreign payments legally.",
     ],
     skills: ["flutter", "dart", "supabase", "postgresql", "react", "python"],
   },
@@ -366,7 +366,7 @@ export const services: Service[] = [
       "Supabase backend: Postgres schema, auth, storage, row-level security",
       "Offline behaviour designed in, not bolted on",
       "Signed release pipeline and store submission",
-      "Handover documentation in English or French",
+      "Handover documentation and a walkthrough",
     ],
     timeline: "4–8 weeks to a first release",
     priceBand: null,
@@ -456,7 +456,7 @@ export const deliveryProcess: { step: string; title: string; body: string }[] = 
   {
     step: "06",
     title: "Handover",
-    body: "An admin dashboard your team operates, documentation in English or French, and a walkthrough. The goal is that you do not need me on retainer.",
+    body: "An admin dashboard your team operates, written documentation, and a walkthrough. The goal is that you do not need me on retainer.",
   },
 ];
 
@@ -1026,7 +1026,7 @@ export const engineering = {
     },
     {
       title: "Written for the next developer",
-      body: "Typed boundaries, small commits against reviewable milestones, and handover documentation in English or French so the project outlives the engagement.",
+      body: "Typed boundaries, small commits against reviewable milestones, and handover documentation so the project outlives the engagement.",
     },
   ],
   /** What is genuinely public, stated plainly rather than padded out. */

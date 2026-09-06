@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { about, experience, keycapList } from "@/data/portfolio";
+import { experience, keycapList } from "@/data/portfolio";
 import { Section, SectionHeader } from "@/components/section";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,17 +19,6 @@ export default function ExperienceSection() {
           desc="How I got here, and what I have actually been paid to do."
           spacer="mb-12 md:mb-20"
         />
-
-        {/* Facts panel alongside the timeline. One role on its own left a very
-            empty row; these are the details a client checks anyway. */}
-        <div className="mb-10 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {about.facts.map((fact) => (
-            <div key={fact.label} className="bg-background/88 p-5 backdrop-blur-sm">
-              <p className="eyebrow">{fact.label}</p>
-              <p className="mt-1.5 text-sm leading-relaxed">{fact.value}</p>
-            </div>
-          ))}
-        </div>
 
         <div className="relative flex flex-col gap-8 md:gap-12">
           {/* Connector rail */}
