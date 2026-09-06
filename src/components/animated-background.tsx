@@ -399,7 +399,12 @@ const AnimatedBackground = () => {
       keycapAnimationsRef.current?.stop();
       revealTimeline.current?.kill();
     };
-
+    // The four builders above are rebuilt on every render, so depending on
+    // them would tear down and re-register every ScrollTrigger and every
+    // animation each time anything in this component changed. The scene needs
+    // wiring when it loads, and again when the breakpoint moves it to a
+    // different set of poses — which is exactly what is listed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [splineApp, isMobile]);
 
   // Handle keyboard text visibility based on theme and section
@@ -426,23 +431,27 @@ const AnimatedBackground = () => {
 
     if (activeSection !== "skills") {
       setVisibility(false, false, false, false);
-    } else if (theme === "dark") {
-      isMobile
-        ? setVisibility(false, false, false, true)
-        : setVisibility(false, true, false, false);
-    } else {
-      isMobile
-        ? setVisibility(false, false, true, false)
-        : setVisibility(true, false, false, false);
+      return;
     }
+
+    // The four variants are named for their ink, not for the theme that shows
+    // them — dark ink is what reads on a light background, so the dark theme
+    // takes the light-ink label. Worth stating, because the pairing looks
+    // inverted every time you come back to it.
+    const lightInk = theme === "dark";
+    setVisibility(
+      !isMobile && !lightInk,
+      !isMobile && lightInk,
+      isMobile && !lightInk,
+      isMobile && lightInk
+    );
   }, [theme, splineApp, isMobile, activeSection]);
 
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
-    // console.log(selectedSkill)
     splineApp.setVariable("heading", selectedSkill.label);
     splineApp.setVariable("desc", selectedSkill.shortDescription);
-  }, [selectedSkill]);
+  }, [selectedSkill, splineApp]);
 
   // Handle rotation and teardown animations based on active section
   useEffect(() => {
@@ -593,17 +602,27 @@ const AnimatedBackground = () => {
   }, []);
 
   // Reveal keyboard on load
+  // The address bar follows the section. replaceState, not router.push:
+  // pushing added a history entry for every section the visitor scrolled past,
+  // so Back walked them up the page one section at a time instead of leaving
+  // the site.
   useEffect(() => {
-    // replaceState, not router.push. Pushing added a history entry for every
-    // section the visitor scrolled past, so Back walked them up the page one
-    // section at a time instead of leaving the site. This keeps the address
-    // bar honest without touching the stack.
     const hash = activeSection === "hero" ? "" : `#${activeSection}`;
     window.history.replaceState(null, "", "/" + hash);
+  }, [activeSection]);
 
+  // The opening reveal, once, when the scene has landed. This shared the
+  // effect above until now, which meant each ran on the other's dependencies:
+  // the reveal was re-evaluated on every section change, and the address bar
+  // was rewritten whenever the scene finished loading.
+  useEffect(() => {
     if (!splineApp || isLoading || keyboardRevealed) return;
     updateKeyboardTransform();
-  }, [splineApp, isLoading, activeSection]);
+    // updateKeyboardTransform is rebuilt every render, so listing it here
+    // would restart the reveal continuously. keyboardRevealed is the latch
+    // that makes running it once correct.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [splineApp, isLoading, keyboardRevealed]);
 
   return (
     // The scene and its runtime are a few hundred kilobytes. Until they land
