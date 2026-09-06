@@ -12,6 +12,40 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  /**
+   * Response headers.
+   *
+   * Vercel already sends HSTS. These are the rest of the set that costs
+   * nothing to be right about. Deliberately no Content-Security-Policy: the
+   * Spline runtime needs WebAssembly, workers and blob URLs, so a policy
+   * written without testing against the live scene would not fail loudly — it
+   * would silently leave a blank rectangle where the keyboard used to be.
+   * That one wants a session with a working browser in front of it.
+   */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // Stop a browser second-guessing a declared Content-Type. An asset
+          // served as text and sniffed as script is the whole attack.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Nothing here is meant to be framed, so no one gets to overlay it.
+          { key: "X-Frame-Options", value: "DENY" },
+          // Send the full URL within the site, only the origin when leaving it,
+          // and nothing at all when leaving it for plain http.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // None of these are used. Saying so means an embedded frame cannot
+          // reach for them either.
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+          },
+        ],
+      },
+    ];
+  },
+
   webpack: (config, { webpack }) => {
     // @splinetool/runtime ships a WebAssembly module, so the import has to be
     // allowed at all. `layers` is required alongside it by Next's own config.
