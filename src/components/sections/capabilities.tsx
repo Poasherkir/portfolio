@@ -20,7 +20,7 @@ export default function Capabilities() {
             {capabilities.map((c) => (
               <RevealItem
                 key={c.id}
-                className="group/card relative bg-background/88 p-7 backdrop-blur-sm transition-colors duration-300 hover:bg-background/70"
+                className="group/card relative bg-background/95 p-7 transition-colors duration-300 hover:bg-background/70"
               >
                 <h3 className="font-display text-lg font-semibold tracking-tight transition-colors group-hover/card:text-brand">
                   {c.title}

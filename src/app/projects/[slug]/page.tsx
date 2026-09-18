@@ -202,7 +202,7 @@ export default async function CaseStudyPage({ params }: Params) {
                 </Button>
               )}
               {project.privateRepo && !project.links.repo && (
-                <div className="w-full rounded-xl border border-border bg-card/80 p-5 backdrop-blur-sm">
+                <div className="w-full rounded-xl border border-border bg-card/92 p-5">
                   <p className="flex items-center gap-2 text-sm font-medium">
                     <Lock className="h-4 w-4 shrink-0 text-brand" />
                     {privateSource.label}
@@ -376,7 +376,7 @@ export default async function CaseStudyPage({ params }: Params) {
             <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
               <Link
                 href={`/projects/${prev.slug}`}
-                className="group bg-background/88 p-6 backdrop-blur-sm transition-colors hover:bg-card"
+                className="group bg-background/95 p-6 transition-colors hover:bg-card"
               >
                 <span className="flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted-foreground">
                   <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
@@ -388,7 +388,7 @@ export default async function CaseStudyPage({ params }: Params) {
               </Link>
 
               {/* Where you are. Not a link — nothing to go to. */}
-              <div className="bg-background/90 p-6 text-center backdrop-blur-sm">
+              <div className="bg-background/96 p-6 text-center">
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brand">
                   Currently reading
                 </span>
@@ -402,7 +402,7 @@ export default async function CaseStudyPage({ params }: Params) {
 
               <Link
                 href={`/projects/${next.slug}`}
-                className="group bg-background/88 p-6 text-right backdrop-blur-sm transition-colors hover:bg-card"
+                className="group bg-background/95 p-6 text-right transition-colors hover:bg-card"
               >
                 <span className="flex items-center justify-end gap-2 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted-foreground">
                   Next

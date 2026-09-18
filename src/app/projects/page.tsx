@@ -122,7 +122,7 @@ export default function ProjectsPage() {
       {pipeline?.beforeAfter && (
         <Section className="pb-20 md:pb-28">
           <div className="container">
-            <div className="rounded-2xl border border-border bg-card/75 p-7 backdrop-blur-sm md:p-10">
+            <div className="rounded-2xl border border-border bg-card/90 p-7 md:p-10">
               <WipeReveal>
                 <p className="eyebrow">Automation, in one picture</p>
               </WipeReveal>

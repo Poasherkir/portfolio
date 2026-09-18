@@ -76,7 +76,7 @@ export default function AboutPage() {
             {deliveryProcess.map((step) => (
               <RevealItem
                 key={step.step}
-                className="rounded-xl border border-border bg-card/75 p-7 backdrop-blur-sm"
+                className="rounded-xl border border-border bg-card/90 p-7"
               >
                 <span className="font-mono text-xs text-brand">{step.step}</span>
                 <h3 className="mt-4 font-display text-lg font-semibold">{step.title}</h3>
@@ -91,7 +91,7 @@ export default function AboutPage() {
             <p className="eyebrow">Why me</p>
             <RevealGroup className="mt-6 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
               {proofPillars.map((pillar, i) => (
-                <RevealItem key={pillar.id} className="bg-background/88 p-7 backdrop-blur-sm md:p-9">
+                <RevealItem key={pillar.id} className="bg-background/95 p-7 md:p-9">
                   <span className="font-mono text-xs text-brand">
                     {String(i + 1).padStart(2, "0")}
                   </span>

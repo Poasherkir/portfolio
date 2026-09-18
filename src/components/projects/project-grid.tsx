@@ -69,7 +69,7 @@ export default function ProjectGrid({
       <div
         role="tablist"
         aria-label="Filter projects by type"
-        className="inline-flex flex-wrap gap-1 rounded-full border border-border bg-card/75 p-1 backdrop-blur-sm"
+        className="inline-flex flex-wrap gap-1 rounded-full border border-border bg-card/90 p-1"
       >
         {available.map((filter) => {
           const isActive = filter === active;

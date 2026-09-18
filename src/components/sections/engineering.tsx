@@ -46,7 +46,7 @@ export default function Engineering() {
           </div>
 
           <Reveal delay={0.12} className="lg:sticky lg:top-28 lg:self-start">
-            <div className="rounded-xl border border-border bg-card/80 p-7 backdrop-blur-sm">
+            <div className="rounded-xl border border-border bg-card/92 p-7">
               <Lock className="h-5 w-5 text-brand" />
               <h3 className="mt-4 font-display text-lg font-semibold tracking-tight">
                 Why the repos are private

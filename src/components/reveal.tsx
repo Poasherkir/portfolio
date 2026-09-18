@@ -4,7 +4,17 @@ import { motion, useReducedMotion, type Variants } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** Blur-and-fade in on mount. Used for the hero, which has no scroll trigger. */
+/**
+ * Fade-and-rise in on mount. Used for the hero and the page mastheads, which
+ * have no scroll trigger.
+ *
+ * This used to blur in as well — filter: blur(12px) down to 0 over 900ms. A
+ * filter is a paint operation, not a compositor one, so a display-size
+ * heading was being rasterised and Gaussian-blurred on every one of those
+ * fifty-odd frames, on every inner page, before a visitor had read a word.
+ * Opacity and transform are handled by the compositor and cost nothing per
+ * frame. The name stays so the call sites do not all have to change.
+ */
 export function BlurIn({
   children,
   className,
@@ -20,12 +30,8 @@ export function BlurIn({
 
   return (
     <motion.div
-      initial={
-        reduced
-          ? { filter: "blur(0px)", opacity: 1, y: 0 }
-          : { filter: "blur(12px)", opacity: 0, y: 8 }
-      }
-      animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+      initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={reduced ? INSTANT : { duration, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >

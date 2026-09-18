@@ -177,9 +177,6 @@
     -webkit-text-stroke: 1px hsl(var(--foreground) / 0.35);
   }
 
-  .card-hairline {
-    @apply border border-border bg-card/70 backdrop-blur-sm;
-  }
 }
 
 @layer utilities {
@@ -216,8 +213,7 @@
     color: #000 !important;
   }
 
-  .instrument-grid,
-  .card-hairline {
+  .instrument-grid {
     background-image: none !important;
     backdrop-filter: none !important;
   }
