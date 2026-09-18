@@ -28,3 +28,6 @@ next-env.d.ts
 /portfolio-main/
 /add/
 /bac dz/
+
+# Local dev-server config for the editor preview
+.claude/launch.json

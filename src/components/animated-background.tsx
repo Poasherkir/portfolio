@@ -58,8 +58,22 @@ const AnimatedBackground = () => {
   // so on a text-heavy section it sits at full strength over the copy.
   // Hero and skills are where it is meant to be looked at; everywhere else
   // it is background and gets out of the way.
+  //
+  // On a phone the hero copy alone runs past one screen, and the board is
+  // fixed in the viewport while that copy scrolls through it. No fixed pose
+  // clears every line at every width — the Spline canvas is full-viewport,
+  // so the same pose lands on different pixels at 390 and 430 wide, and the
+  // copy wraps differently too. Rather than chase that, the board is dimmed
+  // on the mobile hero: still clearly the board, but a line of text that
+  // lands on it reads instead of disappearing into a keycap.
   const boardOpacity =
-    activeSection === "hero" ? 1 : activeSection === "skills" ? 0.42 : 0.3;
+    activeSection === "hero"
+      ? isMobile
+        ? 0.55
+        : 1
+      : activeSection === "skills"
+        ? 0.42
+        : 0.3;
 
   // Animation controllers refs
   const bongoAnimationRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);

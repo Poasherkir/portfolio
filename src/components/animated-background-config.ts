@@ -8,8 +8,14 @@ export const STATES = {
       rotation: { x: 0, y: 0, z: 0 },
     },
     mobile: {
-      scale: { x: 0.30, y: 0.30, z: 0.30 },
-      position: { x: 0, y: -200, z: 0 },
+      // Sits below the hero copy rather than behind it. At 0.30 and y -200 the
+      // board's top edge landed on the second call to action and the whole
+      // capability row rendered over keycaps. The headline, paragraph and two
+      // buttons run to roughly 750px on a phone, so the board starts under
+      // that and shows its top edge in the first screen — a reveal that
+      // finishes on the first scroll rather than a collision.
+      scale: { x: 0.27, y: 0.27, z: 0.27 },
+      position: { x: 0, y: -450, z: 0 },
       rotation: { x: 0, y: 0, z: 0 },
     },
   },
