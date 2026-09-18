@@ -30,6 +30,44 @@ const MOVE = REDUCED
   ? { duration: 0.001, ease: "none" }
   : { duration: 1.5, ease: "power3.out" };
 
+/**
+ * Caps the resolution the scene renders at.
+ *
+ * The runtime reads its pixel ratio once, at load, from the settings the scene
+ * was published with. If that setting is "native", a full-viewport canvas on a
+ * 3× phone renders nine times the pixels of a 1× display — every frame, for
+ * detail nobody can see on a board that fills a fifth of the screen. Lower
+ * ratios are the single largest lever on GPU cost there is.
+ *
+ * This only ever lowers. If the scene already renders at or under the cap it
+ * does nothing, so it is safe whatever the file was published with. The cap
+ * is higher on desktop, where the board is large and close to the eye, and
+ * where the GPU can generally afford it.
+ *
+ * The renderer is not part of the runtime's public surface, so every step is
+ * guarded: if the shape changes in a future version, this becomes a no-op
+ * rather than a crash.
+ */
+function capPixelRatio(app: Application, mobile: boolean) {
+  type Renderer = {
+    getPixelRatio?: () => number;
+    setPixelRatio?: (ratio: number) => void;
+    setSize?: (w: number, h: number, updateStyle?: boolean) => void;
+  };
+  const renderer = (app as unknown as { _renderer?: Renderer })._renderer;
+  if (!renderer?.getPixelRatio || !renderer.setPixelRatio || !renderer.setSize) return;
+
+  const cap = mobile ? 1.5 : 2;
+  const current = renderer.getPixelRatio();
+  if (!(current > cap)) return;
+
+  renderer.setPixelRatio(cap);
+  // The backing store is sized from the ratio, so it has to be laid out again.
+  // Third argument false: leave the CSS size alone.
+  const { clientWidth, clientHeight } = app.canvas;
+  if (clientWidth && clientHeight) renderer.setSize(clientWidth, clientHeight, false);
+}
+
 const AnimatedBackground = () => {
   const { isLoading, bypassLoading } = usePreloader();
   const { theme } = useTheme();
@@ -655,6 +693,7 @@ const AnimatedBackground = () => {
           // Creates the AudioContext and arms it on the first real gesture.
           // Without this the play calls below are silent.
           initKeyboardAudio();
+          capPixelRatio(app, isMobile);
         }}
         scene="/assets/skills-keyboard.spline"
       />
