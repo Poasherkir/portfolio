@@ -62,7 +62,6 @@ export const seo = {
     "duty roster software",
     "developpeur Flutter freelance",
   ],
-  ogImage: "/assets/seo/og-image.png",
 };
 
 // Navigation
@@ -1078,6 +1077,10 @@ export const workPage = {
   eyebrow: "Selected work",
   title: "Software I've built, shipped and learned from.",
   lead: "Production applications, internal tools and automation systems across aviation, education, healthcare, commerce and logistics.",
+  /** The full-width project at the top of /projects. */
+  heroSlug: "briefing-point-go",
+  /** The large rows under it, in order. */
+  featuredSlugs: ["gateflow", "docroster", "techsub", "bac-archive"],
 };
 
 /** Figures under the /projects title, read from the project data. */

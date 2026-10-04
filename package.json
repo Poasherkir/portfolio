@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:content": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.2",

@@ -26,16 +26,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/projects" },
 };
 
-const HERO_SLUG = "briefing-point-go";
-const FEATURED_SLUGS = ["gateflow", "docroster", "techsub", "bac-archive"];
-
 export default function ProjectsPage() {
-  const hero = getProject(HERO_SLUG);
-  const featured = FEATURED_SLUGS.map(getProject).filter(
+  const hero = getProject(workPage.heroSlug);
+  const featured = workPage.featuredSlugs.map(getProject).filter(
     (p): p is NonNullable<typeof p> => Boolean(p)
   );
 
-  const featuredSet = new Set([HERO_SLUG, ...FEATURED_SLUGS]);
+  const featuredSet = new Set([workPage.heroSlug, ...workPage.featuredSlugs]);
   const rest = projects.filter((p) => !featuredSet.has(p.slug));
 
   const pipeline = getProject("briefing-pdf-pipeline");
