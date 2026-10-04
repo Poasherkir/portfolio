@@ -44,6 +44,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+/** Minutes to read the case-study prose, at 200 words a minute. */
+function readingMinutes(texts: (string | undefined)[]) {
+  const words = texts.join(" ").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
 /** A prose section, kept to a readable line length. */
 function Prose({
   n,
@@ -138,6 +144,17 @@ export default async function CaseStudyPage({ params }: Params) {
               <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-foreground/60">
                 {project.tags.join(" · ")}
               </span>
+              <span aria-hidden className="h-3 w-px bg-border" />
+              <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-foreground/60">
+                {readingMinutes([
+                  project.problem,
+                  project.approach,
+                  project.hardPart,
+                  project.result,
+                  project.whyItMatters,
+                ])}{" "}
+                min read
+              </span>
             </div>
 
             <h1 className="mt-6 max-w-4xl font-display text-display-md font-semibold tracking-tighter text-balance">
@@ -226,7 +243,8 @@ export default async function CaseStudyPage({ params }: Params) {
         {/* Body */}
         <div className="container py-20 md:py-28">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16">
-            <div className="lg:sticky lg:top-28 lg:self-start">
+            {/* display:contents below lg lets the mobile strip stick across the whole body. */}
+            <div className="contents lg:sticky lg:top-28 lg:block lg:self-start">
               <CaseStudyNav sections={contents} />
 
               {project.relatedRepos && project.relatedRepos.length > 0 && (

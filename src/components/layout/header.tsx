@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { navLinks, profile } from "@/data/portfolio";
 import ThemeToggle from "./theme-toggle";
 import SoundToggle from "./sound-toggle";
@@ -14,9 +15,28 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const lastY = useRef(0);
+  const reduced = useReducedMotion();
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 24));
+  // Hide while scrolling down, show again on any scroll up.
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled(y > 24);
+    const delta = y - lastY.current;
+    lastY.current = y;
+    if (y < 120) setHidden(false);
+    else if (delta > 6) setHidden(true);
+    else if (delta < -6) setHidden(false);
+  });
+
+  const isHidden = hidden && !open && !reduced;
+
+  // Lets sticky elements below the header move up while it is hidden.
+  useEffect(() => {
+    document.documentElement.dataset.header = isHidden ? "hidden" : "shown";
+  }, [isHidden]);
 
   // Lock the page while the overlay is open.
   useEffect(() => {
@@ -30,8 +50,14 @@ export default function Header() {
     <>
       <motion.header
         initial={{ y: -72 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        animate={{ y: isHidden ? "-100%" : 0 }}
+        transition={
+          entered
+            ? { duration: 0.35, ease: [0.22, 1, 0.36, 1] }
+            : { duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }
+        }
+        onAnimationComplete={() => setEntered(true)}
+        onFocusCapture={() => setHidden(false)}
         className={cn(
           "fixed inset-x-0 top-0 z-[1000] transition-colors duration-300",
           scrolled || open
@@ -61,7 +87,7 @@ export default function Header() {
           {/* Inline links on desktop; the overlay menu covers small screens. */}
           <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
             {navLinks
-              .filter((l) => !l.href.includes("#"))
+              .filter((l) => !l.href.includes("#") && l.href !== "/cv")
               .map((link) => {
                 const active =
                   link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
@@ -94,6 +120,18 @@ export default function Header() {
             <span className="mr-2 hidden font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground xl:inline">
               {profile.location} · {profile.timezone}
             </span>
+            <Link
+              href="/cv"
+              aria-current={pathname === "/cv" ? "page" : undefined}
+              className={cn(
+                "mr-1 hidden h-8 items-center rounded-full border px-3.5 font-mono text-[0.68rem] uppercase tracking-[0.16em] transition-colors lg:inline-flex",
+                pathname === "/cv"
+                  ? "border-brand text-brand"
+                  : "border-border text-muted-foreground hover:border-brand hover:text-brand"
+              )}
+            >
+              CV
+            </Link>
             <SoundToggle />
             <ThemeToggle />
             <button

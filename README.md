@@ -19,7 +19,7 @@ public, and [GateFlow](https://gateflow-demo.vercel.app) has a public demo.
 | 3D | Spline runtime (`@splinetool/react-spline`) |
 | Animation | `motion` for page transitions, GSAP + ScrollTrigger for the keyboard |
 | Smooth scroll | Lenis |
-| Theming | `next-themes`, dark by default |
+| Theming | `next-themes`, light by default with a dark theme |
 | Icons | `lucide-react`, plus vendored [Devicon](https://devicon.dev) logos (MIT) |
 | Mail | Resend, validated with Zod |
 | Analytics | `@vercel/analytics` |
@@ -31,6 +31,7 @@ src/
   app/                      routes (App Router)
     api/contact/route.ts    contact form handler
     projects/[slug]/        case-study pages, generated from the project data
+    archive/                every project in one table
     opengraph-image.tsx     OG image, generated at build time
     icon.tsx apple-icon.tsx favicons, generated at build time
   components/
@@ -136,6 +137,14 @@ Spam handling, without a CAPTCHA:
 Deployed on [Vercel](https://vercel.com). Pushing to `main` deploys to
 production; other branches get preview URLs. Set the environment variables
 above in the Vercel project settings.
+
+## Inspiration
+
+Some ideas, not code, came from other developers' open-source portfolios: the
+project archive table, the header that hides while scrolling, the CV button and
+the live and source links on projects from
+[Brittany Chiang's v4](https://github.com/bchiang7/v4), and reading time on
+case studies from [Sat Naing's site](https://github.com/satnaing/satnaing.dev).
 
 ## Licence
 

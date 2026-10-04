@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Light theme */
+  /* Light theme (default) */
   :root {
     --background: 40 22% 97%;
     --foreground: 222 24% 11%;
@@ -40,7 +40,7 @@
     --grid-alpha: 0.035;
   }
 
-  /* Dark theme (default) */
+  /* Dark theme */
   .dark {
     --background: 222 26% 6%;
     --foreground: 210 24% 97%;

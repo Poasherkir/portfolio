@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { Lock } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Lock } from "lucide-react";
 import {
   architectureIntro,
   funProjects,
@@ -65,6 +66,13 @@ export default function ProjectsPage() {
               <p className="font-mono text-xs uppercase tracking-[0.16em] text-foreground/65">
                 {workProof.join("  ·  ")}
               </p>
+              <Link
+                href="/archive"
+                className="group inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.16em] text-brand"
+              >
+                All {projects.length} in one list
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
           </Reveal>
 

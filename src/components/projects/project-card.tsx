@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 import ProjectVisual from "./project-visual";
@@ -78,11 +78,38 @@ export default function ProjectCard({
           </ul>
         )}
 
-        {project.hasCaseStudy && (
-          <p className="mt-auto pt-6 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brand">
-            Read case study →
-          </p>
-        )}
+        <div className="mt-auto flex items-center justify-between gap-3 pt-6">
+          {project.hasCaseStudy && (
+            <p className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brand">
+              Read case study →
+            </p>
+          )}
+          {/* z-20 lifts these above the card's stretched link. */}
+          <div className="relative z-20 flex items-center gap-1">
+            {project.hasCaseStudy && project.links.live && (
+              <a
+                href={project.links.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.title}, live`}
+                className="inline-flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-brand"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            )}
+            {project.links.repo && (
+              <a
+                href={project.links.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.title} source on GitHub`}
+                className="inline-flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-brand"
+              >
+                <Github className="h-3.5 w-3.5" />
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
