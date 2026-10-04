@@ -122,7 +122,7 @@ function DataPortrait({ project, className }: { project: Project; className?: st
       return <ArchivePortrait project={project} className={className} />;
     case "briefing-pdf-pipeline":
       return <PipelinePortrait className={className} />;
-    case "livreurpro":
+    case "delivery-os":
       return <RoutePortrait className={className} />;
     case "bankidz":
       return <ComparePortrait className={className} />;
@@ -325,7 +325,7 @@ function PipelinePortrait({ className }: { className?: string }) {
   );
 }
 
-// LivreurPro: a sequenced delivery route
+// Delivery OS: a sequenced delivery route
 
 function RoutePortrait({ className }: { className?: string }) {
   const stops = [
@@ -359,7 +359,7 @@ function RoutePortrait({ className }: { className?: string }) {
           </g>
         ))}
       </svg>
-      <Caption left="A day of drops, sequenced once instead of guessed at" right="PWA" />
+      <Caption left="A day of drops in one batch, sequenced into one route" right="IN PROGRESS" />
     </Frame>
   );
 }

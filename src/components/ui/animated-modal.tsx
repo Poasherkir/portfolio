@@ -29,19 +29,15 @@ export function Modal({ children }: { children: ReactNode }) {
 export function ModalTrigger({
   children,
   className,
-  label,
 }: {
   children: ReactNode;
   className?: string;
-  /** Accessible name for the trigger. */
-  label: string;
 }) {
   const { setOpen } = useModal();
   return (
     <button
       type="button"
       aria-haspopup="dialog"
-      aria-label={label}
       className={cn("relative overflow-hidden text-center", className)}
       onClick={() => setOpen(true)}
     >

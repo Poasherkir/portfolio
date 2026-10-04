@@ -5,7 +5,10 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** Fade and rise in on mount, for content above the fold. */
+/**
+ * Fade and rise in on load, for content above the fold. Plain CSS, so it runs
+ * as soon as the page paints instead of waiting for JavaScript.
+ */
 export function FadeIn({
   children,
   className,
@@ -17,17 +20,13 @@ export function FadeIn({
   delay?: number;
   duration?: number;
 }) {
-  const reduced = useReducedMotion();
-
   return (
-    <motion.div
-      initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={reduced ? INSTANT : { duration, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+    <div
+      className={cn("animate-fade-in-up", className)}
+      style={{ animationDelay: `${delay}s`, animationDuration: `${duration}s` }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 

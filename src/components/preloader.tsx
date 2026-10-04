@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { profile } from "@/data/portfolio";
 
 type PreloaderState = {
@@ -21,13 +22,19 @@ export const usePreloader = () => useContext(PreloaderContext);
 const DURATION_MS = 1400;
 const SESSION_KEY = "mb:seen-intro";
 
-/** Intro counter, shown once per browser session. */
+/** Intro counter, shown once per browser session when the visit starts on the home page. */
 export default function Preloader({ children }: { children: ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [percent, setPercent] = useState(0);
+  const startsOnHome = usePathname() === "/";
+  const [isLoading, setIsLoading] = useState(startsOnHome);
+  const [percent, setPercent] = useState(startsOnHome ? 0 : 100);
   const raf = useRef<number>(0);
 
   useEffect(() => {
+    if (!startsOnHome) {
+      window.sessionStorage.setItem(SESSION_KEY, "1");
+      return;
+    }
+
     const seen =
       typeof window !== "undefined" && window.sessionStorage.getItem(SESSION_KEY) === "1";
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -77,6 +84,8 @@ export default function Preloader({ children }: { children: ReactNode }) {
       window.removeEventListener("wheel", skip);
       document.removeEventListener("visibilitychange", skip);
     };
+    // Decided once, on the page the visit started on.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -89,7 +98,8 @@ export default function Preloader({ children }: { children: ReactNode }) {
             key="preloader"
             exit={{ y: "-100%" }}
             transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1], delay: 0.15 }}
-            className="pointer-events-none fixed inset-0 z-[5000] flex flex-col items-center justify-center bg-background"
+            // animate-intro-failsafe hides the overlay with CSS if JavaScript never runs.
+            className="pointer-events-none fixed inset-0 z-[5000] flex animate-intro-failsafe flex-col items-center justify-center bg-background"
           >
             <div className="instrument-grid pointer-events-none absolute inset-0 opacity-60" />
             <div className="relative flex flex-col items-center gap-6">

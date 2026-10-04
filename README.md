@@ -30,9 +30,10 @@ public, and [GateFlow](https://gateflow-demo.vercel.app) has a public demo.
 src/
   app/                      routes (App Router)
     api/contact/route.ts    contact form handler
-    projects/[slug]/        case-study pages, generated from the project data
+    projects/[slug]/        case-study pages and their share images, generated
+                            from the project data
     archive/                every project in one table
-    opengraph-image.tsx     OG image, generated at build time
+    opengraph-image.tsx     site-wide OG image, generated at build time
     icon.tsx apple-icon.tsx favicons, generated at build time
   components/
     animated-background*    Spline keyboard and its scroll choreography
@@ -46,6 +47,7 @@ src/
   data/roadmap.ts           data for the /stack page
   data/tech-logos.ts        skill name to Devicon file
   types/                    shared types
+scripts/check-content.mjs   data checks for CI (files, sizes, slugs)
 public/assets/projects/     project screenshots (WebP)
 public/assets/devicon/      vendored Devicon logos
 ```
@@ -67,8 +69,8 @@ Add an entry to `projects` in `portfolio.ts`:
   cover; the rest appear in the case study.
 - `screens` are phone screenshots (582 px wide WebP), shown in device frames.
 - `architecture` fills the layer diagram on the case study and on `/projects`.
-- `featured: true` puts it in the home-page grid. `FEATURED_SLUGS` in
-  `src/app/projects/page.tsx` controls the large rows on `/projects`.
+- `featured: true` puts it in the home-page grid. `workPage.heroSlug` and
+  `workPage.featuredSlugs` choose the large rows on `/projects`.
 
 ## Running locally
 
@@ -84,8 +86,15 @@ Then open http://localhost:3000.
 ```bash
 npm run typecheck
 npm run lint
+npm run check:content
 npm run build
 ```
+
+`check:content` catches what the compiler cannot: a screenshot or logo file
+that does not exist, a screenshot at the wrong size, a duplicate slug, or a
+slug in `workPage` that matches no project. It loads the `.ts` data files
+directly, so it needs Node 22.18 or newer. CI runs all four on every pull
+request.
 
 Stop the dev server before running `npm run build`: both write to `.next`, and
 the build overwrites the chunks the dev server is serving.

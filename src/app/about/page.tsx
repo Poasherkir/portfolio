@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { about, deliveryProcess, foundations, proofPillars } from "@/data/portfolio";
 import PageHeader from "@/components/page-header";
 import { Section } from "@/components/section";
-import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+import { FadeIn, Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import ExperienceSection from "@/components/sections/experience";
 import Engineering from "@/components/sections/engineering";
@@ -26,11 +26,11 @@ export default function AboutPage() {
           <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-20">
             <div className="max-w-2xl space-y-6">
               {about.body.map((para, i) => (
-                <Reveal key={i} delay={i * 0.04}>
+                <FadeIn key={i} delay={0.2 + i * 0.04}>
                   <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
                     {para}
                   </p>
-                </Reveal>
+                </FadeIn>
               ))}
 
               <Reveal delay={0.2}>

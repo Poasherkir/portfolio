@@ -55,15 +55,16 @@ function ProjectModal({ project }: { project: Project }) {
   return (
     <div className="flex">
       <Modal>
-        <ModalTrigger
-          label={`Open case study for ${project.title}`}
-          className="group/modal-btn block w-full bg-transparent text-left"
-        >
+        {/* The tile's text (status, title, summary) is the button's accessible name. */}
+        <ModalTrigger className="group/modal-btn block w-full bg-transparent text-left">
           <div
             className="relative w-full overflow-hidden rounded-lg border border-border"
             style={{ aspectRatio: "3/2" }}
           >
-            <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover/modal-btn:scale-[1.04]">
+            <div
+              aria-hidden
+              className="absolute inset-0 transition-transform duration-500 ease-out group-hover/modal-btn:scale-[1.04]"
+            >
               <ProjectVisual project={project} />
             </div>
 

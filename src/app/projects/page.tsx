@@ -12,7 +12,7 @@ import {
   workProof,
 } from "@/data/portfolio";
 import { Section } from "@/components/section";
-import { Reveal, WipeReveal } from "@/components/reveal";
+import { FadeIn, Reveal, WipeReveal } from "@/components/reveal";
 import FeaturedProject from "@/components/projects/featured-project";
 import ProjectGrid from "@/components/projects/project-grid";
 import ProjectSearch from "@/components/projects/project-search";
@@ -26,16 +26,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/projects" },
 };
 
-const HERO_SLUG = "briefing-point-go";
-const FEATURED_SLUGS = ["gateflow", "docroster", "techsub", "bac-archive"];
-
 export default function ProjectsPage() {
-  const hero = getProject(HERO_SLUG);
-  const featured = FEATURED_SLUGS.map(getProject).filter(
+  const hero = getProject(workPage.heroSlug);
+  const featured = workPage.featuredSlugs.map(getProject).filter(
     (p): p is NonNullable<typeof p> => Boolean(p)
   );
 
-  const featuredSet = new Set([HERO_SLUG, ...FEATURED_SLUGS]);
+  const featuredSet = new Set([workPage.heroSlug, ...workPage.featuredSlugs]);
   const rest = projects.filter((p) => !featuredSet.has(p.slug));
 
   const pipeline = getProject("briefing-pdf-pipeline");
@@ -49,19 +46,19 @@ export default function ProjectsPage() {
             <p className="eyebrow">{workPage.eyebrow}</p>
           </WipeReveal>
 
-          <Reveal delay={0.05}>
+          <FadeIn delay={0.05}>
             <h1 className="mt-5 max-w-4xl font-display text-4xl font-bold tracking-tight text-balance md:text-6xl">
               {workPage.title}
             </h1>
-          </Reveal>
+          </FadeIn>
 
-          <Reveal delay={0.1}>
+          <FadeIn delay={0.1}>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
               {workPage.lead}
             </p>
-          </Reveal>
+          </FadeIn>
 
-          <Reveal delay={0.15}>
+          <FadeIn delay={0.15}>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
               <p className="font-mono text-xs uppercase tracking-[0.16em] text-foreground/65">
                 {workProof.join("  ·  ")}
@@ -74,20 +71,20 @@ export default function ProjectsPage() {
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
-          </Reveal>
+          </FadeIn>
 
-          <Reveal delay={0.2}>
+          <FadeIn delay={0.2}>
             <div className="mt-8">
               <ProjectSearch projects={projects} />
             </div>
-          </Reveal>
+          </FadeIn>
 
-          <Reveal delay={0.24}>
+          <FadeIn delay={0.24}>
             <p className="mt-10 flex max-w-2xl gap-3 border-t border-border pt-6 text-sm leading-relaxed text-muted-foreground">
               <Lock className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden />
               {privateSource.notice}
             </p>
-          </Reveal>
+          </FadeIn>
         </div>
       </Section>
 

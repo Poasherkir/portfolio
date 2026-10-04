@@ -139,9 +139,13 @@ export default function Header() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="nav-overlay"
+              aria-label={open ? "Close menu" : "Open menu"}
               className="ml-1 flex h-10 items-center gap-2.5 rounded-full px-3 text-sm transition-colors hover:bg-foreground/[0.05] lg:hidden"
             >
-              <span className="hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] sm:inline">
+              <span
+                aria-hidden
+                className="hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] sm:inline"
+              >
                 {open ? "Close" : "Menu"}
               </span>
               <span className="relative flex h-4 w-5 flex-col justify-center" aria-hidden>
