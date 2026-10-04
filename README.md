@@ -30,9 +30,10 @@ public, and [GateFlow](https://gateflow-demo.vercel.app) has a public demo.
 src/
   app/                      routes (App Router)
     api/contact/route.ts    contact form handler
-    projects/[slug]/        case-study pages, generated from the project data
+    projects/[slug]/        case-study pages and their share images, generated
+                            from the project data
     archive/                every project in one table
-    opengraph-image.tsx     OG image, generated at build time
+    opengraph-image.tsx     site-wide OG image, generated at build time
     icon.tsx apple-icon.tsx favicons, generated at build time
   components/
     animated-background*    Spline keyboard and its scroll choreography

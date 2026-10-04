@@ -30,14 +30,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: project.title,
     description: project.tagline,
     alternates: { canonical: `/projects/${project.slug}` },
+    // The image comes from opengraph-image.tsx in this folder.
     openGraph: {
       title: `${project.title} — ${profile.name}`,
       description: project.tagline,
       url: absoluteUrl(`/projects/${project.slug}`),
-      // Without a screenshot the site-wide generated OG image is used.
-      ...(project.images[0]
-        ? { images: [{ url: project.images[0].src, width: 1200, height: 630 }] }
-        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} — ${profile.name}`,
+      description: project.tagline,
     },
   };
 }
