@@ -11,6 +11,12 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      // Old name of the Delivery OS project.
+      { source: "/projects/livreurpro", destination: "/projects/delivery-os", permanent: true },
+    ];
+  },
   // Vercel already sends HSTS. No CSP yet: the Spline runtime needs
   // WebAssembly, workers and blob URLs, and a wrong policy fails silently.
   async headers() {

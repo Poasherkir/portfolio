@@ -746,7 +746,6 @@ export const projects: Project[] = [
     images: [],
     featured: true,
     hasCaseStudy: true,
-    privateRepo: true,
     metrics: [
       { label: "Exam entries", value: "171" },
       { label: "PDFs served", value: "343" },
@@ -947,29 +946,38 @@ export const projects: Project[] = [
     privateRepo: true,
   },
   {
-    slug: "livreurpro",
-    title: "LivreurPro",
-    tagline: "Offline-first Flutter app for delivery riders — built by someone who did the job.",
+    slug: "delivery-os",
+    title: "Delivery OS",
+    tagline: "Offline-first Android app for Algerian delivery drivers — built by someone who did the job.",
     role: "Sole developer",
     year: "Ongoing",
     status: "active",
-    tags: ["Web", "Mobile"],
-    stack: ["PWA"],
-    valueProp: "Route-optimisation PWA for delivery riders.",
+    tags: ["Mobile"],
+    stack: ["Flutter", "Dart", "Riverpod", "go_router", "Drift", "SQLCipher"],
+    valueProp: "Offline Flutter app for delivery drivers: orders, customers and cash, reconciled to the dinar.",
     architecture: {
-      client: ["PWA — installable, no store gatekeeping"],
+      client: ["Flutter, Android only", "Arabic, French, English — full RTL"],
+      logic: ["Riverpod", "Pure-Dart domain layer", "Order state machine"],
+      data: ["Drift over SQLite", "SQLCipher, key in the Android Keystore", "Outbox, written now, synced later"],
+      deploy: ["CI: analyze, tests, 90% domain coverage gate, APK build"],
     },
     problem:
-      "Delivery riders in Algiers plan a day of drops in their head and lose time doubling back across the city. I know the shape of that problem because I did electric-bike delivery here — it is obvious from the saddle and invisible from a spreadsheet.",
+      "A driver in Algiers collects batches of parcels from several delivery companies each morning, plans the route in their head, and settles the cash with each agency at night. If the phone says 47,300 DA and the agency counts 47,250, the driver pays the difference. I did electric-bike delivery here, so I know where the time and the money leak.",
     approach:
-      "A PWA rather than a store app: installable, works on the cheap Android phones riders actually carry, no store gatekeeping and no install friction for a workforce that turns over. It sequences a day of drops into a route that stops the backtracking.",
-    hardPart: "",
-    result: "",
+      "Built for one person at a door, holding a parcel, often with no signal. Everything works offline: IDs are UUIDv7 generated on the phone, every write also lands in a local outbox, and the app makes no network call at all until the route milestone. Money is integer centimes end to end, and a payment rule produces exactly one rounded value per order, with every other amount derived by subtraction, so the day's totals add up to the dinar.",
+    hardPart:
+      "Data that has to be right with nobody around to fix it. The database is a list of households, their addresses and when they receive cash parcels, so it is encrypted with SQLCipher and no log line or exception ever carries a full phone number or coordinate. Phone numbers arrive pasted from WhatsApp with Arabic-Indic digits and invisible bidi marks, and are folded to one canonical form because they are the customer's identity key. Rules that cannot be made structural are enforced by guard tests, each proven by planting a real violation and watching it fail.",
+    result:
+      "In active development. Done: the encrypted database, Arabic, French and English with RTL, and customer and order entry. Batches are being built now; the money engine and the route optimiser come in later milestones.",
     links: { repo: "https://github.com/Poasherkir/delivery-os" },
     images: [],
     featured: false,
     hasCaseStudy: true,
-    privateRepo: true,
+    metrics: [
+      { label: "Network calls", value: "None, by design" },
+      { label: "Languages", value: "AR + FR + EN, full RTL" },
+      { label: "Money", value: "Integer centimes" },
+    ],
   },
 ];
 
@@ -989,7 +997,7 @@ export const about = {
     "I write Flutter and Dart for mobile, React and TypeScript for web, and Python for automation and services. Backends are Supabase, or Postgres behind FastAPI or Node.js, with permissions enforced on the server.",
     "The work I care most about is Briefing Point Go, an Electronic Flight Bag used by Air Algérie crew. They read it minutes before departure, the data sources are unreliable, and \u201cit mostly works\u201d is not good enough.",
     "It has been rewritten twice, from React Native to React + Capacitor to Flutter. The Flutter rebuild reached parity with the web app without a single backend change.",
-    "Outside aviation I have built GateFlow, a dismissal system for a school in Algiers; DocRoster, an on-call roster solver for hospital residents; a consumer exam-prep platform with its own payment gating; a loan-matching app for Algerian banking; and an app for delivery riders, because I did electric-bike delivery in Algiers and knew where the time went.",
+    "Outside aviation I have built GateFlow, a dismissal system for a school in Algiers; DocRoster, an on-call roster solver for hospital residents; a consumer exam-prep platform with its own payment gating; a loan-matching app for Algerian banking; and Delivery OS, an offline app for delivery drivers, because I did electric-bike delivery in Algiers and knew where the time went.",
     "I work in English, French and Arabic, remotely, from GMT+1. I am a registered auto-entrepreneur through ANAE, which means I can invoice international clients and receive foreign payments legally.",
   ],
   facts: [
@@ -1005,7 +1013,7 @@ export const about = {
 export const faq: { q: string; a: string }[] = [
   {
     q: "Can I see the source code?",
-    a: "Some of it. BAC Archive and LivreurPro are public on GitHub, and GateFlow has a public demo. Projects that hold real user data stay private; for those I can walk you through the architecture and the code on a call, or set up scoped read-only access.",
+    a: "Some of it. BAC Archive and Delivery OS are public on GitHub, and GateFlow has a public demo. Projects that hold real user data stay private; for those I can walk you through the architecture and the code on a call, or set up scoped read-only access.",
   },
   {
     q: "Do you work with clients outside Algeria?",
