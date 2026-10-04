@@ -21,13 +21,12 @@ import BeforeAfter from "@/components/projects/before-after";
 export const metadata: Metadata = {
   title: "Selected work",
   description:
-    "Production mobile and web work: an Electronic Flight Bag for commercial aviation, a bilingual subscription marketplace, an offline exam archive, and document automation.",
+    "Production mobile and web work: an Electronic Flight Bag for commercial aviation, a school dismissal system, an on-call roster solver for hospital residents, a bilingual subscription marketplace, an offline exam archive, and document automation.",
   alternates: { canonical: "/projects" },
 };
 
-/** The three that carry the page. Everything else is "more work". */
 const HERO_SLUG = "briefing-point-go";
-const FEATURED_SLUGS = ["techsub", "bac-archive"];
+const FEATURED_SLUGS = ["gateflow", "docroster", "techsub", "bac-archive"];
 
 export default function ProjectsPage() {
   const hero = getProject(HERO_SLUG);
@@ -42,9 +41,7 @@ export default function ProjectsPage() {
 
   return (
     <>
-      {/* ------------------------------------------------------------------ */}
-      {/* Hero                                                                */}
-      {/* ------------------------------------------------------------------ */}
+      {/* Hero */}
       <Section className="pb-16 pt-36 md:pb-24 md:pt-44">
         <div className="container">
           <WipeReveal>
@@ -77,7 +74,6 @@ export default function ProjectsPage() {
             </div>
           </Reveal>
 
-          {/* Stated once, as policy — not repeated on every card. */}
           <Reveal delay={0.24}>
             <p className="mt-10 flex max-w-2xl gap-3 border-t border-border pt-6 text-sm leading-relaxed text-muted-foreground">
               <Lock className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden />
@@ -87,9 +83,7 @@ export default function ProjectsPage() {
         </div>
       </Section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Featured case studies                                               */}
-      {/* ------------------------------------------------------------------ */}
+      {/* Featured case studies */}
       <Section id="featured" className="pb-20 md:pb-28">
         <div className="container">
           <WipeReveal>
@@ -107,8 +101,6 @@ export default function ProjectsPage() {
           <div className="mt-20 space-y-20 md:mt-24 md:space-y-24">
             {featured.map((project, i) => (
               <Reveal key={project.slug}>
-                {/* Alternating sides, so the eye has to travel and the second
-                    one does not read as a repeat of the first. */}
                 <FeaturedProject project={project} reverse={i % 2 === 1} />
               </Reveal>
             ))}
@@ -116,9 +108,7 @@ export default function ProjectsPage() {
         </div>
       </Section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Before / after — only where a manual process was actually replaced   */}
-      {/* ------------------------------------------------------------------ */}
+      {/* Before / after */}
       {pipeline?.beforeAfter && (
         <Section className="pb-20 md:pb-28">
           <div className="container">
@@ -144,9 +134,7 @@ export default function ProjectsPage() {
         </Section>
       )}
 
-      {/* ------------------------------------------------------------------ */}
-      {/* More work                                                           */}
-      {/* ------------------------------------------------------------------ */}
+      {/* More work */}
       <Section id="more-work" className="pb-20 md:pb-28">
         <div className="container">
           <WipeReveal>
@@ -159,8 +147,7 @@ export default function ProjectsPage() {
           </Reveal>
 
           <div className="mt-10">
-            {/* useSearchParams needs a boundary for the rest of the page to
-                stay static. */}
+            {/* useSearchParams needs a Suspense boundary to keep the page static. */}
             <Suspense fallback={<div className="h-12" />}>
               <ProjectGrid projects={rest} allProjects={projects} />
             </Suspense>
@@ -193,9 +180,7 @@ export default function ProjectsPage() {
         </div>
       </Section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* How I build                                                         */}
-      {/* ------------------------------------------------------------------ */}
+      {/* How I build */}
       <Section id="architecture" className="border-t border-border py-20 md:py-28">
         <div className="container">
           <WipeReveal>

@@ -1,10 +1,4 @@
-/* ---------------------------------------------------------------------------
- * STACK
- *
- * Two tiers, both meaning "I work with this":
- *   shipping — the daily stack, what I reach for first.
- *   working  — used and comfortable in.
- * ------------------------------------------------------------------------- */
+// Data for /stack. "shipping" is the daily stack, "working" is used and comfortable in.
 
 export type SkillLevel = "shipping" | "working" | "roadmap";
 
@@ -39,7 +33,7 @@ export const languagePriority: {
   { language: "TypeScript", stars: 5, why: "Professional modern web development", level: "shipping" },
   { language: "SQL", stars: 5, why: "Databases", level: "shipping" },
   { language: "Java", stars: 4, why: "Enterprise and backend", level: "working" },
-  { language: "Python", stars: 3, why: "Automation, APIs, AI and data", level: "shipping" },
+  { language: "Python", stars: 3, why: "Automation, APIs, solvers and data", level: "shipping" },
   { language: "C / C++", stars: 3, why: "CS fundamentals", level: "working" },
   { language: "C#", stars: 2, why: ".NET ecosystem", level: "working" },
   { language: "Go", stars: 2, why: "Modern backend and cloud", level: "working" },
@@ -53,7 +47,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "core",
     title: "Core programming",
-    blurb: "The non-negotiables. Everything else assumes these.",
+    blurb: "The fundamentals under everything else.",
     items: [
       { name: "HTML5", level: "shipping" },
       { name: "CSS3", level: "shipping" },
@@ -69,7 +63,7 @@ export const skillAreas: SkillArea[] = [
       { name: "Authentication & authorization", level: "shipping", note: "Supabase auth + RLS" },
       { name: "Linux / terminal", level: "working" },
       { name: "Basic networking", level: "working" },
-      { name: "Testing", level: "working" },
+      { name: "Testing", level: "shipping" },
     ],
   },
   {
@@ -88,14 +82,14 @@ export const skillAreas: SkillArea[] = [
       { name: "Fetch API", level: "shipping" },
       { name: "Modules", level: "shipping" },
       { name: "React", level: "shipping" },
-      { name: "Next.js", level: "shipping", note: "this site" },
+      { name: "Next.js", level: "shipping", note: "this site, TechSub, DocRoster" },
       { name: "Tailwind CSS", level: "shipping", note: "this site" },
       { name: "Component architecture", level: "shipping" },
       { name: "Error handling", level: "shipping" },
       { name: "Accessibility", level: "working" },
       { name: "Performance optimisation", level: "working" },
-      { name: "React Router", level: "working" },
-      { name: "TanStack Query", level: "working" },
+      { name: "React Router", level: "shipping", note: "GateFlow" },
+      { name: "TanStack Query", level: "shipping", note: "DocRoster" },
       { name: "Zustand / Redux Toolkit", level: "working" },
       { name: "Form validation libraries", level: "working", note: "zod on this site" },
       { name: "Frontend testing", level: "working" },
@@ -104,7 +98,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "mobile",
     title: "Mobile",
-    blurb: "Not on the source list, but it is the strongest thing here.",
+    blurb: "Flutter first, with native Android work where it is needed.",
     items: [
       { name: "Flutter", level: "shipping", note: "primary" },
       { name: "Dart", level: "shipping" },
@@ -115,6 +109,7 @@ export const skillAreas: SkillArea[] = [
       { name: "PWA", level: "shipping" },
       { name: "Android release engineering", level: "shipping", note: "signing, ProGuard, FLAG_SECURE" },
       { name: "jadx", level: "shipping", note: "APK recovery" },
+      { name: "Android WebView apps", level: "shipping", note: "GateFlow, Java" },
       { name: "Kotlin", level: "working" },
       { name: "Swift", level: "working" },
     ],
@@ -122,20 +117,26 @@ export const skillAreas: SkillArea[] = [
   {
     id: "backend",
     title: "Backend",
-    blurb: "Postgres-first today; a second ecosystem is the next deliberate step.",
+    blurb: "Postgres first, with Python, Node.js and PHP services around it.",
     items: [
       { name: "Supabase", level: "shipping", note: "Postgres, Auth, Storage, RLS, Edge Functions" },
       { name: "REST API design", level: "shipping" },
       { name: "PHP", level: "shipping" },
       { name: "Python", level: "shipping", note: "pipelines, scraping, automation" },
+      { name: "FastAPI", level: "shipping", note: "DocRoster, Briefing Point Go services" },
+      { name: "SQLAlchemy / Alembic", level: "shipping", note: "DocRoster" },
+      { name: "OR-Tools CP-SAT", level: "shipping", note: "DocRoster roster solver" },
+      { name: "Node.js", level: "shipping", note: "GateFlow" },
+      { name: "Express", level: "shipping", note: "GateFlow" },
+      { name: "WebSockets", level: "shipping", note: "Socket.IO in GateFlow" },
+      { name: "Background jobs & queues", level: "shipping", note: "DocRoster worker" },
+      { name: "Email systems", level: "shipping", note: "SMTP, Resend" },
       { name: "Playwright", level: "shipping", note: "server-side authenticated scraping" },
       { name: "JWT", level: "working" },
       { name: "Cookies & sessions", level: "working" },
       { name: "File uploads", level: "working" },
       { name: "Logging", level: "working" },
       { name: "Rate limiting", level: "working", note: "on this site's contact route" },
-      { name: "Node.js", level: "working" },
-      { name: "Express", level: "working" },
       { name: "NestJS", level: "working" },
       { name: "Java", level: "working" },
       { name: "Spring Boot", level: "working" },
@@ -143,19 +144,17 @@ export const skillAreas: SkillArea[] = [
       { name: "JPA / Hibernate", level: "working" },
       { name: "Maven", level: "working" },
       { name: "OAuth", level: "working" },
-      { name: "WebSockets", level: "working" },
-      { name: "Background jobs & queues", level: "working" },
-      { name: "Email systems", level: "working" },
       { name: "Caching", level: "working" },
     ],
   },
   {
     id: "databases",
     title: "Databases",
-    blurb: "The part most portfolios skip and most real work depends on.",
+    blurb: "Schema design and SQL, where most of the real work happens.",
     items: [
       { name: "PostgreSQL", level: "shipping" },
       { name: "MySQL", level: "shipping" },
+      { name: "SQLite", level: "shipping", note: "GateFlow" },
       { name: "Oracle SQL", level: "shipping" },
       { name: "SELECT / INSERT / UPDATE / DELETE", level: "shipping" },
       { name: "JOIN", level: "shipping" },
@@ -175,7 +174,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "devops",
     title: "DevOps",
-    blurb: "Where a beginner portfolio and a professional one visibly diverge.",
+    blurb: "Containers, CI and the server work around a release.",
     items: [
       { name: "Bash", level: "working" },
       { name: "SSH", level: "working" },
@@ -183,10 +182,11 @@ export const skillAreas: SkillArea[] = [
       { name: "Permissions & processes", level: "working" },
       { name: "Logs", level: "working" },
       { name: "Vercel deployment", level: "shipping" },
-      { name: "Docker", level: "working" },
-      { name: "Docker Compose", level: "working" },
-      { name: "GitHub Actions", level: "working" },
-      { name: "CI/CD pipelines", level: "working" },
+      { name: "Docker", level: "shipping" },
+      { name: "Docker Compose", level: "shipping", note: "DocRoster" },
+      { name: "GitHub Actions", level: "shipping" },
+      { name: "CI/CD pipelines", level: "shipping" },
+      { name: "Caddy", level: "working" },
       { name: "AWS EC2", level: "working" },
       { name: "AWS S3", level: "working" },
       { name: "AWS RDS", level: "working" },
@@ -200,7 +200,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "security",
     title: "Security",
-    blurb: "Not a login page — understanding why the login is safe.",
+    blurb: "Authentication, permissions and data protection, enforced on the server.",
     items: [
       { name: "HTTPS", level: "shipping" },
       { name: "Row-level security", level: "shipping", note: "server decides, never the client" },
@@ -211,9 +211,10 @@ export const skillAreas: SkillArea[] = [
       { name: "SQL injection", level: "working" },
       { name: "XSS", level: "working" },
       { name: "CORS", level: "working" },
-      { name: "Password hashing", level: "working", note: "bcrypt / Argon2" },
-      { name: "JWT security", level: "working" },
-      { name: "CSRF", level: "working" },
+      { name: "Password hashing", level: "shipping", note: "argon2id, scrypt" },
+      { name: "JWT security", level: "shipping", note: "rotating refresh tokens" },
+      { name: "CSRF", level: "shipping" },
+      { name: "Signed tokens", level: "shipping", note: "Ed25519 passes in GateFlow" },
       { name: "Secrets management", level: "working" },
       { name: "OWASP Top 10", level: "working" },
     ],
@@ -221,26 +222,28 @@ export const skillAreas: SkillArea[] = [
   {
     id: "testing",
     title: "Testing",
-    blurb: "Honestly the biggest single gap, and the next thing being closed.",
+    blurb: "Unit, integration and browser tests, run in CI.",
     items: [
       { name: "Manual QA & debugging", level: "shipping" },
-      { name: "Vitest / Jest", level: "working" },
-      { name: "React Testing Library", level: "working" },
-      { name: "Playwright E2E", level: "working", note: "used for scraping, not yet for tests" },
-      { name: "Unit testing", level: "working" },
-      { name: "Integration testing", level: "working" },
-      { name: "API testing", level: "working" },
-      { name: "Test databases", level: "working" },
-      { name: "CI test pipeline", level: "working" },
+      { name: "Vitest / Jest", level: "shipping" },
+      { name: "pytest", level: "shipping", note: "with Hypothesis" },
+      { name: "React Testing Library", level: "shipping" },
+      { name: "Playwright E2E", level: "shipping", note: "DocRoster, GateFlow" },
+      { name: "Unit testing", level: "shipping" },
+      { name: "Integration testing", level: "shipping" },
+      { name: "API testing", level: "shipping" },
+      { name: "Test databases", level: "shipping" },
+      { name: "CI test pipeline", level: "shipping" },
     ],
   },
   {
     id: "architecture",
     title: "Architecture",
-    blurb: "A good modular monolith first. Microservices are not step one.",
+    blurb: "Modular monoliths with clear layers, before anything distributed.",
     items: [
       { name: "Layered architecture", level: "shipping" },
       { name: "Service layer", level: "shipping" },
+      { name: "State machines", level: "shipping", note: "orders, rosters, school pickups" },
       { name: "MVC", level: "working" },
       { name: "SOLID", level: "working" },
       { name: "Dependency injection", level: "working" },
@@ -257,7 +260,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "apis",
     title: "APIs",
-    blurb: "Integrating hostile third-party APIs is already the day job.",
+    blurb: "Designing APIs, and integrating third-party ones that have no documentation.",
     items: [
       { name: "REST", level: "shipping" },
       { name: "HTTP semantics", level: "shipping" },
@@ -265,9 +268,9 @@ export const skillAreas: SkillArea[] = [
       { name: "API authentication", level: "shipping" },
       { name: "Pagination / filtering / sorting", level: "working" },
       { name: "Rate limiting", level: "working" },
-      { name: "WebSockets", level: "working" },
+      { name: "WebSockets", level: "shipping" },
       { name: "GraphQL", level: "working" },
-      { name: "OpenAPI / Swagger", level: "working" },
+      { name: "OpenAPI / Swagger", level: "shipping", note: "typed client in DocRoster" },
       { name: "API versioning", level: "working" },
       { name: "API documentation", level: "working" },
     ],
@@ -275,7 +278,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "ai",
     title: "AI engineering",
-    blurb: "The newest column, and the one with the most headroom.",
+    blurb: "LLM features built into products.",
     items: [
       { name: "LLM APIs", level: "working" },
       { name: "Prompt engineering", level: "working" },
@@ -294,7 +297,7 @@ export const skillAreas: SkillArea[] = [
   {
     id: "workflow",
     title: "Git & workflow",
-    blurb: "A workspace, not a folder of tutorials.",
+    blurb: "How the work is tracked, reviewed and released.",
     items: [
       { name: "Branches", level: "shipping" },
       { name: "Merge", level: "shipping" },
@@ -304,7 +307,7 @@ export const skillAreas: SkillArea[] = [
       { name: "Rebase", level: "working" },
       { name: "Tags & releases", level: "working" },
       { name: "Conventional commits", level: "working" },
-      { name: "GitHub Actions", level: "working" },
+      { name: "GitHub Actions", level: "shipping" },
       { name: "GitHub Projects", level: "working" },
     ],
   },
