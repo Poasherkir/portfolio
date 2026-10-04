@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { hero, profile, socials } from "@/data/portfolio";
@@ -12,9 +13,10 @@ import { usePreloader } from "@/components/preloader";
 import { cn } from "@/lib/utils";
 
 export default function Hero() {
-  // Always rendered; the entrance is delayed while the intro is showing.
+  // Always rendered; the entrance is delayed while the intro is showing. Read
+  // once so a running CSS animation is not restarted when the intro ends.
   const { isLoading } = usePreloader();
-  const offset = isLoading ? 0.7 : 0;
+  const [offset] = useState(() => (isLoading ? 0.7 : 0));
 
   return (
     <section id="hero" className="relative min-h-[100svh] w-full md:h-dvh">

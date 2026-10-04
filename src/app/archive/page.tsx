@@ -4,7 +4,7 @@ import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
 import { projects } from "@/data/portfolio";
 import PageHeader from "@/components/page-header";
 import { Section } from "@/components/section";
-import { Reveal } from "@/components/reveal";
+import { FadeIn } from "@/components/reveal";
 import ProjectStatus from "@/components/projects/project-status";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function ArchivePage() {
 
       <Section className="py-14 md:py-20">
         <div className="container">
-          <Reveal>
+          <FadeIn delay={0.2}>
             <div className="overflow-x-auto rounded-xl border border-border bg-background/90">
               <table className="w-full border-collapse text-left text-sm">
                 <thead>
@@ -134,7 +134,7 @@ export default function ArchivePage() {
                 </tbody>
               </table>
             </div>
-          </Reveal>
+          </FadeIn>
 
           <p className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
