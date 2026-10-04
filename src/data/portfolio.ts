@@ -8,23 +8,14 @@ import type {
   SocialLink,
 } from "@/types";
 
-/* ---------------------------------------------------------------------------
- * Site content.
- *
- * Everything the site says lives here; components read from it and never
- * hardcode copy. Unknown values are omitted rather than guessed, and the
- * component simply does not render that line. Outstanding items are listed in
- * CONTENT_CHECKLIST at the bottom.
- * ------------------------------------------------------------------------- */
+// All site copy. Optional values left as null are not rendered.
 
 export const profile = {
   name: "Malik Boudine",
   handle: "Poasherkir",
-  /** Shown under the name in the hero. */
   role: "Full-stack & mobile developer",
   location: "Algiers, Algeria",
   timezone: "GMT+1",
-  /** Registered to invoice and receive foreign payments. */
   legal: "Registered auto-entrepreneur (ANAE) — I invoice internationally.",
   languages: [
     { name: "English", level: "Professional" },
@@ -65,14 +56,16 @@ export const seo = {
     "Python automation",
     "PDF automation",
     "Electronic Flight Bag",
+    "FastAPI developer",
+    "Node.js developer",
+    "school dismissal app",
+    "duty roster software",
     "developpeur Flutter freelance",
   ],
   ogImage: "/assets/seo/og-image.png",
 };
 
-/* -------------------------------------------------------------------------- */
-/* Navigation                                                                  */
-/* -------------------------------------------------------------------------- */
+// Navigation
 
 export const navLinks: NavLink[] = [
   { title: "Home", href: "/", description: "Start here" },
@@ -85,34 +78,23 @@ export const navLinks: NavLink[] = [
 
 export const socials: SocialLink[] = [
   { title: "GitHub", href: profile.github, handle: "@Poasherkir", icon: "github" },
-  // Add LinkedIn / Upwork here and they appear in the header, footer and contact page.
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Hero + proof                                                                */
-/* -------------------------------------------------------------------------- */
+// Hero + proof
 
 export const hero = {
   eyebrow: "Full-stack · Mobile · Automation",
-  /** The big display type, one line per entry. */
   displayLines: ["I build", "software", "that ships."],
-  /** Only the closing word is accented, so the emphasis lands somewhere. */
   accentWord: "ships.",
   subhead:
     "Production apps, end to end. Flutter on mobile, React on web, Supabase and Python behind them — architecture through to the signed release.",
-  /** Set to null when booked up. */
+  /** Null hides the availability badge. */
   availability: "Available for selected freelance projects",
   primaryCta: { label: "View the work", href: "/projects" },
   secondaryCta: { label: "Start a project", href: "/contact" },
-  /**
-   * The shape of a delivery, stated once. Turns the loose technology list into
-   * something ordered — this is what a client is buying, in sequence.
-   */
   pipeline: ["Interface", "Logic", "Data", "Automation", "Release"],
 };
 
-
-/** Every line here is verifiable. */
 export const proofStrip: string[] = [
   "Flagship: an Electronic Flight Bag in commercial aviation use",
   "Rewritten twice — React Native → Capacitor → Flutter",
@@ -125,7 +107,7 @@ export const proofPillars = [
   {
     id: "production",
     title: "Production, not portfolio-ware",
-    body: "Signed release pipelines, encrypted credentials, live data feeds, real users. The projects below are things people open at work, not things I opened once for a screenshot.",
+    body: "Signed release pipelines, encrypted credentials, live data feeds and real users, in aviation, education, healthcare and commerce.",
   },
   {
     id: "ownership",
@@ -135,7 +117,7 @@ export const proofPillars = [
   {
     id: "integrations",
     title: "Hard integrations",
-    body: "METAR weather and ADS-B tracking, authenticated roster scraping, PDF content-stream surgery, and a local payment gateway with no usable SDK. The parts other people quote around.",
+    body: "METAR weather and ADS-B tracking, authenticated roster scraping, PDF content-stream surgery, a constraint solver for hospital rosters, and a local payment gateway with no usable SDK.",
   },
   {
     id: "languages",
@@ -144,9 +126,7 @@ export const proofPillars = [
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Skills                                                                      */
-/* -------------------------------------------------------------------------- */
+// Skills
 
 export const skillGroups: SkillGroup[] = [
   {
@@ -203,55 +183,47 @@ export const skillGroups: SkillGroup[] = [
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Keycaps for the 3D keyboard in the background                               */
-/* -------------------------------------------------------------------------- */
+// Keycaps for the 3D keyboard in the background
 
 export type SkillLevel = "shipping" | "working" | "roadmap";
 
 export type Keycap = {
   id: string;
-  /** Devicon SVG in /public/assets/devicon. Full colour, MIT licensed. */
+  /** File in /public/assets/devicon. */
   icon: string;
   label: string;
   description: string;
-  /** Surfaced in the read-out, so a logo never overstates the level. */
   level: SkillLevel;
-  /** Brand hex. Used as a dark tint for the cap body, not at full strength. */
+  /** Brand colour, used as a tint on the cap. */
   color: string;
-  /** Physical key that presses this cap when typed. */
+  /** Keyboard key that presses this cap. */
   key: string;
-  /** Omitted where there is nothing real to point at. */
   usedIn?: string;
 };
 
-/**
- * The board doubles as the skills matrix, so every cap carries its tier and
- * the read-out states it — a logo alone would overstate the roadmap entries.
- */
 export const keycaps: Keycap[][] = [
   // Web core
   [
-    { id: "html5", icon: "html5-plain.svg", label: "HTML5", level: "shipping", color: "#E34F26", key: "h", description: "Semantic structure first. Accessibility is not a plugin." },
-    { id: "css3", icon: "css3-plain.svg", label: "CSS3", level: "shipping", color: "#1572B6", key: "c", description: "Grid, flexbox and design systems that survive a redesign." },
-    { id: "javascript", icon: "javascript-plain.svg", label: "JavaScript", level: "shipping", color: "#F7DF1E", key: "j", description: "Still the language everything else negotiates with." },
-    { id: "typescript", icon: "typescript-plain.svg", label: "TypeScript", level: "shipping", color: "#3178C6", key: "t", description: "Types at the boundary, so a bad API response fails at build.", usedIn: "TechSub · this site" },
-    { id: "react", icon: "react-original.svg", label: "React", level: "shipping", color: "#61DAFB", key: "r", description: "Client-facing web and every admin dashboard behind a product.", usedIn: "TechSub admin · dashboards" },
-    { id: "nextjs", icon: "nextjs-plain.svg", label: "Next.js", level: "shipping", color: "#9AA4B2", key: "n", description: "App Router and server components. This site runs on it.", usedIn: "TechSub storefront · this site" },
+    { id: "html5", icon: "html5-plain.svg", label: "HTML5", level: "shipping", color: "#E34F26", key: "h", description: "Semantic markup, accessible by default." },
+    { id: "css3", icon: "css3-plain.svg", label: "CSS3", level: "shipping", color: "#1572B6", key: "c", description: "Grid, flexbox and responsive layouts." },
+    { id: "javascript", icon: "javascript-plain.svg", label: "JavaScript", level: "shipping", color: "#F7DF1E", key: "j", description: "The browser runtime under every web project." },
+    { id: "typescript", icon: "typescript-plain.svg", label: "TypeScript", level: "shipping", color: "#3178C6", key: "t", description: "Types at the boundary, so a bad API response fails at build.", usedIn: "TechSub · GateFlow · this site" },
+    { id: "react", icon: "react-original.svg", label: "React", level: "shipping", color: "#61DAFB", key: "r", description: "Client-facing web and every admin dashboard behind a product.", usedIn: "TechSub admin · GateFlow" },
+    { id: "nextjs", icon: "nextjs-plain.svg", label: "Next.js", level: "shipping", color: "#9AA4B2", key: "n", description: "App Router and server components. This site runs on it.", usedIn: "TechSub storefront · DocRoster · this site" },
   ],
   // UI & mobile
   [
-    { id: "tailwindcss", icon: "tailwindcss-original.svg", label: "Tailwind CSS", level: "shipping", color: "#38BDF8", key: "w", description: "Utility-first, with a real design system on top of it.", usedIn: "TechSub · this site" },
+    { id: "tailwindcss", icon: "tailwindcss-original.svg", label: "Tailwind CSS", level: "shipping", color: "#38BDF8", key: "w", description: "Utility CSS with design tokens on top.", usedIn: "TechSub · GateFlow · DocRoster" },
     { id: "vitejs", icon: "vitejs-plain.svg", label: "Vite", level: "working", color: "#646CFF", key: "v", description: "Fast dev server and build for React work." },
-    { id: "figma", icon: "figma-plain.svg", label: "Figma", level: "shipping", color: "#F24E1E", key: "f", description: "Where a client hands me a design and I hand back a signed build." },
+    { id: "figma", icon: "figma-plain.svg", label: "Figma", level: "shipping", color: "#F24E1E", key: "f", description: "From a client's Figma file to built, signed screens." },
     { id: "flutter", icon: "flutter-plain.svg", label: "Flutter", level: "shipping", color: "#54C5F8", key: "1", description: "The primary stack. One codebase, Android and iOS, shipped signed.", usedIn: "Briefing Point Go · BAC Archive" },
-    { id: "dart", icon: "dart-plain.svg", label: "Dart", level: "shipping", color: "#0175C2", key: "2", description: "Sound null safety and a compiler that catches what tests would not.", usedIn: "Briefing Point Go" },
-    { id: "android", icon: "android-plain.svg", label: "Android", level: "shipping", color: "#3DDC84", key: "3", description: "APK signing, ProGuard, FLAG_SECURE, encrypted credential storage.", usedIn: "Briefing Point Go · BAC Archive" },
+    { id: "dart", icon: "dart-plain.svg", label: "Dart", level: "shipping", color: "#0175C2", key: "2", description: "Sound null safety, compiled ahead of time for release.", usedIn: "Briefing Point Go" },
+    { id: "android", icon: "android-plain.svg", label: "Android", level: "shipping", color: "#3DDC84", key: "3", description: "APK signing, ProGuard, FLAG_SECURE, encrypted credential storage.", usedIn: "Briefing Point Go · BAC Archive · GateFlow" },
   ],
   // Data
   [
     { id: "supabase", icon: "supabase-plain.svg", label: "Supabase", level: "shipping", color: "#3ECF8E", key: "s", description: "Postgres, auth, storage and edge functions without a devops hire.", usedIn: "Briefing Point Go · BAC Archive" },
-    { id: "postgresql", icon: "postgresql-plain.svg", label: "PostgreSQL", level: "shipping", color: "#4169E1", key: "g", description: "Relational modelling done properly, before any client code exists.", usedIn: "TechSub · Supabase apps" },
+    { id: "postgresql", icon: "postgresql-plain.svg", label: "PostgreSQL", level: "shipping", color: "#4169E1", key: "g", description: "Schemas, constraints, row-level security and migrations.", usedIn: "DocRoster · TechSub · Supabase apps" },
     { id: "mysql", icon: "mysql-original.svg", label: "MySQL", level: "shipping", color: "#4479A1", key: "q", description: "Relational schema design and CRUD backends on PHP stacks." },
     { id: "oracle", icon: "oracle-original.svg", label: "Oracle SQL", level: "working", color: "#F80000", key: "o", description: "Relational modelling and query work. No shipped project on this one." },
     { id: "mongodb", icon: "mongodb-plain.svg", label: "MongoDB", level: "working", color: "#47A248", key: "m", description: "Postgres covers the work today." },
@@ -259,29 +231,27 @@ export const keycaps: Keycap[][] = [
   ],
   // Backend
   [
-    { id: "python", icon: "python-plain.svg", label: "Python", level: "shipping", color: "#3776AB", key: "p", description: "Pipelines, scraping and automation. The quiet money-saver.", usedIn: "PDF pipeline · BAC Archive importer" },
-    { id: "php", icon: "php-plain.svg", label: "PHP", level: "shipping", color: "#777BB4", key: "u", description: "Legacy stacks are real work. I maintain them without complaining.", usedIn: "Gestion de la Scolarité" },
-    { id: "nodejs", icon: "nodejs-plain.svg", label: "Node.js", level: "working", color: "#5FA04E", key: "4", description: "The next backend ecosystem after Supabase." },
+    { id: "python", icon: "python-plain.svg", label: "Python", level: "shipping", color: "#3776AB", key: "p", description: "Solvers, pipelines, scraping and API services.", usedIn: "DocRoster · PDF pipeline · BAC Archive importer" },
+    { id: "php", icon: "php-plain.svg", label: "PHP", level: "shipping", color: "#777BB4", key: "u", description: "Features and maintenance on existing PHP and MySQL stacks.", usedIn: "Gestion de la Scolarité" },
+    { id: "nodejs", icon: "nodejs-plain.svg", label: "Node.js", level: "shipping", color: "#5FA04E", key: "4", description: "Express and Socket.IO for realtime servers, NestJS for structured APIs.", usedIn: "GateFlow · TechSub API" },
     { id: "nestjs", icon: "nestjs-original.svg", label: "NestJS", level: "shipping", color: "#E0234E", key: "5", description: "Structured Node backend — the TechSub API runs on it.", usedIn: "TechSub API" },
-    { id: "java", icon: "java-plain.svg", label: "Java", level: "working", color: "#E76F00", key: "7", description: "Fourth step on the path, after SQL." },
-    { id: "fastapi", icon: "fastapi-original.svg", label: "FastAPI", level: "shipping", color: "#009688", key: "8", description: "The load and flight-plan services behind Briefing Point Go.", usedIn: "Briefing Point Go services" },
+    { id: "java", icon: "java-plain.svg", label: "Java", level: "working", color: "#E76F00", key: "7", description: "Native Android shells: WebView, notifications, foreground services.", usedIn: "GateFlow Android apps" },
+    { id: "fastapi", icon: "fastapi-original.svg", label: "FastAPI", level: "shipping", color: "#009688", key: "8", description: "The DocRoster API and the services behind Briefing Point Go.", usedIn: "DocRoster · Briefing Point Go services" },
   ],
   // Tooling
   [
     { id: "git", icon: "git-plain.svg", label: "Git", level: "shipping", color: "#F03C2E", key: "a", description: "Small commits, milestone gates, a history you can read.", usedIn: "Every project" },
-    { id: "github", icon: "github-original.svg", label: "GitHub", level: "shipping", color: "#9AA4B2", key: "y", description: "Issues, pull requests, releases. A workspace, not a folder of demos.", usedIn: "Every project" },
+    { id: "github", icon: "github-original.svg", label: "GitHub", level: "shipping", color: "#9AA4B2", key: "y", description: "Issues, pull requests, Actions CI and releases.", usedIn: "Every project" },
     { id: "linux", icon: "linux-plain.svg", label: "Linux", level: "working", color: "#FCC624", key: "l", description: "Terminal, permissions, processes, logs." },
-    { id: "docker", icon: "docker-plain.svg", label: "Docker", level: "working", color: "#2496ED", key: "d", description: "The clearest gap between hobby and professional." },
-    { id: "amazonwebservices", icon: "amazonwebservices-plain-wordmark.svg", label: "AWS", level: "working", color: "#FF9900", key: "0", description: "EC2, S3, RDS and IAM first." },
+    { id: "docker", icon: "docker-plain.svg", label: "Docker", level: "working", color: "#2496ED", key: "d", description: "Compose stacks: API, worker, Postgres and a Caddy proxy.", usedIn: "DocRoster · GateFlow" },
+    { id: "amazonwebservices", icon: "amazonwebservices-plain-wordmark.svg", label: "AWS", level: "working", color: "#FF9900", key: "0", description: "EC2, S3, RDS and IAM." },
     { id: "jest", icon: "jest-plain.svg", label: "Jest", level: "working", color: "#C21325", key: "J", description: "Unit, integration and snapshot testing for React work." },
   ],
 ];
 
 export const keycapList = keycaps.flat();
 
-/* -------------------------------------------------------------------------- */
-/* Experience                                                                  */
-/* -------------------------------------------------------------------------- */
+// Experience
 
 export const experience: Experience[] = [
   {
@@ -292,21 +262,18 @@ export const experience: Experience[] = [
     description: [
       "Ships production Flutter apps end to end: mobile client, Supabase backend, React admin dashboard and a signed release pipeline — alone.",
       "Flagship work is Briefing Point Go, an Electronic Flight Bag in production with Air Algérie crew, integrating METAR weather, ADS-B tracking and authenticated crew roster data.",
+      "Built GateFlow, a dismissal system for a school in Algiers with parent, guard, office and driver apps, and DocRoster, a solver-generated duty roster for hospital resident doctors.",
       "Invoices international clients and receives foreign payments legally.",
     ],
-    skills: ["flutter", "dart", "supabase", "postgresql", "react", "python"],
+    skills: ["flutter", "dart", "supabase", "postgresql", "react", "python", "nodejs", "fastapi"],
   },
 ];
 
-/** One line, kept understated. */
 export const foundations =
   "Also comfortable in: Postgres tuning, relational modelling, REST integration, release engineering.";
 
-/* -------------------------------------------------------------------------- */
-/* Capabilities                                                                */
-/* -------------------------------------------------------------------------- */
+// Capabilities
 
-/** The same work as skillGroups, grouped by outcome. Each names its project. */
 export const capabilities: {
   id: string;
   title: string;
@@ -317,7 +284,7 @@ export const capabilities: {
     id: "offline",
     title: "Works without a signal",
     body: "Local-first storage and background sync, so the app keeps working on a plane, in a basement or on a dead connection — and catches up quietly when the network returns.",
-    proof: "BAC Archive · Briefing Point Go",
+    proof: "BAC Archive · Briefing Point Go · GateFlow",
   },
   {
     id: "payments",
@@ -329,13 +296,13 @@ export const capabilities: {
     id: "bilingual",
     title: "Arabic, French and English",
     body: "Full right-to-left layouts, not a translated string file. Mixed-direction text, mirrored navigation and number formatting that survives contact with real content.",
-    proof: "TechSub · BAC Archive",
+    proof: "TechSub · BAC Archive · GateFlow",
   },
   {
     id: "security",
     title: "Permissions enforced on the server",
     body: "Row-level security in Postgres and encrypted credential storage on device. If a request should be refused it is refused by the database, not by a hidden button.",
-    proof: "Briefing Point Go · TechSub",
+    proof: "Briefing Point Go · TechSub · DocRoster",
   },
   {
     id: "release",
@@ -351,9 +318,7 @@ export const capabilities: {
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Services                                                                    */
-/* -------------------------------------------------------------------------- */
+// Services
 
 export const services: Service[] = [
   {
@@ -422,11 +387,8 @@ export const services: Service[] = [
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Delivery process                                                            */
-/* -------------------------------------------------------------------------- */
+// Delivery process
 
-/** End-to-end delivery, not just the build step. */
 export const deliveryProcess: { step: string; title: string; body: string }[] = [
   {
     step: "01",
@@ -460,9 +422,7 @@ export const deliveryProcess: { step: string; title: string; body: string }[] = 
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Projects                                                                    */
-/* -------------------------------------------------------------------------- */
+// Projects
 
 export const projects: Project[] = [
   {
@@ -524,6 +484,166 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "gateflow",
+    title: "GateFlow",
+    tagline: "School dismissal for a school with one gate: parents queue from their phones and collect their children with a signed QR pass.",
+    role: "Sole developer — Node.js server, React web app, four Android apps, in-browser demo",
+    year: "2026",
+    status: "active",
+    tags: ["Web", "Mobile", "Backend"],
+    stack: ["TypeScript", "React", "Node.js", "Express", "Socket.IO", "SQLite", "Leaflet", "Android"],
+    valueProp: "A metered queue for school pickup: the guard calls each child, the parent comes forward only when the children are at the gate.",
+    architecture: {
+      client: ["React + Vite PWA", "Four Android WebView apps", "French, English, Arabic (RTL)"],
+      logic: ["Server-side state machines", "Gate dispatcher and sibling batching", "Van round: nearest neighbour + 2-opt"],
+      api: ["Express REST intents, idempotent by event id", "Socket.IO rooms", "Ed25519-signed passes"],
+      data: ["SQLite (WAL)", "Append-only audit log", "Numbered migrations"],
+      integrations: ["SMS: Twilio, Infobip or any HTTP gateway", "Web Push", "OSRM / Valhalla routing"],
+      automation: ["Nightly backups, encrypted off-site copies", "Retention purge", "Load simulator"],
+      deploy: ["Docker on Fly.io or Render", "Server-less demo on Vercel"],
+    },
+    screens: [
+      {
+        src: "/assets/projects/gateflow-pass.webp",
+        alt: "Parent phone telling the parent to come to the gate now, with a QR pass that renews every 30 seconds, a six-digit fallback code and the four children waiting",
+        caption: "Called to the gate with a signed, rotating pass",
+      },
+      {
+        src: "/assets/projects/gateflow-queue.webp",
+        alt: "Parent screen after check-in with a four-step tracker (arrived, children called, at the gate, handed over), position 1 of 1 in the queue and an estimated wait of one minute",
+        caption: "Place in the queue and the expected wait",
+      },
+      {
+        src: "/assets/projects/gateflow-queue-ar.webp",
+        alt: "The same queue screen in Arabic, laid out right to left",
+        caption: "The same screen in Arabic, right to left",
+      },
+      {
+        src: "/assets/projects/gateflow-van.webp",
+        alt: "Parent following the school van live on a street map of Algiers, with the driver, the vehicle, the way it has come and about three minutes to the family's stop",
+        caption: "The school van, followed live to the family's stop",
+      },
+      {
+        src: "/assets/projects/gateflow-rider.webp",
+        alt: "Driver app showing the morning round on a map of Algiers with five numbered stops, and the three children to collect at the gate in the afternoon",
+        caption: "The driver's round, stop by stop",
+      },
+    ],
+    problem:
+      "El Istikmal School in Algiers has one pedestrian gate, no parking and about 85 families leaving within ten minutes. Parents crowded the gate, the guard called names through a megaphone and children could not get out. Nobody recorded which adult had taken which child.",
+    approach:
+      "Parents tap “I'm here” on their phone and wait nearby instead of at the door. A dispatcher lets at most four families hold a place at the gate; when one frees up, the next family's children appear on the guard's tablet to be called, siblings from different classes together. The parent is called forward only once every child is at the gate, and shows a pass the guard scans to confirm the handover. One Node.js process is the source of truth: clients send REST intents, the engine validates each state transition inside a SQLite transaction, and Socket.IO pushes versioned updates to the parent, gate, office and driver screens.",
+    hardPart:
+      "The gate cannot stop when the network does. Passes are signed with Ed25519, change every 30 seconds and are bound to the family and the date, so the tablet verifies them with the public key alone and a stolen tablet cannot forge one. The tablet caches the roster, photos and salted hashes of pickup restrictions, keeps releasing children offline, and replays its outbox when the connection returns; replays are idempotent, and anything no longer legal is logged as a sync conflict. Custody restrictions are checked on every release path, online, offline and during an emergency.",
+    result:
+      "Ready for its pilot at El Istikmal School: parent, gate, office and driver screens in three languages, four Android apps, SMS and push notifications, emergency reunification and live tracking of the school van. A public demo runs the real server code in the browser on sql.js, so anyone can try it on their own devices.",
+    whyItMatters:
+      "Dismissal is the ten minutes a day when a school hands its children over to adults. A metered queue, a verified pass and an audit log turn a crowd at the gate into a record of who collected whom.",
+    links: { live: "https://gateflow-demo.vercel.app" },
+    images: [
+      {
+        src: "/assets/projects/gateflow-gate.webp",
+        alt: "Guard tablet with children to call, the gate slots with three of four families present, families on their way with arrival times, and children who walk home alone",
+      },
+      {
+        src: "/assets/projects/gateflow-simulation.webp",
+        alt: "Office load simulation at 20× speed: 60 virtual parents, families at the gate held at the cap of four, the queue growing over time, and capacity never exceeded",
+      },
+      {
+        src: "/assets/projects/gateflow-office.webp",
+        alt: "Office live dashboard with the gate capacity control, families and pupils by state, average wait, time at the gate and throughput",
+      },
+    ],
+    featured: true,
+    hasCaseStudy: true,
+    privateRepo: true,
+    metrics: [
+      { label: "Families per dismissal", value: "~85" },
+      { label: "Android apps", value: "4" },
+      { label: "REST routes", value: "180" },
+    ],
+  },
+  {
+    slug: "docroster",
+    title: "DocRoster",
+    tagline: "On-call rosters for hospital resident doctors, generated by a constraint solver and checked by one rules engine.",
+    role: "Sole developer — FastAPI backend, CP-SAT solver, Next.js app, document generation",
+    year: "2026",
+    status: "active",
+    tags: ["Web", "Backend", "Automation"],
+    stack: ["Python", "FastAPI", "OR-Tools", "PostgreSQL", "Next.js", "TypeScript", "Docker"],
+    valueProp: "Fair on-call rosters for hospital residents: a solver proposes, the department reviews, payroll receives signed documents.",
+    architecture: {
+      client: ["Next.js 16 + React 19 PWA", "Offline personal planning", "Android app (TWA)"],
+      logic: ["One rules engine for solver, edits, swaps and transitions", "Roster state machine"],
+      api: ["FastAPI, 77 operations", "Invitation-only accounts, argon2id", "Rotating refresh tokens, CSRF"],
+      data: ["PostgreSQL 16, 28 tables", "Versioned rosters", "Append-only audit log"],
+      integrations: ["SMTP e-mail", "iCalendar feed"],
+      automation: ["OR-Tools CP-SAT solver", "Job queue worker (SKIP LOCKED)", "PDF and XLSX payroll documents"],
+      deploy: ["Docker Compose + Caddy", "Next.js on Vercel", "GitHub Actions with Playwright"],
+    },
+    screens: [
+      {
+        src: "/assets/projects/docroster-home.webp",
+        alt: "Resident home screen with the next night duty, tomorrow's post-call rest and seven duties this month against a target of 7.8",
+        caption: "Next duty, rest days and the month's count",
+      },
+      {
+        src: "/assets/projects/docroster-preferences.webp",
+        alt: "November preference calendar with one day marked unavailable, two marked rather not and one wished for, and the submission deadline",
+        caption: "Monthly preferences, one tap per state",
+      },
+      {
+        src: "/assets/projects/docroster-planning.webp",
+        alt: "Personal planning for November listing night duties, the post-call rest day after each, and a swap button on every duty",
+        caption: "Personal planning, readable offline",
+      },
+      {
+        src: "/assets/projects/docroster-swap.webp",
+        alt: "Replacement request listing colleagues, all but one greyed out with the rule each would break, such as insufficient rest after a 24-hour duty",
+        caption: "Swaps checked against the solver's own rules",
+      },
+      {
+        src: "/assets/projects/docroster-grid-phone.webp",
+        alt: "November department roster on a phone, validated, version 2, with the senior and junior on duty each day and the public holiday highlighted",
+        caption: "The validated roster, version 2",
+      },
+    ],
+    problem:
+      "In an Algerian hospital department, the chief resident draws up the monthly on-call roster by hand and sends it to the administration, which pays the duty allowance from it. Totals, weekends and holidays end up uneven, rest rules get missed, and swaps agreed in the corridor never reach payroll.",
+    approach:
+      "Residents mark their availability for the month. The chief closes collection and the solver, OR-Tools CP-SAT, returns three distinct rosters (balanced, preference-first and fairness-first), each scored on fairness, preferences honoured and cost. The chief adjusts one in a grid, publishes it for review, then submits it to the administration, which validates it and downloads the official PDFs and payroll spreadsheet. Residents then swap duties among themselves, and every change after submission creates a new version flagged to the administration.",
+    hardPart:
+      "The hard constraints are never relaxed: exact coverage of every senior and junior slot, rest after each duty (three days after a 24-hour one), one duty per weekend block, absences and declared unavailability. They are defined once, in a pure Python rules engine that the solver, the manual editor, swap validation and every state transition all call. When no roster is possible the solver says why in French, for example “15/12: no senior available”. Fairness carries over from month to month against each doctor's fair share, so an uneven month is evened out by the next.",
+    result:
+      "The full cycle works from preferences to payroll, tested end to end on a demo department: four roles, 77 API operations over 28 tables, numbered PDF and XLSX documents carrying a data fingerprint, an installable app with offline planning and an Android package, and CI running backend, frontend and browser tests on every push.",
+    whyItMatters:
+      "The roster decides who sleeps, who works the holidays and what each resident is paid. A fair, rule-checked roster with a recorded history of every change settles the monthly disputes and gives payroll a document it can rely on.",
+    links: {},
+    images: [
+      {
+        src: "/assets/projects/docroster-grid.webp",
+        alt: "Department duty grid for November 2026: four seniors and four juniors, night and 24-hour duties, post-call rest days, a public holiday, an absence, and each doctor's total against target",
+      },
+      {
+        src: "/assets/projects/docroster-proposals.webp",
+        alt: "Three solver proposals side by side, balanced, preferences and fairness, each optimal, with fairness indices, preferences honoured and computation time",
+      },
+      {
+        src: "/assets/projects/docroster-rules.webp",
+        alt: "Manual adjustment screen where replacing a doctor raises a blocking violation, insufficient rest after a 24-hour duty, before anything is saved",
+      },
+    ],
+    featured: true,
+    hasCaseStudy: true,
+    privateRepo: true,
+    metrics: [
+      { label: "Solver proposals per month", value: "3" },
+      { label: "API operations", value: "77" },
+      { label: "Database tables", value: "28" },
+    ],
+  },
+  {
     slug: "techsub",
     title: "TechSub",
     tagline: "Bilingual AR/FR subscription marketplace built on Algerian payment rails.",
@@ -553,8 +673,6 @@ export const projects: Project[] = [
     whyItMatters:
       "The market default is shared credentials — one account passed between strangers. This gives each customer an account in their own name, paid for with the money they actually hold, which is the difference between a workaround and a product.",
     links: { live: "https://subhub-three.vercel.app/fr" },
-    // Captured from the live storefront. The only project with real product
-    // shots, because it is the only one with a public URL to capture.
     images: [
       {
         src: "/assets/projects/techsub-fr.webp",
@@ -801,7 +919,7 @@ export const projects: Project[] = [
       "It replaces a recurring manual task that had to be done correctly, before every flight, by someone with better things to do. That is the shape of automation worth paying for.",
     links: {},
     images: [],
-    featured: true,
+    featured: false,
     hasCaseStudy: true,
     privateRepo: true,
   },
@@ -848,50 +966,45 @@ export const projects: Project[] = [
     result: "",
     links: { repo: "https://github.com/Poasherkir/delivery-os" },
     images: [],
-    featured: true,
+    featured: false,
     hasCaseStudy: true,
     privateRepo: true,
   },
 ];
 
-/** Small strip at the bottom of /projects. Kept tiny on purpose. */
 export const funProjects: { name: string; note: string; url?: string }[] = [
-  { name: "wordle-solver", note: "Constraint solver. Algorithms flex." },
+  { name: "wordle-solver", note: "Constraint solver for Wordle guesses." },
 ];
 
 export const featuredProjects = projects.filter((p) => p.featured);
 export const caseStudies = projects.filter((p) => p.hasCaseStudy);
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 
-/* -------------------------------------------------------------------------- */
-/* About                                                                       */
-/* -------------------------------------------------------------------------- */
+// About
 
 export const about = {
   lead: "Full-stack and mobile developer in Algiers. I build production software end to end.",
   body: [
-    "I write Flutter and Dart for mobile, React and TypeScript for web, and Python when a problem turns out to be a pipeline wearing a UI. The backend is usually Supabase — Postgres with row-level security, because permissions belong on the server.",
-    "The work I care most about is Briefing Point Go, an Electronic Flight Bag used by Air Algérie crew. Aviation is a hard teacher. Tolerance for \u201cit mostly works\u201d is zero, the data sources are hostile, and the person using your app is flying a plane at the same time.",
-    "It has also been rewritten twice — React Native, then React + Capacitor, then Flutter. I mention that because migrations are where architectural judgement actually shows. Choosing a stack is easy. Knowing when the one you chose has stopped paying for itself is not.",
-    "Outside the aviation work I have shipped a consumer exam-prep platform with its own payment gating and content pipeline, a loan-matching app for Algerian banking, and a route-optimisation PWA for delivery riders — that last one because I did electric-bike delivery in Algiers and knew exactly where the time went.",
-    "I work in English, French and Arabic, remotely, from GMT+1. I am a registered auto-entrepreneur through ANAE, which means I can invoice international clients and receive foreign payments legally. No workarounds, no awkward conversation at the end of the project.",
+    "I write Flutter and Dart for mobile, React and TypeScript for web, and Python for automation and services. Backends are Supabase, or Postgres behind FastAPI or Node.js, with permissions enforced on the server.",
+    "The work I care most about is Briefing Point Go, an Electronic Flight Bag used by Air Algérie crew. They read it minutes before departure, the data sources are unreliable, and \u201cit mostly works\u201d is not good enough.",
+    "It has been rewritten twice, from React Native to React + Capacitor to Flutter. The Flutter rebuild reached parity with the web app without a single backend change.",
+    "Outside aviation I have built GateFlow, a dismissal system for a school in Algiers; DocRoster, an on-call roster solver for hospital residents; a consumer exam-prep platform with its own payment gating; a loan-matching app for Algerian banking; and an app for delivery riders, because I did electric-bike delivery in Algiers and knew where the time went.",
+    "I work in English, French and Arabic, remotely, from GMT+1. I am a registered auto-entrepreneur through ANAE, which means I can invoice international clients and receive foreign payments legally.",
   ],
   facts: [
     { label: "Based", value: "Algiers, Algeria — GMT+1, remote" },
     { label: "Languages", value: "English, French, Arabic" },
     { label: "Status", value: "Registered auto-entrepreneur (ANAE) — invoices internationally" },
-    { label: "Primary stack", value: "Flutter · React · Supabase · Python" },
+    { label: "Primary stack", value: "Flutter · React · Supabase · Python · Node.js" },
   ],
 };
 
-/* -------------------------------------------------------------------------- */
-/* FAQ                                                                         */
-/* -------------------------------------------------------------------------- */
+// FAQ
 
 export const faq: { q: string; a: string }[] = [
   {
     q: "Can I see the source code?",
-    a: "Not the repos \u2014 they hold live user data. I will walk you through the architecture and the code on a call, or set up scoped read-only access.",
+    a: "Some of it. BAC Archive and LivreurPro are public on GitHub, and GateFlow has a public demo. Projects that hold real user data stay private; for those I can walk you through the architecture and the code on a call, or set up scoped read-only access.",
   },
   {
     q: "Do you work with clients outside Algeria?",
@@ -919,42 +1032,23 @@ export const faq: { q: string; a: string }[] = [
   },
 ];
 
+// Private source
 
-/* -------------------------------------------------------------------------- */
-/* Private source                                                              */
-/* -------------------------------------------------------------------------- */
-
-/**
- * Most repositories are private — production apps with real user data, crew
- * rosters and payment flows. Stated plainly and once, framed as the deliberate
- * position it is, with a route to a live walkthrough so it ends in a
- * conversation rather than a dead end.
- */
 export const privateSource = {
   short: "Private repo",
-  label: "Private production repo",
+  label: "Private repository",
   cta: "Request a walkthrough",
-  /** One line, stated as policy rather than as an apology. */
   notice:
     "Source code is private where projects handle real user data. Architecture walkthroughs and scoped read-only access are available for serious enquiries.",
   reason:
-    "Anything holding real user data — crew rosters, student records, payments — stays private. Several others are public on GitHub. For the closed ones I will walk you through the architecture and the code on a call, or arrange scoped read-only access.",
+    "Projects that hold real user data stay private: crew rosters, student and family records, hospital rosters, payments. For these I can walk you through the architecture and the code on a call, or arrange scoped read-only access.",
 };
 
-/* -------------------------------------------------------------------------- */
-/* Architecture                                                                */
-/* -------------------------------------------------------------------------- */
+// Architecture
 
-/**
- * The layers a product passes through, top to bottom.
- *
- * This is the spine of the "How I build" diagram on /projects. Selecting a
- * project fills the layers it genuinely has and dims the ones it does not —
- * which is why the PDF pipeline lights up exactly one. A diagram where every
- * project fills every layer would be decoration; this one is a claim.
- */
+/** Layers of the "How I build" diagram, top to bottom. */
 export const architectureLayers: { id: ArchLayerId; label: string; role: string }[] = [
-  { id: "client", label: "Mobile / Web", role: "What the user actually touches" },
+  { id: "client", label: "Mobile / Web", role: "What the user touches" },
   { id: "logic", label: "Application logic", role: "State, rules and the flows between them" },
   { id: "api", label: "API / Auth", role: "The boundary, and who is allowed through it" },
   { id: "data", label: "Database", role: "The schema everything else depends on" },
@@ -965,25 +1059,19 @@ export const architectureLayers: { id: ArchLayerId; label: string; role: string 
 
 export const architectureIntro = {
   title: "How I build",
-  lead: "I don't just build interfaces. I design the systems behind them.",
-  body: "Pick a project to see the layers it actually has. Not every product needs all seven — a document pipeline is one layer deep and an Electronic Flight Bag is all of them, and pretending otherwise would make this a decoration rather than a description.",
+  lead: "Interfaces, and the systems behind them.",
+  body: "Pick a project to see the layers it has. Not every product needs all seven: a document pipeline is one layer deep, while an Electronic Flight Bag or a school dismissal system uses every one.",
 };
 
-/* -------------------------------------------------------------------------- */
-/* Projects page                                                               */
-/* -------------------------------------------------------------------------- */
+// Projects page
 
 export const workPage = {
   eyebrow: "Selected work",
   title: "Software I've built, shipped and learned from.",
-  lead: "A selection of production applications, internal tools and automation systems across aviation, education, commerce and logistics.",
+  lead: "Production applications, internal tools and automation systems across aviation, education, healthcare, commerce and logistics.",
 };
 
-/**
- * The proof line under the page title. Every figure is read back out of the
- * project data, so it cannot drift from what the case studies say — and if a
- * metric is ever removed, the line shrinks instead of lying.
- */
+/** Figures under the /projects title, read from the project data. */
 export const workProof: string[] = [
   `${projects.filter((p) => p.status === "production").length} production applications`,
   ...(() => {
@@ -998,19 +1086,11 @@ export const workProof: string[] = [
   })(),
 ];
 
-/* -------------------------------------------------------------------------- */
-/* Engineering practice                                                        */
-/* -------------------------------------------------------------------------- */
+// Engineering practice
 
-/**
- * There is no contribution graph on this site on purpose. The work that would
- * fill one lives in private repositories, and a sparse public graph would say
- * something false about how much gets shipped. These are the practices instead
- * — each one is a thing a client can ask me to demonstrate on a call.
- */
 export const engineering = {
-  title: "How the code is actually written",
-  body: "Where a project holds real user data the source stays private. The rest is on GitHub, and I will walk you through the inside of the others.",
+  title: "How the code is written",
+  body: "Projects that hold real user data stay private; the rest are on GitHub. For the private ones I can walk you through the code on a call.",
   practices: [
     {
       title: "Server-enforced permissions",
@@ -1029,8 +1109,7 @@ export const engineering = {
       body: "Typed boundaries, small commits against reviewable milestones, and handover documentation so the project outlives the engagement.",
     },
   ],
-  /** What is genuinely public, stated plainly rather than padded out. */
-  openSource: "This portfolio is the public repository — the 3D keyboard, the audio synthesis and the whole site.",
+  openSource: "This portfolio is public too: the 3D keyboard, the audio synthesis and the whole site.",
 };
 
 export const contactCopy = {
@@ -1043,79 +1122,3 @@ export const contactCopy = {
   cta: "Start a conversation",
   responseTime: "I reply within one working day.",
 };
-
-
-/* -------------------------------------------------------------------------- */
-/* Content checklist — dev-only overlay, never rendered in production.          */
-/* -------------------------------------------------------------------------- */
-
-export type ChecklistItem = { area: string; item: string; where: string };
-
-export const CONTENT_CHECKLIST: ChecklistItem[] = [
-  {
-    area: "Projects",
-    item: "GitHub shows only ONE public repo on this account (the profile README). Every project repo is private or elsewhere, so all repo links were removed rather than ship 404s. Make them public and add the URL back to links.repo.",
-    where: "projects[].links.repo",
-  },
-  { area: "Contact", item: "Professional email address", where: "profile.email" },
-  { area: "Contact", item: "Calendly / booking link", where: "profile.calendly" },
-  { area: "Contact", item: "LinkedIn, Upwork and Fiverr URLs", where: "socials[]" },
-  {
-    area: "Contact",
-    item: "Custom domain — a name-based domain beats *.vercel.app for client trust",
-    where: "NEXT_PUBLIC_SITE_URL",
-  },
-  { area: "CV", item: "CV PDF in English and French, into /public/assets/cv/", where: "profile.cv" },
-  {
-    area: "Brand",
-    item: "Professional photo or consistent avatar, into /public/assets/me.jpg",
-    where: "public/assets",
-  },
-  {
-    area: "Projects",
-    item: "Screenshots for every featured project — sanitise all real crew/flight/user data first",
-    where: "projects[].images",
-  },
-  {
-    area: "Projects",
-    item: "moto-pilot — still undescribed. (amadeus-api and ofp-api are now documented as the two FastAPI services behind Briefing Point Go.)",
-    where: "projects[briefing-point-go]",
-  },
-  {
-    area: "Projects",
-    item: "Decide on healthdeep-pulse-dive, galaxy-pulse-pro, qahwa-books. (subhub is now featured as TechSub.)",
-    where: "projects[]",
-  },
-  { area: "Projects", item: "BankiDZ — confirm stack and status", where: "projects[bankidz].stack" },
-  { area: "Projects", item: "LivreurPro — repo name and full stack", where: "projects[livreurpro]" },
-  {
-    area: "Projects",
-    item: "Confirm which repos can be public — every linked repo needs a real README with screenshots",
-    where: "projects[].links.repo",
-  },
-  {
-    area: "Projects",
-    item: "aero-swift-guide (PatrickDine) — only list it if you actually contributed",
-    where: "projects[]",
-  },
-  {
-    area: "Metrics",
-    item: "Real numbers still missing for BankiDZ and LivreurPro. (Briefing Point Go, TechSub and BAC Archive now carry real metrics from their READMEs.)",
-    where: "projects[].metrics",
-  },
-  {
-    area: "Services",
-    item: "Price bands for the three packages — show ranges, not exact rates",
-    where: "services[].priceBand",
-  },
-  {
-    area: "SEO",
-    item: "Optional: a hand-designed OG card to replace the generated one",
-    where: "src/app/opengraph-image.tsx",
-  },
-  {
-    area: "Deploy",
-    item: "RESEND_API_KEY plus a verified sending domain for the contact form",
-    where: ".env",
-  },
-];

@@ -12,7 +12,6 @@ import InstrumentBackground from "@/components/background/instrument-background"
 import SmoothScroll from "@/components/smooth-scroll";
 import MobileCta from "@/components/mobile-cta";
 import PrivacyNotice from "@/components/privacy-notice";
-import DevChecklist from "@/components/dev-checklist";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const display = Archivo_Black({
@@ -45,7 +44,6 @@ export const metadata: Metadata = {
     siteName: profile.name,
     title: seo.title,
     description: seo.description.short,
-    // Images intentionally omitted: src/app/opengraph-image.tsx generates them.
   },
   twitter: {
     card: "summary_large_image",
@@ -68,7 +66,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-/** Person + ProfilePage structured data, so search engines know who this is. */
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
@@ -90,6 +87,8 @@ const jsonLd = {
       "Supabase",
       "PostgreSQL",
       "Python",
+      "FastAPI",
+      "Node.js",
       "Mobile application development",
       "Electronic Flight Bag",
     ],
@@ -120,9 +119,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ScrollProgress />
           <Header />
           <SmoothScroll>
-            {/* canvas-overlay-mode lets the pointer fall through the page to the
-                3D keyboard behind it, while links, controls and text keep
-                their own events. See globals.css. */}
+            {/* canvas-overlay-mode passes pointer events through to the 3D
+                keyboard behind the page; see globals.css. */}
             <main id="main" className="relative z-10 canvas-overlay-mode">
               {children}
             </main>
@@ -130,7 +128,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </SmoothScroll>
           <MobileCta />
           <PrivacyNotice />
-          <DevChecklist />
         </Providers>
         <Analytics />
       </body>

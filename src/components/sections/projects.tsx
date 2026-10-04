@@ -23,14 +23,10 @@ const STATUS_LABEL: Record<Project["status"], string> = {
   archived: "Archived",
 };
 
-/** Maps a stack string onto a keycap so the dock reuses the same logos. */
+/** Uses the keycap logo for stack entries that match a keycap label exactly. */
 function toDockItems(stack: string[]): DockItem[] {
   return stack.map((name) => {
-    const cap = keycapList.find(
-      (c) =>
-        c.label.toLowerCase() === name.toLowerCase() ||
-        c.label.toLowerCase().startsWith(name.toLowerCase())
-    );
+    const cap = keycapList.find((c) => c.label.toLowerCase() === name.toLowerCase());
     return cap
       ? { id: cap.id, title: cap.label, hasIcon: true, color: cap.color }
       : { id: name, title: name, hasIcon: false, color: "currentColor" };
@@ -43,9 +39,7 @@ export default function Projects() {
       <SectionHeader
         id="projects"
         title="Projects"
-        // Counted from the data. Written out by hand it went stale the
-        // moment a project was added or removed.
-        desc={`${projects.length} shipped products, ${projects.filter((p) => p.hasCaseStudy).length} with full case studies.`}
+        desc={`${projects.length} products, ${projects.filter((p) => p.hasCaseStudy).length} with full case studies.`}
       />
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -65,9 +59,6 @@ function ProjectModal({ project }: { project: Project }) {
           label={`Open case study for ${project.title}`}
           className="group/modal-btn block w-full bg-transparent text-left"
         >
-          {/* Width comes from the grid column. The fixed pixel widths this
-              replaced were narrower than the column on a wide screen, so the
-              row of tiles never lined up with anything else on the page. */}
           <div
             className="relative w-full overflow-hidden rounded-lg border border-border"
             style={{ aspectRatio: "3/2" }}
@@ -76,12 +67,8 @@ function ProjectModal({ project }: { project: Project }) {
               <ProjectVisual project={project} />
             </div>
 
-            {/* Reads over artwork of any brightness, so it stays black here
-                rather than following the theme. */}
-            {/* Above the artwork. The centre phone in the stage layout carries z-10,
-                  and this caption had no z-index at all, so the phone won and stood
-                  in front of the title and the description. */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/95 to-transparent pt-20">
+            {/* Always dark so it reads over any artwork; z-20 keeps it above the centre phone (z-10). */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/95 to-transparent pt-20">
               <div className="flex flex-col items-start gap-2 p-5">
                 <span className="rounded bg-white/95 px-1.5 py-0.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-black">
                   {STATUS_LABEL[project.status]}
@@ -89,8 +76,6 @@ function ProjectModal({ project }: { project: Project }) {
                 <h3 className="text-left font-display text-lg font-semibold leading-tight text-white">
                   {project.title}
                 </h3>
-                {/* A title alone does not say what any of these are. One line
-                    does, and it is the line already written for each. */}
                 <p className="line-clamp-2 text-left text-[0.8rem] leading-snug text-white/70">
                   {project.valueProp}
                 </p>
@@ -106,8 +91,7 @@ function ProjectModal({ project }: { project: Project }) {
 
           <ModalFooter className="gap-4">
             <CancelButton />
-            {/* asChild throughout: a <button> inside an <a> is invalid HTML and
-                browsers reparent it, which breaks keyboard activation. */}
+            {/* asChild: a <button> inside an <a> is invalid HTML. */}
             {project.links.live && (
               <Button asChild size="sm" className="w-28">
                 <Link href={project.links.live} target="_blank" rel="noreferrer">

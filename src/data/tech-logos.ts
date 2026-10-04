@@ -1,15 +1,6 @@
 /**
- * Exact skill name to its Devicon file in /public/assets/devicon.
- *
- * Keyed on the full name and never matched loosely. A prefix match looks
- * harmless and then puts Java's logo on JavaScript, Spring's on anything
- * beginning "spring", and React's on React Router — which has its own mark and
- * is not React.
- *
- * Only entries naming a product with a real logo appear here. Most of the
- * stack list is practice rather than product — debugging, data structures,
- * authorisation, release engineering — and those carry none, because there is
- * no such logo and inventing one would say something untrue.
+ * Skill name to Devicon file in /public/assets/devicon. Matched on the exact
+ * name: a prefix match would give "Java" the JavaScript logo.
  */
 export const TECH_LOGOS: Record<string, string> = {
   "HTML5": "html5-original.svg",
@@ -20,16 +11,10 @@ export const TECH_LOGOS: Record<string, string> = {
   "GitHub": "github-original.svg",
   "GitHub Actions": "github-original.svg",
   "GitHub Projects": "github-original.svg",
-  // The only entry here that is not an SVG. Devicon's full-colour Tux is a
-  // 712-path illustration with gradients that weighs 189 KB — two thirds of
-  // the entire 3D scene, for one mark drawn at sixteen pixels. Optimising the
-  // vector only reached 114 KB. Rasterised at 128px it is 4.3 KB and identical
-  // at any size this is ever drawn. The plain variant is small but monochrome,
-  // and would leave Linux the only greyscale logo in a row of colour.
+  // Raster: the colour SVG is 189 KB, this 128px WebP is 4 KB.
   "Linux / terminal": "linux-original.webp",
   "Bash": "bash-original.svg",
   "React": "react-original.svg",
-  // React Native's own mark is the React atom, so this one is not a stand-in.
   "React Native": "react-original.svg",
   "Next.js": "nextjs-original.svg",
   "Tailwind CSS": "tailwindcss-original.svg",
@@ -41,6 +26,7 @@ export const TECH_LOGOS: Record<string, string> = {
   "Python": "python-original.svg",
   "Node.js": "nodejs-original.svg",
   "Express": "express-original.svg",
+  "FastAPI": "fastapi-original.svg",
   "NestJS": "nestjs-original.svg",
   "Java": "java-original.svg",
   "Spring Boot": "spring-original.svg",

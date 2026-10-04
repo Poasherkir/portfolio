@@ -34,8 +34,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       title: `${project.title} — ${profile.name}`,
       description: project.tagline,
       url: absoluteUrl(`/projects/${project.slug}`),
-      // Falls back to the generated site-wide OG image until a real screenshot
-      // exists for this project.
+      // Without a screenshot the site-wide generated OG image is used.
       ...(project.images[0]
         ? { images: [{ url: project.images[0].src, width: 1200, height: 630 }] }
         : {}),
@@ -45,7 +44,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** A prose section. Rendered narrow — long lines are hard to read. */
+/** A prose section, kept to a readable line length. */
 function Prose({
   n,
   section,
@@ -88,12 +87,7 @@ export default async function CaseStudyPage({ params }: Params) {
     result: { key: "result", label: "The result", body: project.result },
   };
 
-  /**
-   * Contents in reading order, including the sections that are not prose.
-   * Built from what this project actually has — a case study with no
-   * architecture data simply does not get an Architecture entry, rather than
-   * getting an empty one.
-   */
+  // Table of contents, limited to the sections this project has.
   const contents: { key: string; label: string }[] = [
     prose.problem,
     prose.approach,
@@ -170,7 +164,6 @@ export default async function CaseStudyPage({ params }: Params) {
               </div>
             </dl>
 
-            {/* Metrics render only when real numbers exist. */}
             {project.metrics && project.metrics.length > 0 && (
               <dl className="mt-8 grid gap-6 border-t border-border pt-8 sm:grid-cols-3">
                 {project.metrics.map((m) => (
@@ -225,16 +218,14 @@ export default async function CaseStudyPage({ params }: Params) {
         {/* Cover */}
         <div className="container -mt-px">
           <div className="relative aspect-[21/9] w-full overflow-hidden rounded-b-xl border-x border-b border-border">
-            {/* Full bleed here. The banner is 21:9 and the browser frame's
-                body is a fixed 16:10, so framed it stands taller than the
-                space and loses its title bar off the top. */}
+            {/* Unframed: a 16:10 browser frame does not fit a 21:9 banner. */}
             <ProjectVisual project={project} priority framed={false} />
           </div>
         </div>
 
         {/* Body */}
         <div className="container py-20 md:py-28">
-          <div className="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <CaseStudyNav sections={contents} />
 
@@ -269,8 +260,6 @@ export default async function CaseStudyPage({ params }: Params) {
             </div>
 
             <div className="space-y-14">
-              {/* Numbering is computed from `contents`, so it stays in step with
-                  the rail even though the sections render in a fixed order. */}
               <Prose n={num("problem")} section={prose.problem} />
               <Prose n={num("approach")} section={prose.approach} />
 
@@ -282,7 +271,7 @@ export default async function CaseStudyPage({ params }: Params) {
                       Architecture
                     </h2>
                     <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                      The layers this product actually has, and what sits in each one.
+                      The layers this product has, and what sits in each one.
                     </p>
                     <div className="mt-8">
                       <ArchitectureDiagram projects={[project]} />
@@ -299,7 +288,9 @@ export default async function CaseStudyPage({ params }: Params) {
                       The app
                     </h2>
                     <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                      Screens from the build in production.
+                      {project.status === "production"
+                        ? "Screens from the build in production."
+                        : "Screens from the working build."}
                     </p>
                     <div className="mt-8">
                       <ScreenGallery screens={project.screens} variant="strip" />
@@ -324,7 +315,6 @@ export default async function CaseStudyPage({ params }: Params) {
 
               <Prose n={num("hardPart")} section={prose.hardPart} />
 
-              {/* Real product shots, where a public URL made them possible. */}
               {project.images.length > 1 && (
                 <Reveal>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -387,7 +377,6 @@ export default async function CaseStudyPage({ params }: Params) {
                 </span>
               </Link>
 
-              {/* Where you are. Not a link — nothing to go to. */}
               <div className="bg-background/96 p-6 text-center">
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brand">
                   Currently reading
