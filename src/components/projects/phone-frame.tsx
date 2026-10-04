@@ -1,11 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-/**
- * A phone screenshot in a device bezel. Aspect is fixed and the image is
- * cover-cropped from the top — captures vary by a few pixels between devices,
- * and a row of phones at their own heights looks ragged.
- */
+/** Phone screenshot in a bezel, with a fixed aspect ratio and top-anchored crop. */
 export default function PhoneFrame({
   src,
   alt,

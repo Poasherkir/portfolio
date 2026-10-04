@@ -2,16 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 import ProjectStatus from "./project-status";
 
-/**
- * Project search. Matches across title, value prop, tagline, tags and stack,
- * so "aviation" finds the flight bag and the PDF pipeline.
- */
+/** Project search across title, summary, tagline, tags and stack. */
 export default function ProjectSearch({ projects }: { projects: Project[] }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -34,7 +32,7 @@ export default function ProjectSearch({ projects }: { projects: Project[] }) {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return projects;
-    // Every whitespace-separated term must appear somewhere in the record.
+    // Every term must match somewhere.
     const terms = q.split(/\s+/);
     return haystacks
       .filter(({ text }) => terms.every((t) => text.includes(t)))
@@ -60,7 +58,6 @@ export default function ProjectSearch({ projects }: { projects: Project[] }) {
     [close, router]
   );
 
-  // Global shortcut.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
@@ -72,12 +69,10 @@ export default function ProjectSearch({ projects }: { projects: Project[] }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Focus the field once the dialog is actually mounted.
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
 
-  // Keep the highlighted row inside the result set as it shrinks.
   useEffect(() => {
     setCursor((c) => Math.min(c, Math.max(results.length - 1, 0)));
   }, [results.length]);

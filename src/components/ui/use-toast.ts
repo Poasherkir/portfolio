@@ -1,9 +1,6 @@
 "use client";
 
-/**
- * Minimal toast store. Deliberately smaller than the shadcn original: this site
- * only ever shows one toast at a time (contact form success/failure).
- */
+/** Minimal toast store; the site shows at most one toast at a time. */
 import * as React from "react";
 import type { ToastProps } from "./toast";
 

@@ -5,9 +5,8 @@ import ScreenGallery from "./screen-gallery";
 import BrowserFrame from "./browser-frame";
 
 /**
- * Cover art. Uses real screenshots where they exist; otherwise draws a figure
- * from the project's own numbers — a mark per PDF served, a mark per tool
- * shipped. Counts come from project.metrics, never hard-coded here.
+ * Project cover: the first landscape image, else the phone screens, else a
+ * drawn figure built from the project's metrics.
  */
 export default function ProjectVisual({
   project,
@@ -20,19 +19,11 @@ export default function ProjectVisual({
   className?: string;
   priority?: boolean;
   sizes?: string;
-  /**
-   * Whether a landscape cover gets the staged browser frame.
-   *
-   * True suits a card, where the frame is what stops a web screenshot reading
-   * as a stretched image next to framed phones. False suits a wide hero
-   * banner: the frame has a fixed 16:10 body, so in a 21:9 box it is taller
-   * than the space and the title bar is clipped off the top.
-   */
+  /** Wrap a landscape cover in a browser frame. Off for wide banners, where 16:10 does not fit. */
   framed?: boolean;
 }) {
   const cover = project.images[0];
 
-  // A phone screenshot letterboxed into 16:10 shows almost nothing.
   if (!cover && project.screens?.length) {
     return <ScreenGallery screens={project.screens} priority={priority} className={className} />;
   }
@@ -51,10 +42,6 @@ export default function ProjectVisual({
   }
 
   if (cover) {
-    // Staged the same way the phones are, rather than bled to the edges of the
-    // card. A browser screenshot stretched corner to corner sits flat next to
-    // framed devices and reads as a stretched image; the frame and the backdrop
-    // are what make it read as a product shot.
     return (
       <div
         className={cn(
@@ -84,7 +71,7 @@ export default function ProjectVisual({
   return <DataPortrait project={project} className={className} />;
 }
 
-/** Pulls a numeric metric back out of the project's own data. */
+/** Numeric value of the first metric whose label starts with `startsWith`. */
 function metric(project: Project, startsWith: string): number | null {
   const raw = project.metrics?.find((m) => m.label.startsWith(startsWith))?.value;
   if (!raw) return null;
@@ -111,7 +98,7 @@ function Frame({ children, className }: { children: React.ReactNode; className?:
   );
 }
 
-/** Caption strip, so the figure is always labelled. */
+/** Caption strip along the bottom of a figure. */
 function Caption({ left, right }: { left: string; right?: string }) {
   return (
     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5">
@@ -150,21 +137,18 @@ function DataPortrait({ project, className }: { project: Project; className?: st
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Briefing Point Go — one mark per tool, on an attitude-indicator horizon      */
-/* -------------------------------------------------------------------------- */
+// Briefing Point Go: one dot per tool over an attitude-indicator horizon
 
 function AviationPortrait({ project, className }: { project: Project; className?: string }) {
   const tools = metric(project, "Reference") ?? 0;
   const sections = metric(project, "Main sections") ?? 0;
 
-  // Fixed grid — deterministic, so server and client agree.
+  // Deterministic layout, so server and client render the same markup.
   const cols = 10;
   const rows = Math.ceil(tools / cols);
 
   return (
     <Frame className={className}>
-      {/* Horizon line — the instrument the whole site's motif comes from. */}
       <svg viewBox="0 0 400 240" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice">
         <circle cx="200" cy="118" r="98" fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.16" />
         <circle cx="200" cy="118" r="70" fill="none" stroke="hsl(var(--foreground))" strokeOpacity="0.1" />
@@ -182,7 +166,7 @@ function AviationPortrait({ project, className }: { project: Project; className?
         ))}
       </svg>
 
-      {/* One dot per reference tool. The count is the point. */}
+      {/* One dot per reference tool. */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div
           className="grid gap-[7px]"
@@ -194,7 +178,6 @@ function AviationPortrait({ project, className }: { project: Project; className?
               className="h-1.5 w-1.5 rounded-[1px]"
               style={{
                 background: "hsl(var(--foreground))",
-                // Front rows brightest, for depth.
                 opacity: 0.85 - (Math.floor(i / cols) / Math.max(rows, 1)) * 0.55,
               }}
             />
@@ -210,9 +193,7 @@ function AviationPortrait({ project, className }: { project: Project; className?
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* BAC Archive — one mark per PDF actually served, across the years covered     */
-/* -------------------------------------------------------------------------- */
+// BAC Archive: one mark per PDF served
 
 function ArchivePortrait({ project, className }: { project: Project; className?: string }) {
   const pdfs = metric(project, "PDFs served") ?? 0;
@@ -232,7 +213,6 @@ function ArchivePortrait({ project, className }: { project: Project; className?:
               className="h-[7px] w-[5px] rounded-[1px]"
               style={{
                 background: "hsl(var(--foreground))",
-                // A steady vertical gradient — a shelf of paper, seen edge-on.
                 opacity: 0.28 + ((i % cols) / cols) * 0.5,
               }}
             />
@@ -248,9 +228,7 @@ function ArchivePortrait({ project, className }: { project: Project; className?:
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* PDF pipeline — many messy pages in, one clean page out                      */
-/* -------------------------------------------------------------------------- */
+// PDF pipeline: messy pages in, one clean page out
 
 function PipelinePortrait({ className }: { className?: string }) {
   return (
@@ -260,7 +238,7 @@ function PipelinePortrait({ className }: { className?: string }) {
         className="absolute inset-0 h-full w-full"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* In: four pages, deliberately misaligned and different sizes. */}
+        {/* In: four misaligned pages of different sizes. */}
         {[
           { x: 40, y: 52, w: 52, h: 68, r: -8 },
           { x: 58, y: 62, w: 46, h: 72, r: 4 },
@@ -279,7 +257,7 @@ function PipelinePortrait({ className }: { className?: string }) {
               stroke="#ffffff"
               strokeOpacity="0.2"
             />
-            {/* The watermark that has to come out of the content stream. */}
+            {/* Watermark */}
             <text
               x={p.x + p.w / 2}
               y={p.y + p.h / 2}
@@ -317,7 +295,7 @@ function PipelinePortrait({ className }: { className?: string }) {
           PyMuPDF
         </text>
 
-        {/* Out: one clean A4, square to the frame, no watermark. */}
+        {/* Out: one clean A4 page. */}
         <rect
           x="258"
           y="46"
@@ -347,9 +325,7 @@ function PipelinePortrait({ className }: { className?: string }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* LivreurPro — a sequenced route instead of doubling back                     */
-/* -------------------------------------------------------------------------- */
+// LivreurPro: a sequenced delivery route
 
 function RoutePortrait({ className }: { className?: string }) {
   const stops = [
@@ -388,9 +364,7 @@ function RoutePortrait({ className }: { className?: string }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* BankiDZ — products that are only comparable side by side                    */
-/* -------------------------------------------------------------------------- */
+// BankiDZ: loan products side by side
 
 function ComparePortrait({ className }: { className?: string }) {
   const bars = [0.82, 0.54, 0.68, 0.38, 0.74];
@@ -417,12 +391,10 @@ function ComparePortrait({ className }: { className?: string }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* OFP API — a plan document parsed into the figures a pilot needs             */
-/* -------------------------------------------------------------------------- */
+// OFP API: a flight plan parsed into fields
 
 function FlightPlanPortrait({ className }: { className?: string }) {
-  // The real parsed keys, so the picture is the output rather than a mock.
+  // Field names the parser returns.
   const fields = [
     ["TRIP FUEL", "4957"],
     ["ETOW", "63262"],
@@ -433,7 +405,7 @@ function FlightPlanPortrait({ className }: { className?: string }) {
   return (
     <Frame className={className}>
       <div className="absolute inset-0 flex items-center justify-center gap-6 p-8 sm:gap-10">
-        {/* The document going in: text it cannot read as data. */}
+        {/* Input document */}
         <div className="flex w-[26%] max-w-[104px] flex-col gap-[3px] rounded-sm border border-foreground/20 p-2.5">
           {Array.from({ length: 9 }).map((_, i) => (
             <span
@@ -454,7 +426,7 @@ function FlightPlanPortrait({ className }: { className?: string }) {
           </svg>
         </div>
 
-        {/* The structured result coming out. */}
+        {/* Parsed output */}
         <div className="flex w-[42%] max-w-[168px] flex-col gap-1.5">
           {fields.map(([k, v]) => (
             <div
@@ -475,9 +447,7 @@ function FlightPlanPortrait({ className }: { className?: string }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Load Control API — the closeout figures, as a loadsheet                     */
-/* -------------------------------------------------------------------------- */
+// Load Control API: closeout figures as a loadsheet
 
 function LoadSheetPortrait({ className }: { className?: string }) {
   const rows = [
@@ -519,9 +489,7 @@ function LoadSheetPortrait({ className }: { className?: string }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* Bac DZ — a curriculum, and how far through it you are                       */
-/* -------------------------------------------------------------------------- */
+// Bac DZ: curriculum progress
 
 function StudyPortrait({ className }: { className?: string }) {
   const units = [72, 100, 45, 88, 30, 64];
@@ -540,7 +508,6 @@ function StudyPortrait({ className }: { className?: string }) {
                   className="block h-full rounded-full"
                   style={{
                     width: `${pct}%`,
-                    // Only a finished unit earns the accent.
                     background: pct === 100 ? "hsl(var(--brand))" : "hsl(var(--foreground) / 0.45)",
                   }}
                 />

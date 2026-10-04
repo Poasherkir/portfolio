@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project, ProjectTag } from "@/types";
@@ -15,9 +16,9 @@ export default function ProjectGrid({
   projects,
   allProjects,
 }: {
-  /** The default set — everything not already featured further up the page. */
+  /** Projects not featured above. */
   projects: Project[];
-  /** Every project, including the featured ones. Used only for stack queries. */
+  /** All projects, used for ?stack= queries. */
   allProjects?: Project[];
 }) {
   const [active, setActive] = useState<ProjectTag | "All">("All");
@@ -25,10 +26,9 @@ export default function ProjectGrid({
   const params = useSearchParams();
   const reduced = useReducedMotion();
 
-  /** Keycaps on the home page link here as /projects?stack=flutter. */
+  /** Set by keycap links, e.g. /projects?stack=flutter. */
   const stackQuery = params.get("stack")?.trim().toLowerCase() ?? "";
 
-  /** Searches every project, not just this grid — the featured ones count too. */
   const stackMatches = useMemo(() => {
     if (!stackQuery) return null;
     return (allProjects ?? projects).filter((p) =>
@@ -36,7 +36,7 @@ export default function ProjectGrid({
     );
   }, [projects, allProjects, stackQuery]);
 
-  // Chips describe the visible pool, which changes under a stack query.
+  // Filter chips for the tags present in the current pool.
   const available = useMemo(() => {
     const used = new Set((stackMatches ?? projects).flatMap((p) => p.tags));
     return FILTERS.filter((f) => f === "All" || used.has(f));
@@ -47,7 +47,7 @@ export default function ProjectGrid({
     return active === "All" ? base : base.filter((p) => p.tags.includes(active));
   }, [projects, stackMatches, active]);
 
-  // Arriving from a keycap lands mid-page.
+  // Scroll to the grid when arriving with a stack query.
   const scrolledRef = useRef(false);
   useEffect(() => {
     if (!stackQuery || scrolledRef.current) return;
@@ -64,8 +64,7 @@ export default function ProjectGrid({
 
   return (
     <>
-      {/* Segmented filter. One bordered track, one moving indicator — reads as a
-          single control rather than five loose chips. */}
+      {/* Segmented filter */}
       <div
         role="tablist"
         aria-label="Filter projects by type"
@@ -112,7 +111,7 @@ export default function ProjectGrid({
         })}
       </div>
 
-      {/* Arrived from a keycap — say so, and offer the way out. */}
+      {/* Active stack filter, with a clear button. */}
       {stackMatches && (
         <div className="mt-5 inline-flex items-center gap-3 rounded-full border border-brand/30 bg-brand/[0.07] py-1.5 pl-4 pr-1.5 text-sm">
           <span className="text-muted-foreground">

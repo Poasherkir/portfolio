@@ -135,17 +135,7 @@ export default function StackPage() {
                         )}
                         title={`${LEVEL_LABEL[item.level]} — ${LEVEL_BLURB[item.level]}`}
                       >
-                        {/* One leading mark per pill, never two. The logo
-                            replaces the dot rather than joining it: with both,
-                            a pill that has a logo started its text further
-                            along than one that does not, and a wrapped row of
-                            them read as misaligned.
-                            
-                            Nothing is lost by dropping the dot here. The level
-                            is already in the pill's own colour, in its title
-                            and in the label read out to screen readers — and
-                            the dot was the same grey for "working" and
-                            "roadmap" anyway, so it never separated those two. */}
+                        {/* Logo when there is one, otherwise a level dot. */}
                         {TECH_LOGOS[item.name] ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img

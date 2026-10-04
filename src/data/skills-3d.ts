@@ -1,6 +1,5 @@
-// Skill set for the Spline keyboard scene.
-// The keys must match the mesh names inside public/assets/skills-keyboard.spline,
-// so these are taken verbatim from the scene they belong to.
+// Skills for the Spline keyboard scene. Keys must match the mesh names in
+// public/assets/skills-keyboard.spline.
 
 export enum SkillNames {
   JS = "js",

@@ -1,21 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/**
- * Fade-and-rise in on mount. Used for the hero and the page mastheads, which
- * have no scroll trigger.
- *
- * This used to blur in as well — filter: blur(12px) down to 0 over 900ms. A
- * filter is a paint operation, not a compositor one, so a display-size
- * heading was being rasterised and Gaussian-blurred on every one of those
- * fifty-odd frames, on every inner page, before a visitor had read a word.
- * Opacity and transform are handled by the compositor and cost nothing per
- * frame. The name stays so the call sites do not all have to change.
- */
-export function BlurIn({
+/** Fade and rise in on mount, for content above the fold. */
+export function FadeIn({
   children,
   className,
   delay = 0,
@@ -41,8 +32,8 @@ export function BlurIn({
 }
 
 /**
- * Content slides up while a coloured panel sweeps off it. The panel mounts on
- * the client only — server-rendered, it would cover the heading if JS stalled.
+ * Content slides up while a coloured panel sweeps off it. The panel is
+ * client-only so it never covers the content if JS fails to load.
  */
 export function WipeReveal({
   children,
@@ -63,10 +54,8 @@ export function WipeReveal({
 
   return (
     <div className={cn("relative overflow-hidden", className)} style={{ width }}>
-      {/* Percentage, never a fixed pixel offset. This wrapper clips, and
-          whileInView's IntersectionObserver respects that clipping — a fixed
-          y:48 pushes anything shorter than 48px fully outside its own clip
-          box, so it never intersects and never reveals. */}
+      {/* Offset in percent: a fixed pixel offset can push short content fully
+          outside this clipping box, and then whileInView never fires. */}
       <motion.div
         initial={reduced ? { opacity: 1, y: "0%" } : { opacity: 0, y: "60%" }}
         whileInView={{ opacity: 1, y: "0%" }}
@@ -95,25 +84,13 @@ const defaultVariants: Variants = {
   visible: { opacity: 1, y: 0 },
 };
 
-/**
- * Reduced motion has to be handled here, in JS.
- *
- * The blanket rule in globals.css collapses animation-duration and
- * transition-duration, which covers anything driven by CSS. None of this is:
- * Motion writes transform, opacity and filter as inline styles from its own
- * frame loop, and a CSS duration has no bearing on that. So a visitor who had
- * asked for less motion still got every blur, slide and wipe on the site,
- * because these wrappers are on nearly every element of it.
- *
- * Still the same element and the same props either way — swapping the tree on
- * a media query is a hydration mismatch.
- */
+// Motion animates from JS, so the reduced-motion CSS in globals.css does not
+// reach it. These variants keep the same tree but remove the movement.
 const staticVariants: Variants = {
   hidden: { opacity: 1, y: 0 },
   visible: { opacity: 1, y: 0 },
 };
 
-/** No travel, and short enough to read as "already there". */
 const INSTANT = { duration: 0 } as const;
 
 /** Generic scroll-in wrapper. */

@@ -2,11 +2,7 @@ import { faq } from "@/data/portfolio";
 import { Section, SectionHeader } from "@/components/section";
 import { Reveal } from "@/components/reveal";
 
-/**
- * Native <details>, not a JS accordion. It works before hydration, it is
- * keyboard accessible and screen-reader correct for free, and browsers can
- * find text inside a collapsed one.
- */
+/** FAQ built on native <details>, so it works without JS and is searchable. */
 export default function Faq() {
   return (
     <Section id="faq" className="py-24 md:py-32">

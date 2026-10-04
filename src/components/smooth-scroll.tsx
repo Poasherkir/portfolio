@@ -5,11 +5,8 @@ import { ReactLenis } from "lenis/react";
 import type { ReactNode } from "react";
 
 /**
- * Same tree either way — only the options change. Swapping the tree for
- * reduced motion is a hydration mismatch.
- *
- * `lerp` and `duration` are mutually exclusive in Lenis; passing both makes
- * the easing silently lose to the lerp.
+ * Lenis smooth scrolling. Reduced motion changes the options, not the tree.
+ * Pass either `lerp` or `duration` to Lenis, never both.
  */
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const [reduced, setReduced] = useState(false);
@@ -26,15 +23,10 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     <ReactLenis
       root
       options={{
-        // 0.13 took long enough to catch up that a flick felt like it was
-        // being resisted. This still smooths the step between wheel notches
-        // without the page lagging behind the hand.
         lerp: reduced ? 1 : 0.19,
         smoothWheel: !reduced,
-        // Without this an in-page anchor is a native jump that teleports the
-        // page and leaves Lenis to work out where it went.
         anchors: true,
-        // Touch already has native momentum; stacking Lenis on it fights back.
+        // Leave touch scrolling to the browser's native momentum.
         syncTouch: false,
         wheelMultiplier: 1,
       }}

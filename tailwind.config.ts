@@ -11,8 +11,7 @@ const config = {
     },
     extend: {
       fontSize: {
-        // Fluid editorial scale. Each step interpolates between a phone and a
-        // wide desktop, so headings never need a breakpoint to look right.
+        // Fluid type scale from phone to wide desktop.
         "display-2xl": ["clamp(3rem, 9vw, 7.5rem)", { lineHeight: "0.92", letterSpacing: "-0.035em" }],
         "display-xl": ["clamp(2.5rem, 6.5vw, 5rem)", { lineHeight: "0.96", letterSpacing: "-0.03em" }],
         "display-lg": ["clamp(2rem, 4.6vw, 3.5rem)", { lineHeight: "1.02", letterSpacing: "-0.025em" }],
@@ -23,7 +22,6 @@ const config = {
         "meta": ["0.72rem", { lineHeight: "1.5", letterSpacing: "0.16em" }],
       },
       spacing: {
-        // One vertical rhythm for section padding, so the page breathes evenly.
         section: "clamp(5rem, 11vw, 9.5rem)",
         "section-sm": "clamp(3.5rem, 7vw, 6rem)",
         gutter: "clamp(1.25rem, 4vw, 3rem)",

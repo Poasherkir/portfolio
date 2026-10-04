@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 
 export type ProjectStatus = "production" | "active" | "archived";
 
-/** Broad buckets used by the /projects filter bar. */
+/** Filter categories on /projects. */
 export type ProjectTag = "Mobile" | "Backend" | "Automation" | "Web";
 
-/** Layers a product passes through. A project only fills the ones it has. */
+/** Layers of the architecture diagram. */
 export type ArchLayerId =
   | "client"
   | "logic"
@@ -15,7 +15,7 @@ export type ArchLayerId =
   | "automation"
   | "deploy";
 
-/** Tech per layer. Layers with nothing in them are omitted. */
+/** Technologies per layer; empty layers are omitted. */
 export type ProjectArchitecture = Partial<Record<ArchLayerId, string[]>>;
 
 export type Project = {
@@ -27,7 +27,7 @@ export type Project = {
   status: ProjectStatus;
   tags: ProjectTag[];
   stack: string[];
-  /** Case-study body. Written as Problem -> Approach -> Hard part -> Result. */
+  /** Case-study sections. */
   problem: string;
   approach: string;
   hardPart: string;
@@ -35,23 +35,18 @@ export type Project = {
   links: { repo?: string; live?: string; store?: string };
   images: { src: string; alt: string }[];
   featured: boolean;
-  /** Private source — renders a walkthrough offer instead of a dead link. */
+  /** Shows a walkthrough offer in place of a source link. */
   privateRepo?: boolean;
-  /** Optional extra repos that belong to the same product. */
+  /** Other repositories belonging to the same product. */
   relatedRepos?: { name: string; url?: string; note: string }[];
-  /** Omitted when there are no figures to show. */
   metrics?: { label: string; value: string }[];
-  /** One sentence on why it exists. Cards lead with this, not the stack. */
+  /** One-line summary shown on cards. */
   valueProp: string;
-  /** Absent where the stack is not documented. */
   architecture?: ProjectArchitecture;
-  /** Portrait app screenshots, shown in device frames. `images` is landscape. */
+  /** Portrait screenshots shown in phone frames. */
   screens?: { src: string; alt: string; caption: string }[];
-  /** Only where a manual process was replaced by an automated one. */
   beforeAfter?: { before: string[]; via: string; after: string[] };
-  /** Case studies only. */
   whyItMatters?: string;
-  /** Long-form case study only exists for the top projects. */
   hasCaseStudy: boolean;
   accent?: string;
 };
@@ -62,13 +57,7 @@ export type SkillGroup = {
   items: {
     name: string;
     note?: string;
-    /**
-     * Devicon files in /public/assets/devicon, set only where the entry names
-     * a real product. Two where the entry names two. Everything else here is
-     * a discipline rather than a tool and deliberately carries none — there is
-     * no logo for aviation data or for admin dashboards, and borrowing a
-     * neighbouring one to fill the gap would be a lie.
-     */
+    /** Devicon files in /public/assets/devicon, only for named products. */
     icons?: string[];
   }[];
 };
@@ -79,7 +68,7 @@ export type Service = {
   outcome: string;
   includes: string[];
   timeline: string;
-  /** Null hides the price line rather than showing a guess. */
+  /** Null hides the price line. */
   priceBand: string | null;
   icon: "mobile" | "server" | "automation" | "rescue";
 };
@@ -105,12 +94,11 @@ export type ProofPillar = {
 
 export type Experience = {
   id: number;
-  /** Omitted where the dates are not confirmed. */
   startDate?: string;
   endDate?: string;
   title: string;
   company: string;
   description: string[];
-  /** Keycap ids, so the badges reuse the same logos as the 3D board. */
+  /** Keycap ids, used for the badge logos. */
   skills: string[];
 };

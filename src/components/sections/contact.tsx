@@ -6,15 +6,12 @@ import { Reveal, WipeReveal } from "@/components/reveal";
 import SocialIcon from "@/components/layout/social-icon";
 import ContactForm from "@/components/contact-form";
 
-/**
- * The close. Large type carries it; the form sits beside rather than under, so
- * the page ends on a statement instead of on a field.
- */
+/** Closing contact section: headline beside the form. */
 export default function ContactSection() {
   return (
     <Section id="contact" className="pt-section pb-section-sm">
       <div className="container">
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
           <div>
             <WipeReveal>
               <p className="eyebrow">{contactCopy.eyebrow}</p>
@@ -55,9 +52,9 @@ export default function ContactSection() {
                   <p className="eyebrow">Or just email me</p>
                   <a
                     href={`mailto:${profile.email}`}
-                    className="group mt-3 inline-flex items-baseline gap-3 font-display text-display-md transition-colors hover:text-brand"
+                    className="group mt-3 inline-flex max-w-full items-baseline gap-3 font-display text-display-md transition-colors hover:text-brand"
                   >
-                    {profile.email}
+                    <span className="min-w-0 break-all">{profile.email}</span>
                     <ArrowUpRight className="h-5 w-5 shrink-0 self-center transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                   </a>
                 </div>

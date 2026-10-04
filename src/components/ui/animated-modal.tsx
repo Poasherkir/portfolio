@@ -33,7 +33,7 @@ export function ModalTrigger({
 }: {
   children: ReactNode;
   className?: string;
-  /** Accessible name — the trigger's visible content is decorative artwork. */
+  /** Accessible name for the trigger. */
   label: string;
 }) {
   const { setOpen } = useModal();

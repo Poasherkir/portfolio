@@ -5,10 +5,7 @@ import type { Project } from "@/types";
 import ProjectVisual from "./project-visual";
 import ProjectStatus from "./project-status";
 
-/**
- * A featured project. `hero` is the flagship and the only one at that scale;
- * `large` is the rest of the featured set.
- */
+/** Featured project row on /projects. `hero` is used for the flagship only. */
 export default function FeaturedProject({
   project,
   size = "large",
@@ -40,7 +37,7 @@ export default function FeaturedProject({
         />
       </div>
 
-      {/* Hover affordance. Hidden from AT — the real link is the title. */}
+      {/* Decorative hover label; the title is the real link. */}
       {cta && (
         <div
           aria-hidden
@@ -62,8 +59,6 @@ export default function FeaturedProject({
     <div className={cn("flex flex-col", isHero ? "justify-center" : "")}>
       <ProjectStatus status={project.status} />
 
-      {/* h2, not h3: these are the top-level content of the featured section and
-          nothing above them is an h2, so h3 would skip a level. */}
       <h2
         className={cn(
           "mt-4 font-display font-bold tracking-tight",

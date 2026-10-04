@@ -85,8 +85,7 @@ export default function AboutPage() {
             ))}
           </RevealGroup>
 
-          {/* Proof pillars. They live here rather than on the home page, whose
-              stack section is given over to the 3D keyboard. */}
+          {/* Proof pillars */}
           <div className="mt-20 border-t border-border pt-10">
             <p className="eyebrow">Why me</p>
             <RevealGroup className="mt-6 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">

@@ -13,14 +13,11 @@ import { useTheme } from "next-themes";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { initKeyboardAudio, playPress, playRelease } from "./keyboard/keyboard-audio";
 import BoardPlaceholder from "./keyboard/board-placeholder";
+import SceneBoundary from "./keyboard/scene-boundary";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * How the board travels between sections. Longer and more decelerating than
- * the default, so it arrives rather than stops. Reduced-motion cuts it to a
- * near-instant move — the board still goes where it should, without the trip.
- */
+// Tween used to move the board between sections; near-instant under reduced motion.
 const REDUCED =
   typeof window !== "undefined" &&
   typeof window.matchMedia === "function" &&
@@ -31,22 +28,9 @@ const MOVE = REDUCED
   : { duration: 1.5, ease: "power3.out" };
 
 /**
- * Caps the resolution the scene renders at.
- *
- * The runtime reads its pixel ratio once, at load, from the settings the scene
- * was published with. If that setting is "native", a full-viewport canvas on a
- * 3× phone renders nine times the pixels of a 1× display — every frame, for
- * detail nobody can see on a board that fills a fifth of the screen. Lower
- * ratios are the single largest lever on GPU cost there is.
- *
- * This only ever lowers. If the scene already renders at or under the cap it
- * does nothing, so it is safe whatever the file was published with. The cap
- * is higher on desktop, where the board is large and close to the eye, and
- * where the GPU can generally afford it.
- *
- * The renderer is not part of the runtime's public surface, so every step is
- * guarded: if the shape changes in a future version, this becomes a no-op
- * rather than a crash.
+ * Lowers the renderer's pixel ratio to 1.5 on mobile and 2 on desktop. A
+ * "native" ratio on a 3x phone renders nine times the pixels every frame.
+ * The renderer is private runtime API, so every access is guarded.
  */
 function capPixelRatio(app: Application, mobile: boolean) {
   type Renderer = {
@@ -62,8 +46,7 @@ function capPixelRatio(app: Application, mobile: boolean) {
   if (!(current > cap)) return;
 
   renderer.setPixelRatio(cap);
-  // The backing store is sized from the ratio, so it has to be laid out again.
-  // Third argument false: leave the CSS size alone.
+  // Resize the backing store without touching the CSS size.
   const { clientWidth, clientHeight } = app.canvas;
   if (clientWidth && clientHeight) renderer.setSize(clientWidth, clientHeight, false);
 }
@@ -80,30 +63,13 @@ const AnimatedBackground = () => {
   const playReleaseSound = playRelease;
 
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
-  /**
-   * Lenis animates the scroll position on its own rAF loop. ScrollTrigger,
-   * left alone, reads native scroll events and its own ticker, so the two ran
-   * on separate clocks and drifted: triggers fired a little early or late and
-   * the board's moves never quite lined up with the page under them. This is
-   * the whole reason scrolling felt unsteady. Now every Lenis frame drives the
-   * update, and there is one clock.
-   */
+  // Drive ScrollTrigger from Lenis so both run on the same frame clock.
   useLenis(ScrollTrigger.update);
 
   const [activeSection, setActiveSection] = useState<Section>("hero");
 
-  // The borrowed choreography moves and turns the board but never fades it,
-  // so on a text-heavy section it sits at full strength over the copy.
-  // Hero and skills are where it is meant to be looked at; everywhere else
-  // it is background and gets out of the way.
-  //
-  // On a phone the hero copy alone runs past one screen, and the board is
-  // fixed in the viewport while that copy scrolls through it. No fixed pose
-  // clears every line at every width — the Spline canvas is full-viewport,
-  // so the same pose lands on different pixels at 390 and 430 wide, and the
-  // copy wraps differently too. Rather than chase that, the board is dimmed
-  // on the mobile hero: still clearly the board, but a line of text that
-  // lands on it reads instead of disappearing into a keycap.
+  // Full strength where the board is the subject, dimmed behind text. On phones
+  // the hero copy scrolls over the board, so it is dimmed there too.
   const boardOpacity =
     activeSection === "hero"
       ? isMobile
@@ -113,23 +79,13 @@ const AnimatedBackground = () => {
         ? 0.42
         : 0.3;
 
-  // Animation controllers refs
   const bongoAnimationRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
   const keycapAnimationsRef = useRef<{ start: () => void; stop: () => void } | undefined>(undefined);
-  /** The staggered opening reveal, held so it can be stopped part way. */
   const revealTimeline = useRef<gsap.core.Timeline | undefined>(undefined);
 
   const [keyboardRevealed, setKeyboardRevealed] = useState(false);
 
-  // --- Event Handlers ---
-
-  /**
-   * Selects the cap under the pointer.
-   *
-   * Shared by hover and by mouseDown. A phone has no hover at all, so without
-   * the second the keyboard is decoration there — every cap inert, the
-   * read-out never shown.
-   */
+  /** Selects the cap under the pointer. Used for hover and for taps. */
   const handleMouseHover = (e: SplineEvent) => {
     if (!splineApp || selectedSkillRef.current?.name === e.target.name) return;
 
@@ -186,8 +142,7 @@ const AnimatedBackground = () => {
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
 
-    // Touch has no hover. Spline maps a tap to mouseDown, so this is what
-    // makes the board work at all on a phone.
+    // Touch has no hover; Spline reports a tap as mouseDown.
     splineApp.addEventListener("mouseDown", (e) => {
       handleMouseHover(e);
       const skill = SKILLS[e.target.name as SkillNames];
@@ -197,8 +152,6 @@ const AnimatedBackground = () => {
       }
     });
   };
-
-  // --- Animation Setup Helpers ---
 
   const createSectionTimeline = (
     triggerId: string,
@@ -239,23 +192,13 @@ const AnimatedBackground = () => {
     const kbd = splineApp.findObjectByName("keyboard");
     if (!kbd) return;
 
-    // Initial state
     const heroState = getKeyboardState({ section: "hero", isMobile });
     gsap.set(kbd.scale, heroState.scale);
     gsap.set(kbd.position, heroState.position);
 
-    // Section transitions
-    // In document order. These carry the section to fall back to when the
-    // visitor scrolls back out of them, so the chain has to match the page:
-    // hero, projects, stack, contact. It previously read hero, stack,
-    // projects, which is the order of the site this choreography came from.
-    // Here it meant scrolling up out of the stack handed the board back to
-    // the hero pose — full size, dead centre, full opacity — directly on top
-    // of the Projects heading.
-    //
-    // Projects starts at "top bottom" rather than part way up: there is a
-    // block of copy between the hero and the grid, and the board has to be
-    // clear of it before it is read, not while.
+    // Each section falls back to the previous one in page order when scrolling
+    // up, so this chain must follow the page: hero, projects, skills, contact.
+    // Projects triggers early so the board clears the copy above the grid.
     createSectionTimeline("#projects", "projects", "hero", "top bottom");
     createSectionTimeline("#skills", "skills", "projects");
     createSectionTimeline("#contact", "contact", "skills", "top 30%");
@@ -270,10 +213,7 @@ const AnimatedBackground = () => {
       return { start: () => { }, stop: () => { } };
     }
 
-    // Two frames alternating at 10Hz — a flipbook, so the cadence is the
-    // point and is kept. Driven by rAF rather than setInterval: an interval
-    // goes on flipping scene objects in a tab nobody is looking at, where rAF
-    // simply stops until the tab comes back.
+    // Two-frame flipbook at 10 Hz, on rAF so it pauses in background tabs.
     const FRAME_MS = 100;
     let raf = 0;
     let last = 0;
@@ -379,14 +319,7 @@ const AnimatedBackground = () => {
 
     await sleep(900);
 
-    // One timeline for the whole reveal.
-    //
-    // This was a setTimeout per keycap, spawned from inside forEach(async ...)
-    // — around fifty floating promises with nothing holding them. Nothing
-    // could stop them, so a visitor who changed the width or left the page
-    // part way through the reveal left timers still firing into a scene that
-    // had moved on. A timeline staggers on the same clock as every other
-    // animation here and dies when told to.
+    // One timeline for the staggered reveal, so it can be killed part way.
     revealTimeline.current?.kill();
     const tl = gsap.timeline();
     revealTimeline.current = tl;
@@ -434,15 +367,11 @@ const AnimatedBackground = () => {
     }
   };
 
-  // --- Effects ---
-
-  // Initialize GSAP and Spline interactions
   useEffect(() => {
     if (!splineApp) return;
     handleSplineInteractions();
     setupScrollAnimations();
-    // Measured while the scene, fonts and artwork were still loading, so the
-    // positions are stale the moment the page settles.
+    // Trigger positions were measured before the scene and fonts loaded.
     ScrollTrigger.refresh();
     bongoAnimationRef.current = getBongoAnimation();
     keycapAnimationsRef.current = getKeycapsAnimation();
@@ -451,15 +380,12 @@ const AnimatedBackground = () => {
       keycapAnimationsRef.current?.stop();
       revealTimeline.current?.kill();
     };
-    // The four builders above are rebuilt on every render, so depending on
-    // them would tear down and re-register every ScrollTrigger and every
-    // animation each time anything in this component changed. The scene needs
-    // wiring when it loads, and again when the breakpoint moves it to a
-    // different set of poses — which is exactly what is listed.
+    // Re-wire only when the scene loads or the breakpoint changes; the helper
+    // functions are recreated every render and must not be dependencies.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [splineApp, isMobile]);
 
-  // Handle keyboard text visibility based on theme and section
+  // The skills label variants are named by ink colour: dark ink for the light theme.
   useEffect(() => {
     if (!splineApp) return;
     const textDesktopDark = splineApp.findObjectByName("text-desktop-dark");
@@ -486,10 +412,6 @@ const AnimatedBackground = () => {
       return;
     }
 
-    // The four variants are named for their ink, not for the theme that shows
-    // them — dark ink is what reads on a light background, so the dark theme
-    // takes the light-ink label. Worth stating, because the pairing looks
-    // inverted every time you come back to it.
     const lightInk = theme === "dark";
     setVisibility(
       !isMobile && !lightInk,
@@ -505,7 +427,6 @@ const AnimatedBackground = () => {
     splineApp.setVariable("desc", selectedSkill.shortDescription);
   }, [selectedSkill, splineApp]);
 
-  // Handle rotation and teardown animations based on active section
   useEffect(() => {
     if (!splineApp) return;
 
@@ -523,7 +444,7 @@ const AnimatedBackground = () => {
         yoyoEase: true,
         ease: "back.inOut",
         delay: 2.5,
-        paused: true, // Start paused
+        paused: true,
       });
 
       teardownKeyboard = gsap.fromTo(
@@ -543,13 +464,11 @@ const AnimatedBackground = () => {
     }
 
     const manageAnimations = async () => {
-      // Reset text if not in skills
       if (activeSection !== "skills") {
         splineApp.setVariable("heading", "");
         splineApp.setVariable("desc", "");
       }
 
-      // Handle Rotate/Teardown Tweens
       if (activeSection === "hero") {
         rotateKeyboard?.restart();
         teardownKeyboard?.pause();
@@ -560,7 +479,6 @@ const AnimatedBackground = () => {
         teardownKeyboard?.pause();
       }
 
-      // Handle Bongo Cat
       if (activeSection === "projects") {
         await sleep(300);
         bongoAnimationRef.current?.start();
@@ -569,7 +487,6 @@ const AnimatedBackground = () => {
         bongoAnimationRef.current?.stop();
       }
 
-      // Handle Contact Section Animations
       if (activeSection === "contact") {
         await sleep(600);
         teardownKeyboard?.restart();
@@ -589,37 +506,20 @@ const AnimatedBackground = () => {
     };
   }, [activeSection, splineApp]);
 
-  /**
-   * Parallax on the container, not on the board's own rotation.
-   *
-   * The section timelines already tween kbd.rotation, and a second writer on
-   * the same property fights them. Moving the element instead keeps the two
-   * completely independent, and it is a compositor transform rather than a
-   * scene-graph change.
-   *
-   * The smoothing is done here rather than handed to a CSS transition. A
-   * transition plus a per-frame write means restarting a 600ms curve sixty
-   * times a second, so the browser recomputes it on every one of those frames
-   * and the board arrives late and soft. One loop closing a fixed fraction of
-   * the gap per frame is both cheaper and tighter, and it stops itself once
-   * there is nothing left to close.
-   */
+  // Pointer parallax on the container element, so it never competes with the
+  // section tweens on kbd.rotation. Eased in a rAF loop that stops when settled.
   useEffect(() => {
     const el = splineContainer.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // Coarse pointers have no hover to track.
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
-    // Where the pointer wants the board, and where it currently is. The gap
-    // between them is closed a fixed fraction per frame, which is what makes
-    // the board trail the cursor instead of snapping to it.
     let targetX = 0, targetY = 0, curX = 0, curY = 0;
     let frame = 0;
 
     const AMOUNT_X = 14;
     const AMOUNT_Y = 10;
-    // Per-frame catch-up. Lower is heavier.
+    // Fraction of the remaining distance covered per frame.
     const EASE = 0.075;
 
     const tick = () => {
@@ -627,8 +527,6 @@ const AnimatedBackground = () => {
       curY += (targetY - curY) * EASE;
 
       if (Math.abs(targetX - curX) < 0.05 && Math.abs(targetY - curY) < 0.05) {
-        // Close enough to be indistinguishable. Land exactly and let the loop
-        // stop rather than leaving a rAF running for the life of the page.
         curX = targetX;
         curY = targetY;
         el.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
@@ -653,51 +551,40 @@ const AnimatedBackground = () => {
     };
   }, []);
 
-  // Reveal keyboard on load
-  // The address bar follows the section. replaceState, not router.push:
-  // pushing added a history entry for every section the visitor scrolled past,
-  // so Back walked them up the page one section at a time instead of leaving
-  // the site.
+  // Mirror the section in the URL without adding history entries.
   useEffect(() => {
     const hash = activeSection === "hero" ? "" : `#${activeSection}`;
     window.history.replaceState(null, "", "/" + hash);
   }, [activeSection]);
 
-  // The opening reveal, once, when the scene has landed. This shared the
-  // effect above until now, which meant each ran on the other's dependencies:
-  // the reveal was re-evaluated on every section change, and the address bar
-  // was rewritten whenever the scene finished loading.
+  // Opening reveal, once the scene has loaded.
   useEffect(() => {
     if (!splineApp || isLoading || keyboardRevealed) return;
     updateKeyboardTransform();
-    // updateKeyboardTransform is rebuilt every render, so listing it here
-    // would restart the reveal continuously. keyboardRevealed is the latch
-    // that makes running it once correct.
+    // keyboardRevealed makes this run once; the helper is recreated every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [splineApp, isLoading, keyboardRevealed]);
 
   return (
-    // The scene and its runtime are a few hundred kilobytes. Until they land
-    // this stands in the same corner at the same attitude, so the swap does not
-    // jump — which is what the placeholder was written for, before the Spline
-    // scene replaced the board it was written for and left it orphaned. The
-    // string it replaces here rendered as unstyled body text.
-    <Suspense fallback={<BoardPlaceholder />}>
-      <Spline
-        className="pointer-events-auto w-full h-full fixed transition-opacity duration-700 ease-out print:hidden"
-        style={{ opacity: boardOpacity }}
-        ref={splineContainer}
-        onLoad={(app: Application) => {
-          setSplineApp(app);
-          bypassLoading();
-          // Creates the AudioContext and arms it on the first real gesture.
-          // Without this the play calls below are silent.
-          initKeyboardAudio();
-          capPixelRatio(app, isMobile);
-        }}
-        scene="/assets/skills-keyboard.spline"
-      />
-    </Suspense>
+    // Silhouette in the same position while the runtime downloads. If the
+    // runtime cannot load, the page carries on without the keyboard.
+    <SceneBoundary fallback={null}>
+      <Suspense fallback={<BoardPlaceholder />}>
+        <Spline
+          className="pointer-events-auto w-full h-full fixed transition-opacity duration-700 ease-out print:hidden"
+          style={{ opacity: boardOpacity }}
+          ref={splineContainer}
+          onLoad={(app: Application) => {
+            setSplineApp(app);
+            bypassLoading();
+            // The AudioContext can only start after a user gesture.
+            initKeyboardAudio();
+            capPixelRatio(app, isMobile);
+          }}
+          scene="/assets/skills-keyboard.spline"
+        />
+      </Suspense>
+    </SceneBoundary>
   );
 };
 

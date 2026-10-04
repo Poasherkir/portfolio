@@ -5,15 +5,8 @@ import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 /**
- * Standing call to action on small screens.
- *
- * The hero's buttons scroll away and the header keeps only the menu, so on a
- * phone there is otherwise a long stretch of the site with no way to start a
- * conversation. Desktop already has the nav in view the whole time and does
- * not need this, so it stops at the md breakpoint.
- *
- * Hidden on the pages where it would be pointing at the page you are already
- * on, and on the one that says the message already arrived.
+ * Fixed "start a project" bar on small screens. Hidden on desktop and on the
+ * contact and thank-you pages.
  */
 const HIDDEN_ON = ["/contact", "/thank-you"];
 
@@ -25,10 +18,8 @@ export default function MobileCta() {
     <div
       className={[
         "fixed inset-x-0 bottom-0 z-[3000] md:hidden print:hidden",
-        // The bar is transparent to the pointer so it never blocks what is
-        // under it; only the button itself takes events back.
+        // Only the button receives pointer events.
         "pointer-events-none",
-        // Sits above the phone's own home indicator rather than under it.
         "px-4 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] pt-3",
         "bg-gradient-to-t from-background via-background/95 to-transparent",
       ].join(" ")}

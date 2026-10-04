@@ -36,8 +36,6 @@ export default function ExperienceSection() {
 }
 
 function ExperienceCard({ experience: exp, index }: { experience: Experience; index: number }) {
-  // Only render the date pill when a real date exists — a placeholder dash
-  // reads worse than no pill at all.
   const dates = [exp.startDate, exp.endDate].filter(Boolean).join(" – ");
 
   return (

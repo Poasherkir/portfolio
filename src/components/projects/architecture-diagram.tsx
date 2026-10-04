@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { architectureIntro, architectureLayers } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
 /** Layered architecture per project. Layers a project lacks are dimmed. */
 export default function ArchitectureDiagram({ projects }: { projects: Project[] }) {
-  // Only projects with documented layers.
   const selectable = projects.filter((p) => p.architecture);
   const [activeSlug, setActiveSlug] = useState(selectable[0]?.slug ?? "");
   const reduced = useReducedMotion();
@@ -134,9 +134,11 @@ export default function ArchitectureDiagram({ projects }: { projects: Project[] 
         })}
       </ol>
 
-      <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        {architectureIntro.body}
-      </p>
+      {selectable.length > 1 && (
+        <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          {architectureIntro.body}
+        </p>
+      )}
     </div>
   );
 }

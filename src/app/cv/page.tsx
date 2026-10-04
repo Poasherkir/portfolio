@@ -31,7 +31,6 @@ export default function CvPage() {
         lead="Everything below is also downloadable. If you need it in a different format for a client or a platform, ask."
       >
         <div className="flex flex-wrap gap-3 print:hidden">
-          {/* Download buttons appear as soon as the PDFs are dropped in. */}
           {profile.cv.en && (
             <Button asChild>
               <a href={profile.cv.en} download>
@@ -85,8 +84,7 @@ export default function CvPage() {
               </p>
             </section>
 
-            {/* Selected work — projects stand in for employment history, which
-                is the honest shape of a freelance CV at this stage. */}
+            {/* Selected work */}
             <section>
               <h3 className="eyebrow">Selected work</h3>
               <ul className="mt-5 space-y-7 border-t border-border pt-5">

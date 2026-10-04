@@ -1,10 +1,6 @@
 import { ImageResponse } from "next/og";
 
-/**
- * Home-screen icon for iOS. Same mark as the tab icon with room to breathe —
- * Apple rounds the corners itself, so this stays square and keeps the initial
- * well clear of where that rounding bites.
- */
+/** iOS home-screen icon. Square, since iOS rounds the corners itself. */
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 

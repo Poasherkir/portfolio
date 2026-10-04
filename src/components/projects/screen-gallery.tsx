@@ -46,7 +46,6 @@ export default function ScreenGallery({
     );
   }
 
-  // At most three — a fourth is unreadable at this size.
   const shown = screens.slice(0, 3);
 
   return (
@@ -70,7 +69,6 @@ export default function ScreenGallery({
               key={screen.src}
               className={cn(
                 "w-[27%] max-w-[190px] shrink-0 transition-transform duration-500",
-                // Centre phone forward, outer two back and tilted.
                 isCentre
                   ? "z-10 -translate-y-3 scale-[1.06]"
                   : "z-0 translate-y-4 scale-[0.94] opacity-90",

@@ -36,7 +36,6 @@ export default function ContactPage() {
               <div>
                 <p className="eyebrow">Direct</p>
                 <ul className="mt-4 space-y-3 border-t border-border pt-4">
-                  {/* Each row appears only once the detail exists in portfolio.ts. */}
                   {profile.email && (
                     <li>
                       <a

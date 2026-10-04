@@ -1,11 +1,7 @@
 import { keycapList } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
-/**
- * Flat version of a keycap logo, for the experience timeline and the project
- * modals. Reads the same Devicon file the 3D board uses, so a technology looks
- * identical everywhere it appears.
- */
+/** A keycap's Devicon logo as a small inline image. */
 export default function TechIcon({
   id,
   className,

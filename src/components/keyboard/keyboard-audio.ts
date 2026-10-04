@@ -1,16 +1,9 @@
 "use client";
 
 /**
- * Synthesised mechanical-keyboard sound.
- *
- * A press is three layers, the way a real switch actually sounds:
- *   1. a short filtered noise "tick"   — the stem hitting the housing
- *   2. a low pitched "thock"           — the bottom-out
- *   3. a brief high "clack"            — the plastic edge
- * A release is the same idea, lighter, higher and shorter.
- *
- * Each hit is detuned a few percent at random so repeated presses never sound
- * like the same sample fired twice.
+ * Synthesised keyboard sounds (modal synthesis, no audio files). Each strike
+ * is a noise burst through a bank of resonant bandpass filters, detuned a
+ * little at random so repeated presses do not sound identical.
  */
 
 const MUTE_KEY = "mb:kbd-muted";
@@ -24,7 +17,7 @@ let muted = false;
 const listeners = new Set<(muted: boolean) => void>();
 const unlockListeners = new Set<(unlocked: boolean) => void>();
 
-/** Browsers will not let an AudioContext make a sound before a real gesture. */
+/** True once a user gesture has started the AudioContext. */
 export function isAudioUnlocked() {
   return unlocked;
 }
@@ -52,7 +45,7 @@ export function setMuted(next: boolean) {
   try {
     window.localStorage.setItem(MUTE_KEY, next ? "1" : "0");
   } catch {
-    /* private mode — the preference just will not persist */
+    /* storage unavailable; the preference is not persisted */
   }
   if (master && ctx) master.gain.setTargetAtTime(next ? 0 : 1, ctx.currentTime, 0.01);
   listeners.forEach((fn) => fn(next));
@@ -66,7 +59,7 @@ function buildNoise(context: AudioContext) {
   return buffer;
 }
 
-/** Creates the context on the first real gesture. Pointer moves do not count. */
+/** Creates the AudioContext on the first pointerdown, keydown or touchstart. */
 export function initKeyboardAudio() {
   if (typeof window === "undefined" || unlocked) return;
 
@@ -87,8 +80,7 @@ export function initKeyboardAudio() {
     master = ctx.createGain();
     master.gain.value = muted ? 0 : 1;
 
-    // Soft clip rather than a compressor: overlapping strikes still sum
-    // safely, but the attack survives. A compressor ducks it to -23 dBFS.
+    // tanh soft clip instead of a compressor, which would flatten the attack.
     const shaper = ctx.createWaveShaper();
     const curve = new Float32Array(1024);
     for (let i = 0; i < curve.length; i++) {
@@ -104,7 +96,7 @@ export function initKeyboardAudio() {
     unlocked = true;
     unlockListeners.forEach((fn) => fn(true));
 
-    // Play immediately — the gesture that armed the audio needs feedback.
+    // Audible feedback for the gesture that unlocked audio.
     if (!muted) setTimeout(() => playPress(1.06), 30);
 
     window.removeEventListener("pointerdown", unlock);
@@ -117,20 +109,13 @@ export function initKeyboardAudio() {
   window.addEventListener("touchstart", unlock);
 }
 
-/**
- * Modal synthesis: a short impulse through a bank of high-Q bandpass filters
- * tuned to the object's resonant modes.
- */
+/** One resonant mode: centre frequency, Q, level and decay time in seconds. */
 type Mode = { f: number; q: number; gain: number; decay: number };
 
-/**
- * Makeup gain. High-Q bandpasses throw away most of the exciter's energy, so
- * the mode gains below are not output amplitudes — unscaled the bank peaks
- * around -34 dBFS. 13x puts it near -6 dBFS.
- */
+/** High-Q bandpasses discard most of the input energy; this brings the peak from about -34 to -6 dBFS. */
 const MAKEUP = 13;
 
-/** Measured-by-ear modes for a keycap bottoming out in a plastic case. */
+/** Keycap bottoming out in a plastic case. */
 const PRESS_MODES: Mode[] = [
   { f: 168, q: 6, gain: 0.5, decay: 0.085 }, // case thock
   { f: 430, q: 10, gain: 0.28, decay: 0.055 },
@@ -140,7 +125,7 @@ const PRESS_MODES: Mode[] = [
   { f: 5600, q: 10, gain: 0.24, decay: 0.011 }, // plastic edge
 ];
 
-/** The upstroke: fewer modes, higher, drier. Nothing bottoms out. */
+/** Key release: fewer, higher, shorter modes. */
 const RELEASE_MODES: Mode[] = [
   { f: 1400, q: 12, gain: 0.16, decay: 0.02 },
   { f: 3100, q: 14, gain: 0.22, decay: 0.014 },
@@ -151,8 +136,7 @@ function strike(modes: Mode[], pitch: number, level: number) {
   if (!ctx || !master || !noise) return;
 
   const t = ctx.currentTime;
-  // Excitation: a couple of milliseconds of noise, which is effectively an
-  // impulse as far as the resonators are concerned.
+  // A few milliseconds of noise acts as the impulse.
   const src = ctx.createBufferSource();
   src.buffer = noise;
   src.playbackRate.value = 1 + (Math.random() * 0.1 - 0.05);
@@ -165,7 +149,6 @@ function strike(modes: Mode[], pitch: number, level: number) {
   for (const m of modes) {
     const bp = ctx.createBiquadFilter();
     bp.type = "bandpass";
-    // Small random detune per mode per hit, so no two strikes are identical.
     bp.frequency.value = m.f * pitch * (1 + (Math.random() * 0.06 - 0.03));
     bp.Q.value = m.q;
 

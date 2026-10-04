@@ -13,13 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
 };
 
-/**
- * Written against what the site actually does, not from a template. Every
- * claim here was checked: there is no Set-Cookie header on any route, contact
- * submissions go to Resend and land in an inbox rather than a database, and
- * the analytics in use are the cookieless kind. If any of that changes this
- * page has to change with it.
- */
+// Keep in sync with the site: no cookies, contact form via Resend, cookieless analytics.
 const SECTIONS: LegalSection[] = [
   {
     heading: "The short version",

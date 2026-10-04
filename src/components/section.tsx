@@ -19,15 +19,7 @@ export function Section({
   );
 }
 
-/**
- * Centred section title.
- *
- * Not sticky by default. It used to pin under the header while the section
- * scrolled past beneath it, which works only when the gap below is most of a
- * viewport — with the shorter spacers most sections actually use, the pinned
- * heading and the content underneath simply collided, and the heading has a
- * text shadow rather than a background so there was nothing to hide it.
- */
+/** Centred section title. */
 export function SectionHeader({
   id,
   eyebrow,
@@ -46,9 +38,7 @@ export function SectionHeader({
   className?: string;
 }) {
   const heading = (
-    // The 3D board passes directly behind these headings. A soft dark halo
-    // guarantees the type stays readable over whatever colour happens to be
-    // under it, without needing a solid backing plate.
+    // heading-halo keeps the title readable over the 3D board.
     <h2 className="heading-halo text-center font-display text-4xl font-bold text-foreground md:text-7xl">
       {title}
     </h2>

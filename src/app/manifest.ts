@@ -1,12 +1,7 @@
 import type { MetadataRoute } from "next";
 import { profile } from "@/data/portfolio";
 
-/**
- * Present so an installed shortcut carries the right name and colours instead
- * of the URL and a white bar. Deliberately not a full PWA manifest: there is
- * no service worker here and no offline story, so claiming display:standalone
- * would open the site in a chrome-less window with no way back.
- */
+/** Name and colours for home-screen shortcuts. Not a PWA: there is no service worker. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${profile.name} — ${profile.role}`,

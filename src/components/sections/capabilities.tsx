@@ -3,7 +3,7 @@ import { Section, SectionHeader } from "@/components/section";
 import { RevealGroup, RevealItem } from "@/components/reveal";
 import Spotlight from "@/components/spotlight";
 
-/** The same work as the stack section, framed as what a client is buying. */
+/** Capabilities, each with the projects that show it. */
 export default function Capabilities() {
   return (
     <Section id="capabilities" className="py-24 md:py-32">

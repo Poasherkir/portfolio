@@ -7,7 +7,7 @@ import { profile } from "@/data/portfolio";
 type PreloaderState = {
   isLoading: boolean;
   percent: number;
-  /** Skip the intro immediately — the 3D scene calls this once it is ready. */
+  /** Ends the intro; called by the 3D scene once it has loaded. */
   bypassLoading: () => void;
 };
 
@@ -21,10 +21,7 @@ export const usePreloader = () => useContext(PreloaderContext);
 const DURATION_MS = 1400;
 const SESSION_KEY = "mb:seen-intro";
 
-/**
- * Runs once per browser session. A returning visitor clicking through pages
- * should not sit through the intro every time.
- */
+/** Intro counter, shown once per browser session. */
 export default function Preloader({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [percent, setPercent] = useState(0);
@@ -35,12 +32,7 @@ export default function Preloader({ children }: { children: ReactNode }) {
       typeof window !== "undefined" && window.sessionStorage.getItem(SESSION_KEY) === "1";
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Never play the intro to a tab nobody is looking at. requestAnimationFrame
-    // is suspended outright while a document is hidden, so the counter would
-    // not tick and — worse — the exit animation could not run, leaving a
-    // full-screen overlay stranded over the site. Opening a link in a
-    // background tab is common enough that this has to be handled, not hoped
-    // about.
+    // Skip it in background tabs, where rAF is suspended and the overlay would never lift.
     const hidden = document.visibilityState === "hidden";
 
     if (seen || reduced || hidden) {
@@ -59,7 +51,7 @@ export default function Preloader({ children }: { children: ReactNode }) {
     const start = performance.now();
     const tick = (now: number) => {
       const t = Math.min((now - start) / DURATION_MS, 1);
-      // easeOutExpo — fast start, settles on 100
+      // easeOutExpo
       const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
       setPercent(Math.round(eased * 100));
       if (t < 1) raf.current = requestAnimationFrame(tick);
@@ -67,15 +59,10 @@ export default function Preloader({ children }: { children: ReactNode }) {
     };
     raf.current = requestAnimationFrame(tick);
 
-    // Hard backstop. requestAnimationFrame is throttled — or suspended
-    // outright — in a background tab, on low-power mode, and in some embedded
-    // webviews. Without this the intro never lifts and the entire site sits
-    // behind a blank overlay, which is the worst possible failure for a
-    // decorative animation.
+    // Fallback timeout in case rAF is throttled or suspended.
     const bail = setTimeout(finish, DURATION_MS + 600);
 
-    // Any real interaction means the visitor is done waiting. Also covers the
-    // case where the tab is hidden mid-intro and rAF stops.
+    // Any interaction, or the tab being hidden, ends the intro.
     const skip = () => finish();
     window.addEventListener("pointerdown", skip);
     window.addEventListener("keydown", skip);

@@ -1,12 +1,11 @@
 import { proofStrip } from "@/data/portfolio";
 
 /**
- * Infinite marquee of verifiable facts. Duplicated once so the -50% translate
- * loops seamlessly; the copy is aria-hidden so screen readers read the list once.
+ * Scrolling marquee. The list is rendered twice so the -50% translate loops;
+ * the copy is aria-hidden.
  */
 export default function ProofStrip() {
   return (
-    // No backdrop blur — it smears the keycaps passing behind.
     <div className="relative border-y border-border bg-background/90 py-4">
       <div className="mask-fade-x flex overflow-hidden">
         <ul className="flex shrink-0 animate-marquee items-center gap-10 pr-10 motion-reduce:animate-none">

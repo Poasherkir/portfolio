@@ -1,16 +1,12 @@
 import { Reveal } from "./reveal";
 
-/**
- * Shared body for /privacy and /terms so the two read as one document set
- * rather than two pages that happened to be written on different days.
- */
+/** Shared layout for /privacy and /terms. */
 export type LegalSection = {
   heading: string;
   paragraphs: string[];
   list?: string[];
 };
 
-/** Single source for the date both legal pages stamp themselves with. */
 export const LEGAL_UPDATED = "September 2026";
 
 export function LegalBody({ sections }: { sections: LegalSection[] }) {

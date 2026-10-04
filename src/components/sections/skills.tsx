@@ -4,10 +4,7 @@ import { foundations, skillGroups } from "@/data/portfolio";
 import { Section } from "@/components/section";
 import { Reveal, RevealGroup, RevealItem, WipeReveal } from "@/components/reveal";
 
-/**
- * A technical inventory rather than a logo wall. The 3D board flies into the
- * stage below and is the playful way in; this is the version you can read.
- */
+/** Readable skills list, under the space the 3D board moves into. */
 export default function Skills() {
   return (
     <Section id="skills" className="py-section">
@@ -23,7 +20,7 @@ export default function Skills() {
           </Reveal>
         </div>
 
-        {/* Clear space the board flies into. */}
+        {/* Space for the 3D board. */}
         <div
           className="pointer-events-none h-[42vh] md:h-[56vh]"
           data-kbd-anchor="skills"
@@ -36,7 +33,6 @@ export default function Skills() {
               key={group.title}
               className="group grid grid-cols-1 gap-x-10 gap-y-3 border-b border-border py-7 md:grid-cols-[5rem_14rem_minmax(0,1fr)] md:py-9"
             >
-              {/* The number is the only place the accent appears in this list. */}
               <span className="font-mono text-meta uppercase text-brand">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -54,10 +50,7 @@ export default function Skills() {
                 <p className="text-body text-muted-foreground">{group.blurb}</p>
                 <ul className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2.5">
                   {group.items.map((item) => (
-                    // The rule separating one entry from the next is a
-                    // pseudo-element rather than a real span, so the logos can
-                    // sit alongside it without a :last-child selector picking
-                    // the wrong one.
+                    // Separator is a pseudo-element so :last-child still targets the entry.
                     <li
                       key={item.name}
                       className="flex items-center gap-x-2 font-mono text-[0.78rem] tracking-tight text-foreground/75 after:ml-2 after:h-3 after:w-px after:bg-foreground/20 after:content-[''] last:after:hidden"
@@ -75,8 +68,7 @@ export default function Skills() {
                           />
                         ))
                       ) : (
-                        // Keeps every entry on the same rhythm without
-                        // claiming a technology the entry is not.
+                        // Neutral dot for entries without a logo.
                         <span
                           aria-hidden
                           className="h-1 w-1 shrink-0 rounded-full bg-foreground/25"
