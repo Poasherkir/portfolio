@@ -55,7 +55,7 @@ export default function CaseStudyNav({
   return (
     <>
       {/* Mobile: horizontal strip */}
-      <div className="sticky top-[3.5rem] z-20 -mx-5 border-b border-border bg-background/96 lg:hidden">
+      <div className="sticky top-[3.5rem] z-20 -mx-5 border-b border-border bg-background/96 transition-[top] duration-300 lg:hidden [html[data-header=hidden]_&]:top-0">
         <div
           ref={stripRef}
           className="flex gap-1 overflow-x-auto px-5 py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

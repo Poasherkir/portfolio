@@ -26,6 +26,12 @@ export default function Footer() {
                 {l.title}
               </Link>
             ))}
+            <Link
+              href="/archive"
+              className="text-sm text-muted-foreground transition-colors hover:text-brand"
+            >
+              Archive
+            </Link>
           </nav>
 
           <div className="flex flex-col gap-2">

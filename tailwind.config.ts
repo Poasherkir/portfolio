@@ -27,6 +27,15 @@ const config = {
         gutter: "clamp(1.25rem, 4vw, 3rem)",
         13: "3.25rem",
       },
+      // Steps used by colour modifiers such as bg-card/92; Tailwind only ships multiples of 5.
+      opacity: {
+        12: "0.12",
+        82: "0.82",
+        92: "0.92",
+        93: "0.93",
+        94: "0.94",
+        96: "0.96",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],

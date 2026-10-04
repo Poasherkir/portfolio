@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 import ProjectVisual from "./project-visual";
@@ -109,16 +109,41 @@ export default function FeaturedProject({
         </ul>
       )}
 
-      {cta && href && (
-        <p className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-brand">
-          {cta}
-          {href.startsWith("http") ? (
-            <ExternalLink className="h-4 w-4" />
-          ) : (
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          )}
-        </p>
-      )}
+      <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+        {cta && href && (
+          <p className="inline-flex items-center gap-2 text-sm font-medium text-brand">
+            {cta}
+            {href.startsWith("http") ? (
+              <ExternalLink className="h-4 w-4" />
+            ) : (
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            )}
+          </p>
+        )}
+        {/* z-10 lifts these above the title's stretched link. */}
+        {project.hasCaseStudy && project.links.live && (
+          <a
+            href={project.links.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative z-10 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            Try it live
+          </a>
+        )}
+        {project.links.repo && (
+          <a
+            href={project.links.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative z-10 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+          >
+            <Github className="h-3.5 w-3.5" />
+            Source
+          </a>
+        )}
+      </div>
     </div>
   );
 

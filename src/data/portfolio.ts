@@ -74,6 +74,7 @@ export const navLinks: NavLink[] = [
   { title: "Services", href: "/#services", description: "What you can hire me for" },
   { title: "About", href: "/about", description: "Who I am and how I work" },
   { title: "Contact", href: "/contact", description: "Start a project" },
+  { title: "CV", href: "/cv", description: "Printable résumé" },
 ];
 
 export const socials: SocialLink[] = [
