@@ -20,11 +20,11 @@ export default function ContactForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  /** Set when the server says it cannot deliver but tells us where to write. */
+  /** Address returned by the server when it cannot deliver the message. */
   const [fallbackEmail, setFallbackEmail] = useState<string | null>(null);
-  /** The message they already typed, ready to hand to their mail client. */
+  /** The typed message, for the mailto fallback. */
   const [fallbackHref, setFallbackHref] = useState<string>("");
-  // Spam control #1: how long the form was on screen. Bots submit instantly.
+  // Time on screen, checked by the server to catch bots.
   const openedAt = useRef(Date.now());
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -53,21 +53,13 @@ export default function ContactForm() {
 
       form.reset();
       openedAt.current = Date.now();
-      // A page rather than a toast: the submission gets a URL the visitor can
-      // see and return to, and something a conversion can point at. Only the
-      // success path changed — the request and every error branch above are
-      // untouched.
       router.push("/thank-you");
     } catch (err) {
-      // A failed send used to end here, with an apology and nowhere to go. If
-      // the server handed back an address, offer it — the visitor came to say
-      // something and should not have to go hunting for a second route.
+      // If the server returned an address, offer it as a fallback.
       const address = typeof fallback === "string" ? fallback : null;
       setFallbackEmail(address);
       if (address) {
-        // Carry what they typed into the mail client rather than making them
-        // write it a second time. They came here to say something; losing it
-        // to a server problem is the worst possible outcome.
+        // Prefill the mailto link with the typed message.
         const lines = [
           data.company ? `Company: ${data.company}` : null,
           data.budget ? `Budget: ${data.budget}` : null,
@@ -93,7 +85,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-5" noValidate>
-      {/* Spam control #2: honeypot. Hidden from people, irresistible to bots. */}
+      {/* Honeypot field, hidden from people. */}
       <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <label htmlFor="company_website">Company website</label>
         <input id="company_website" name="company_website" tabIndex={-1} autoComplete="off" />
@@ -163,9 +155,7 @@ export default function ContactForm() {
         </Button>
       </div>
 
-      {/* Only appears when the send actually failed. A toast is gone in a few
-          seconds and takes the address with it; this stays until the message
-          is on its way by some other route. */}
+      {/* Persistent fallback when sending failed. */}
       {fallbackEmail && (
         <div
           role="alert"

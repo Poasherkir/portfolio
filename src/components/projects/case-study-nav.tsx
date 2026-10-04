@@ -3,11 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-/**
- * Contents rail. Sticky column on desktop, horizontal strip on mobile.
- * Scroll-spy via IntersectionObserver — no per-frame layout reads, and it
- * stays correct while smooth scroll is running.
- */
+/** Case-study contents: sticky rail on desktop, scrolling strip on mobile, with IntersectionObserver scroll-spy. */
 export default function CaseStudyNav({
   sections,
 }: {
@@ -25,7 +21,7 @@ export default function CaseStudyNav({
         for (const entry of entries) {
           seen.set(entry.target.id, entry.intersectionRatio);
         }
-        // Whichever section shows the most of itself wins.
+        // The most visible section is active.
         let best = "";
         let bestRatio = 0;
         for (const [id, ratio] of seen) {

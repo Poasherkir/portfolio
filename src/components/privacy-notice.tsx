@@ -5,26 +5,14 @@ import Link from "next/link";
 import { X } from "lucide-react";
 
 /**
- * Privacy notice, in the slot a cookie banner would occupy.
- *
- * It does not ask for consent, because there is nothing here to consent to:
- * no route on this site sends a Set-Cookie header, the analytics in use are
- * the cookieless kind, and the only thing written to your device is the
- * light/dark preference — which is exempt as strictly necessary in every
- * regime that would otherwise require a banner.
- *
- * Putting up an accept/reject gate anyway would state something untrue about
- * what the site does and tax every first visit for it. This says what actually
- * happens, links to the detail, and goes away.
- *
- * The dismissal is kept in localStorage rather than a cookie, which would be
- * a fine irony to miss.
+ * Informational privacy notice. No consent prompt: the site sets no cookies,
+ * analytics are cookieless, and only the theme preference is stored locally.
+ * Dismissal is remembered in localStorage.
  */
 const KEY = "mb.privacy-notice.seen";
 
 export default function PrivacyNotice() {
-  // Never render on the server: the answer depends on this browser's storage,
-  // and guessing produces a banner that flashes in and out on every load.
+  // Client-only, since visibility depends on localStorage.
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -32,13 +20,10 @@ export default function PrivacyNotice() {
     try {
       seen = window.localStorage.getItem(KEY) === "1";
     } catch {
-      // Private mode, or storage blocked. Showing it once per visit is the
-      // safer failure than never showing it.
+      // Storage blocked: show it.
       seen = false;
     }
     if (!seen) {
-      // Let the page settle first — arriving at the same moment as the content
-      // makes it feel like an interruption rather than a footnote.
       const t = window.setTimeout(() => setShow(true), 1200);
       return () => window.clearTimeout(t);
     }
@@ -48,7 +33,7 @@ export default function PrivacyNotice() {
     try {
       window.localStorage.setItem(KEY, "1");
     } catch {
-      /* Nothing to do — it simply shows again next time. */
+      /* storage unavailable */
     }
     setShow(false);
   }
@@ -61,7 +46,7 @@ export default function PrivacyNotice() {
       aria-label="Privacy notice"
       className={[
         "fixed z-[3500] print:hidden",
-        // Clears the standing mobile call to action, which owns the bottom edge.
+        // Sits above the mobile call-to-action bar.
         "inset-x-4 bottom-[calc(env(safe-area-inset-bottom,0px)+5rem)]",
         "md:inset-x-auto md:bottom-6 md:left-6 md:max-w-sm",
         "rounded-xl border border-border bg-card p-4 shadow-lg",

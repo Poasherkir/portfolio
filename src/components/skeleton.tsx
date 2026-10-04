@@ -1,17 +1,11 @@
 import { cn } from "@/lib/utils";
 
-/**
- * Placeholder block for route-level loading files.
- *
- * Deliberately not a shimmer: a moving highlight on a page that resolves in
- * under a second reads as jank rather than progress. A steady block that
- * matches the shape of what is coming does the job and disappears quietly.
- */
+/** Static placeholder block for loading.tsx files. */
 export function Skeleton({ className }: { className?: string }) {
   return <div aria-hidden className={cn("rounded-md bg-foreground/[0.07]", className)} />;
 }
 
-/** Masthead placeholder, sized to the real PageHeader so nothing jumps. */
+/** Placeholder sized like PageHeader. */
 export function HeaderSkeleton() {
   return (
     <header className="relative border-b border-border pb-14 pt-36 md:pb-20 md:pt-44">
@@ -25,10 +19,7 @@ export function HeaderSkeleton() {
   );
 }
 
-/**
- * Every loading.tsx renders this. Screen readers get one polite announcement
- * instead of a page of meaningless boxes.
- */
+/** Loading state shared by every loading.tsx, announced once to screen readers. */
 export function LoadingShell({ children }: { children: React.ReactNode }) {
   return (
     <div role="status" aria-live="polite" aria-busy="true">

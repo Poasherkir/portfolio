@@ -5,10 +5,7 @@ import type { Project } from "@/types";
 import ProjectVisual from "./project-visual";
 import ProjectStatus from "./project-status";
 
-/**
- * A project in the "more work" grid. No "Private" badge — it is true of nearly
- * every project, so the page states the policy once instead.
- */
+/** Card in the "More work" grid on /projects. */
 export default function ProjectCard({
   project,
   priority = false,
@@ -18,7 +15,6 @@ export default function ProjectCard({
   priority?: boolean;
   className?: string;
 }) {
-  // Case studies get their own page; everything else points at its live site.
   const href = project.hasCaseStudy
     ? `/projects/${project.slug}`
     : project.links.live ?? project.links.repo;
@@ -98,9 +94,7 @@ export default function ProjectCard({
   return (
     <div className={classes}>
       {body}
-      {/* Stretched link: the whole card is clickable, but only one accessible
-          link exists in the tree rather than a card-sized anchor wrapping
-          headings and lists. */}
+      {/* Stretched link covering the card. */}
       <Link
         href={href}
         {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}

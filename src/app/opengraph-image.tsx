@@ -5,11 +5,7 @@ export const alt = `${profile.name} — ${profile.role}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/**
- * Generated at build time, so there is never a missing-OG-image 404 while the
- * hand-designed one is still pending. Uses no remote assets or web fonts —
- * everything here is solid colour and system type.
- */
+/** Site-wide Open Graph image, generated at build time with no remote assets. */
 export default async function OpengraphImage() {
   return new ImageResponse(
     (

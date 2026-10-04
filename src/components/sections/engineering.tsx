@@ -5,10 +5,7 @@ import { Section } from "@/components/section";
 import { Reveal, RevealGroup, RevealItem, WipeReveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 
-/**
- * Answers "can I see the code?" before it is asked. Not a contribution graph —
- * the shipping work is in private repos, so a public graph would understate it.
- */
+/** Engineering practices, and where the source can be seen. */
 export default function Engineering() {
   return (
     <Section id="engineering" className="py-24 md:py-32">

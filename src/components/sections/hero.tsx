@@ -4,17 +4,15 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { hero, profile, socials } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
-import { BlurIn } from "@/components/reveal";
+import { FadeIn } from "@/components/reveal";
 import ScrollCue from "@/components/scroll-cue";
 import SocialIcon from "@/components/layout/social-icon";
 import Magnetic from "@/components/magnetic";
 import { usePreloader } from "@/components/preloader";
 import { cn } from "@/lib/utils";
 
-/** The board owns the right column, so the copy here stays spare. */
 export default function Hero() {
-  // Always renders — gating on the preloader would ship an empty <h1>.
-  // The entrance is delayed instead, to settle as the intro panel lifts.
+  // Always rendered; the entrance is delayed while the intro is showing.
   const { isLoading } = usePreloader();
   const offset = isLoading ? 0.7 : 0;
 
@@ -25,27 +23,24 @@ export default function Hero() {
           className={cn(
             "z-[2] min-h-[100svh]",
             "col-span-1 flex flex-col items-start justify-center",
-            // Clears the fixed header, and the column may grow past the viewport
-            // rather than centring content taller than itself.
+            // Top padding clears the fixed header.
             "px-gutter pb-20 pt-[calc(4rem+clamp(2rem,6vh,5rem))]"
           )}
         >
-          <BlurIn delay={offset + 0.15}>
+          <FadeIn delay={offset + 0.15}>
             <p className="eyebrow">{hero.eyebrow}</p>
-          </BlurIn>
+          </FadeIn>
 
           <h1 className="mt-6">
             <span className="sr-only">
               {profile.name} — {hero.displayLines.join(" ")}
             </span>
             {hero.displayLines.map((line, i) => (
-              <BlurIn key={line} delay={offset + 0.3 + i * 0.11}>
+              <FadeIn key={line} delay={offset + 0.3 + i * 0.11}>
                 <span
                   aria-hidden
                   className="block font-display text-display-2xl text-foreground"
                 >
-                  {/* Only the last word carries the accent — a whole red line
-                      at this size is a block of colour, not emphasis. */}
                   {line === hero.displayLines[hero.displayLines.length - 1] ? (
                     <>
                       {line.replace(hero.accentWord, "")}
@@ -55,19 +50,17 @@ export default function Hero() {
                     line
                   )}
                 </span>
-              </BlurIn>
+              </FadeIn>
             ))}
           </h1>
 
-          <BlurIn delay={offset + 0.72}>
+          <FadeIn delay={offset + 0.72}>
             <p className="copy-halo mt-8 max-w-[46ch] text-body-lg text-muted-foreground">
               {hero.subhead}
             </p>
-          </BlurIn>
+          </FadeIn>
 
-          {/* One primary. The secondary is a link, so the eye has an order to
-              follow instead of two buttons of equal weight. */}
-          <BlurIn delay={offset + 0.85}>
+          <FadeIn delay={offset + 0.85}>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Magnetic>
                 <Button asChild size="lg">
@@ -97,10 +90,9 @@ export default function Hero() {
                 ))}
               </div>
             </div>
-          </BlurIn>
+          </FadeIn>
 
-          {/* The delivery, in order. Structure where the logos are scattered. */}
-          <BlurIn delay={offset + 0.95}>
+          <FadeIn delay={offset + 0.95}>
             <ol className="mt-14 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-border pt-6">
               {hero.pipeline.map((stage, i) => (
                 <li key={stage} className="flex items-center gap-3">
@@ -115,11 +107,10 @@ export default function Hero() {
                 </li>
               ))}
             </ol>
-          </BlurIn>
+          </FadeIn>
 
-          {/* Rendered only while it is actually true — set to null when booked. */}
           {hero.availability && (
-            <BlurIn delay={offset + 1.02}>
+            <FadeIn delay={offset + 1.02}>
               <p className="mt-7 flex items-center gap-2.5 text-xs text-muted-foreground">
                 <span className="relative flex h-1.5 w-1.5 shrink-0" aria-hidden>
                   <span className="absolute inset-0 animate-blip rounded-full bg-brand" />
@@ -130,11 +121,11 @@ export default function Hero() {
                   · {profile.location} · {profile.timezone}
                 </span>
               </p>
-            </BlurIn>
+            </FadeIn>
           )}
         </div>
 
-        {/* Right column is deliberately empty — the 3D keyboard lives here. */}
+        {/* Empty column; the 3D keyboard shows through here. */}
         <div className="col-span-1 grid" />
       </div>
 

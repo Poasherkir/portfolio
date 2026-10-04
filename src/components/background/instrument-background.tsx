@@ -1,21 +1,14 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 /**
- * Deep-space backdrop: nebula clouds, three parallax star layers, vignette.
- *
- * Star positions are generated from a SEEDED generator at module scope and
- * rounded, not from Math.random(). Random values would differ between the
- * server render and the client render, and React reports that as a hydration
- * mismatch — the same class of bug that bit the project cover art earlier.
- *
- * This is also the complete fallback: if WebGL is unavailable or the visitor
- * asked for reduced motion, the 3D keyboard never mounts and this is the whole
- * design, so it has to stand on its own.
+ * Page backdrop: nebula clouds, three parallax star layers and a vignette.
+ * Star positions come from a seeded PRNG so server and client markup match.
  */
 
-/** Small deterministic PRNG (mulberry32) — same sequence everywhere, always. */
+/** mulberry32 */
 function seeded(seed: number) {
   return () => {
     seed |= 0;
@@ -43,27 +36,13 @@ function field(count: number, seed: number, maxR: number): Star[] {
   return stars;
 }
 
-// Three depths. Far stars are dense and dim, near stars sparse and bright.
-//
-// Counts are deliberately restrained. The page in front of this is now dense
-// with copy, and a starfield that competes with body text stops being
-// atmosphere and starts being noise — the backdrop's job is depth, not display.
+// Far stars are dense and dim, near stars sparse and bright.
 const FAR = field(120, 12345, 0.45);
 const MID = field(62, 67890, 0.8);
 const NEAR = field(24, 24680, 1.3);
 
-/**
- * Shared twinkle phases.
- *
- * Every star used to carry its own infinite opacity animation: 182 of them
- * across the two twinkling layers, all running for as long as the page is
- * open, each needing its own style recalculation every frame. Five shared
- * phases per layer bring that to ten.
- *
- * The stars are already in random order, so taking every fifth one scatters a
- * phase across the whole sky and the field still shimmers rather than pulsing
- * as a block.
- */
+// Stars twinkle in groups that share one animation each, instead of one
+// animation per star. Every fifth star joins the same group.
 const PHASES = 5;
 
 function Star({ s }: { s: Star }) {
@@ -102,7 +81,6 @@ export default function InstrumentBackground() {
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll();
 
-  // Parallax: nearer layers travel further, which reads as depth.
   const farY = useTransform(scrollYProgress, [0, 1], ["0%", "6%"]);
   const midY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const nearY = useTransform(scrollYProgress, [0, 1], ["0%", "26%"]);
@@ -112,8 +90,7 @@ export default function InstrumentBackground() {
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden print:hidden"
     >
-      {/* Deep space ground. Light theme keeps a clean paper wash instead — a
-          starfield on white reads as dirt, not as space. */}
+      {/* The light theme gets a plain background and no stars. */}
       <div className="absolute inset-0 bg-[#f6f8fb] dark:bg-[#080808]" />
       <div
         className="absolute inset-0 hidden dark:block"
@@ -137,7 +114,7 @@ export default function InstrumentBackground() {
         style={{ background: "radial-gradient(circle, #2ec5c1 0%, transparent 62%)" }}
       />
 
-      {/* Stars — dark theme only, and held well under the content. */}
+      {/* Stars, dark theme only */}
       <div className="absolute inset-0 hidden opacity-[0.55] dark:block">
         <motion.div className="absolute inset-0" style={reduced ? undefined : { y: farY }}>
           <Layer stars={FAR} twinkle={!reduced} />
@@ -150,7 +127,7 @@ export default function InstrumentBackground() {
         </motion.div>
       </div>
 
-      {/* Vignette, so copy always wins over the artwork behind it. */}
+      {/* Vignette */}
       <div
         className="absolute inset-0"
         style={{

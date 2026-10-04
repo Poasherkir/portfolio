@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Light theme — "daylight cockpit": cool paper, same instrument cyan. */
+  /* Light theme */
   :root {
     --background: 40 22% 97%;
     --foreground: 222 24% 11%;
@@ -40,7 +40,7 @@
     --grid-alpha: 0.035;
   }
 
-  /* Dark theme — default. Black ground, red signal. */
+  /* Dark theme (default) */
   .dark {
     --background: 222 26% 6%;
     --foreground: 210 24% 97%;
@@ -100,7 +100,6 @@
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
-  /* Respect users who ask for less motion. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -114,42 +113,30 @@
 }
 
 @layer components {
-  /* Thin uppercase label used above every section title and on stat tiles. */
+  /* Small uppercase label above section titles and stats. */
   .eyebrow {
     @apply font-mono text-[0.68rem] font-medium uppercase tracking-[0.2em] text-muted-foreground;
   }
 
-  /* Red is reserved. This is the opt-in for the few labels that earn it. */
   .eyebrow-accent {
     @apply font-mono text-[0.68rem] font-medium uppercase tracking-[0.2em] text-brand;
   }
 
-  /* Legibility halo for type that sits over the 3D board.
-     Built from --background, so it is a light glow on the light theme and a
-     dark one on dark. An earlier version hardcoded a dark shadow, which did
-     nothing on white and left headings unreadable over the keyboard. */
+  /* Background-coloured glow that keeps headings readable over the 3D board. */
   .heading-halo {
     text-shadow:
       0 2px 22px hsl(var(--background) / 0.95),
       0 1px 5px hsl(var(--background) / 0.85);
   }
 
-  /* Same idea as .heading-halo, tuned for body copy.
-   *
-   * The 3D board passes behind long-form paragraphs at real opacity now, and a
-   * card behind every block of prose would turn the page into a stack of
-   * boxes. A tight shadow buys the contrast back invisibly — the blur is much
-   * smaller than the heading version because a 22px halo on 16px text reads as
-   * a smudge rather than as separation. */
+  /* Tighter version of .heading-halo for body text. */
   .copy-halo {
     text-shadow:
       0 1px 10px hsl(var(--background) / 0.92),
       0 0 3px hsl(var(--background) / 0.8);
   }
 
-  /* Fine grain over the whole page. Flat colour at this size reads as screen;
-     a little noise reads as paper. Kept far below the threshold where it
-     becomes visible as texture — it should only be felt. */
+  /* Faint noise texture over the page. */
   .grain::after {
     content: "";
     position: fixed;
@@ -164,7 +151,7 @@
     .grain::after { opacity: 0.018; }
   }
 
-  /* Hairline grid used behind the hero and the services band. */
+  /* Hairline grid background. */
   .instrument-grid {
     background-image:
       linear-gradient(hsl(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px),
@@ -199,8 +186,7 @@
   }
 }
 
-/* Printing the /cv page should produce a clean document, not a screenshot of
-   the site: chrome, background art and navigation all drop out. */
+/* Print styles, mainly for the /cv page. */
 @media print {
   header[class*="fixed"],
   footer,
@@ -229,26 +215,15 @@
     break-inside: avoid;
   }
 
-  /* Backstop for the decorative layers. Each one also carries print:hidden at
-     its own call site; this catches anything added later that forgets to. A
-     canvas is a real element rather than a CSS background, so unlike the
-     gradients it prints whether or not the browser is set to print
-     backgrounds — as a full sheet of keyboard over page one. */
+  /* Hide the 3D canvas and fixed decorative layers. */
   canvas,
   [aria-hidden="true"][class*="fixed"][class*="inset-0"] {
     display: none !important;
   }
 }
 
-/* ---------------------------------------------------------------------------
- * Click-through overlay.
- *
- * The 3D keyboard canvas sits behind the page. To let the pointer actually
- * reach it, the content wrapper stops receiving events and hands them back
- * only to the things that genuinely need them — links, controls, and text you
- * might want to select. Everywhere else (padding, empty card ground, gaps
- * between sections) the cursor falls through to the canvas underneath.
- * ------------------------------------------------------------------------- */
+/* The 3D keyboard sits behind the page. Empty areas of the page pass pointer
+   events through to it; links, controls and text keep their own. */
 .canvas-overlay-mode {
   pointer-events: none;
 }
@@ -276,14 +251,11 @@
   pointer-events: auto;
 }
 
-/* Let vertical scrolling still work when a finger starts on the canvas. */
+/* Keep vertical scrolling when a touch starts on the canvas. */
 canvas {
   touch-action: pan-y !important;
 }
 
-
-/* Star twinkle for the space backdrop. Kept in CSS rather than JS so 300
-   stars cost nothing per frame. */
 @keyframes twinkle {
   0%,
   100% {

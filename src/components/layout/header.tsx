@@ -58,8 +58,7 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Route links inline on desktop. The overlay is a fallback for
-              narrow screens, not the only way to move around the site. */}
+          {/* Inline links on desktop; the overlay menu covers small screens. */}
           <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
             {navLinks
               .filter((l) => !l.href.includes("#"))

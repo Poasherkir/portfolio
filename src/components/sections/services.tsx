@@ -24,7 +24,6 @@ const ICONS: Record<Service["icon"], typeof Smartphone> = {
 export default function Services() {
   return (
     <Section id="services" className="relative py-24 md:py-32">
-      {/* Grid band, so the services block reads as its own surface. */}
       <div className="instrument-grid pointer-events-none absolute inset-0 opacity-50" />
 
       <div className="container relative">
@@ -35,8 +34,6 @@ export default function Services() {
           spacer="mb-12 md:mb-20"
         />
 
-        {/* Two columns, not three: there are four services, and a 3-wide grid
-            strands the fourth card alone on its own row. */}
         <RevealGroup className="grid gap-6 md:grid-cols-2">
           {services.map((service) => {
             const Icon = ICONS[service.icon];
@@ -56,9 +53,6 @@ export default function Services() {
                   {service.outcome}
                 </p>
 
-                {/* Collapsed by default. Four cards times five bullets is a
-                    wall of text that nobody reads; native <details> keeps it
-                    keyboard accessible and working before hydration. */}
                 <details className="group/d mt-6 border-t border-border pt-6">
                   <summary className="-my-2 flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 py-2 text-sm font-medium transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background">
                     What&apos;s included
@@ -82,7 +76,6 @@ export default function Services() {
                     <dt className="eyebrow">Timeline</dt>
                     <dd className="text-sm">{service.timeline}</dd>
                   </div>
-                  {/* Price line renders only once a real band is set — never a guess. */}
                   {service.priceBand && (
                     <div className="flex items-baseline justify-between gap-4">
                       <dt className="eyebrow">From</dt>

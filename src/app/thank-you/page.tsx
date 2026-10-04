@@ -11,16 +11,9 @@ export const metadata: Metadata = {
   title: "Thank you",
   description: "Your message is in. Here is what happens next.",
   alternates: { canonical: "/thank-you" },
-  // Nothing to gain from this being in search results, and a stray visit here
-  // from Google would tell someone their message went through when it did not.
   robots: { index: false, follow: true },
 };
 
-/**
- * A real page rather than only a toast, so the submission has a URL. That
- * gives the visitor something they can see and go back to, and gives a
- * conversion something to point at.
- */
 export default function ThankYouPage() {
   return (
     <>

@@ -3,11 +3,7 @@
 import { useCallback, useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/**
- * A soft light following the pointer across a group of cards. Position goes
- * to a CSS custom property, not React state — a mousemove that calls setState
- * re-renders the subtree on every pointer event.
- */
+/** Soft light that follows the pointer, positioned through CSS variables to avoid re-renders. */
 export default function Spotlight({
   children,
   className,
@@ -24,7 +20,7 @@ export default function Spotlight({
   const onMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     const el = ref.current;
     if (!el) return;
-    // Coalesce to one write per frame; pointermove can fire far faster.
+    // At most one update per frame.
     if (frame.current) return;
     const { clientX, clientY } = e;
     frame.current = requestAnimationFrame(() => {
@@ -59,7 +55,6 @@ export default function Spotlight({
         } as React.CSSProperties
       }
     >
-      {/* Above the cards, pointer-events off so it does not eat the hovers. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] transition-opacity duration-300"

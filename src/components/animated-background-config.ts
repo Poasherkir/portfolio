@@ -8,12 +8,7 @@ export const STATES = {
       rotation: { x: 0, y: 0, z: 0 },
     },
     mobile: {
-      // Sits below the hero copy rather than behind it. At 0.30 and y -200 the
-      // board's top edge landed on the second call to action and the whole
-      // capability row rendered over keycaps. The headline, paragraph and two
-      // buttons run to roughly 750px on a phone, so the board starts under
-      // that and shows its top edge in the first screen — a reveal that
-      // finishes on the first scroll rather than a collision.
+      // Below the hero copy on phones, so only its top edge shows in the first screen.
       scale: { x: 0.27, y: 0.27, z: 0.27 },
       position: { x: 0, y: -450, z: 0 },
       rotation: { x: 0, y: 0, z: 0 },
@@ -132,8 +127,7 @@ export const getKeyboardState = ({
 
   const getScaleOffset = () => {
     const width = window.innerWidth;
-    // Reference widths for "ideal" size
-    // Using 1024 for desktop to maintain backward compatibility with previous look
+    // Viewport widths at which the base scale applies.
     const DESKTOP_REF_WIDTH = 1280;
     const MOBILE_REF_WIDTH = 390;
 
@@ -141,7 +135,6 @@ export const getKeyboardState = ({
       ? width / MOBILE_REF_WIDTH
       : width / DESKTOP_REF_WIDTH;
 
-    // Clamp values to prevent extremes
     const minScale = isMobile ? 0.5 : 0.5;
     const maxScale = isMobile ? 0.6 : 1.15;
 

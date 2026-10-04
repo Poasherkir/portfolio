@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { isMuted, setMuted, subscribeMute } from "@/components/keyboard/keyboard-audio";
 
-/**
- * The keycaps click on hover, and the board is hoverable across the whole page.
- * That needs an off switch within reach — a site that makes noise while you
- * read is a site people close.
- */
+/** Mutes the keyboard sounds. */
 export default function SoundToggle() {
   const [mounted, setMounted] = useState(false);
   const [muted, setLocal] = useState(false);

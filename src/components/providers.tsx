@@ -8,8 +8,7 @@ import Preloader from "./preloader";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    // Dark is the default outright rather than "whatever the OS says" — the
-    // light theme exists for people who go and ask for it.
+    // Dark by default, regardless of the OS setting.
     <ThemeProvider
       attribute="class"
       defaultTheme="light"

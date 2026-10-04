@@ -13,13 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/terms" },
 };
 
-/**
- * Two things at once, kept clearly apart: the terms for reading the site, and
- * the default ground rules for an engagement. The second set is explicitly
- * subordinate to a signed contract, because a portfolio page is not the place
- * to settle commercial terms and pretending otherwise would be worse than
- * saying nothing.
- */
+// Site terms, plus default engagement terms that a signed contract overrides.
 const SECTIONS: LegalSection[] = [
   {
     heading: "Using this site",

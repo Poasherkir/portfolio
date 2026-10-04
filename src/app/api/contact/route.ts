@@ -16,18 +16,13 @@ const Payload = z.object({
   elapsedMs: z.number().optional(),
 });
 
-/** Minimum time a human plausibly takes to fill this in. */
+/** Faster submissions than this are treated as bots. */
 const MIN_ELAPSED_MS = 2500;
 
 /**
- * Very small in-memory rate limit. Serverless instances are ephemeral, so this
- * is a speed bump rather than a guarantee — the honeypot and the timing check
- * do the real work.
- *
- * Deliberately loose, because an IP is not a person. Mobile carriers put
- * thousands of subscribers behind one address, so a tight per-IP limit does not
- * stop a determined sender — it blocks the next unrelated visitor on the same
- * network, who has no idea why and no reason to try again.
+ * Per-instance, in-memory rate limit. Serverless instances are short-lived, so
+ * this only slows bursts down; the honeypot and timing check do most of the
+ * work. Kept loose because carriers put many users behind one IP.
  */
 const RATE_LIMIT = { max: 8, windowMs: 10 * 60 * 1000 };
 const hits = new Map<string, number[]>();
@@ -60,8 +55,7 @@ export async function POST(req: Request) {
     return Response.json(
       {
         error: "Too many messages from this connection. Try again shortly.",
-        // Without this a throttled visitor gets a red box and no way forward.
-        // They still have something to say; give them the other route.
+        // Offer the direct address instead.
         fallbackEmail: destination,
       },
       { status: 429 }
@@ -106,8 +100,7 @@ export async function POST(req: Request) {
     return Response.json(
       {
         error: "The form cannot deliver right now. Please email me directly.",
-        // The address is already printed on this page; handing it back lets
-        // the form turn a dead end into a working one.
+        // The form shows this address so the visitor can write directly.
         fallbackEmail: to,
       },
       { status: 503 }
@@ -132,7 +125,6 @@ export async function POST(req: Request) {
 
   try {
     const { error } = await resend.emails.send({
-      // Replace with an address on your own verified domain once DNS is set up.
       from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
       to: [to],
       replyTo: email,
