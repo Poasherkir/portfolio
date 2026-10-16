@@ -41,7 +41,7 @@ export default function Skills() {
                 <h3 className="font-display text-display-sm leading-tight transition-transform duration-500 ease-out md:group-hover:translate-x-1">
                   {group.title}
                 </h3>
-                <span className="mt-1.5 block font-mono text-meta uppercase text-muted-foreground/70">
+                <span className="mt-1.5 block font-mono text-meta uppercase text-muted-foreground">
                   {group.items.length} tools
                 </span>
               </div>

@@ -104,7 +104,7 @@ export default function CaseStudyNav({
                   <span
                     className={cn(
                       "font-mono text-[0.65rem]",
-                      isActive ? "text-brand" : "text-muted-foreground/70"
+                      isActive ? "text-brand" : "text-muted-foreground"
                     )}
                   >
                     {String(i + 1).padStart(2, "0")}

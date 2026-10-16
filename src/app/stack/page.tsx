@@ -156,7 +156,7 @@ export default function StackPage() {
                         )}
                         {item.name}
                         {item.note && (
-                          <span className="font-mono text-[0.65rem] opacity-70">{item.note}</span>
+                          <span className="font-mono text-[0.65rem]">{item.note}</span>
                         )}
                         <span className="sr-only">, {LEVEL_LABEL[item.level]}</span>
                       </li>
