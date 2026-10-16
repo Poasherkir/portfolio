@@ -33,7 +33,7 @@ export default function ThankYouPage() {
               <ol className="mt-6 space-y-5">
                 {[
                   "I read it properly, not in a hurry, and work out whether I am actually the right person for it.",
-                  "You get either an approach with a timeline and a price, or an honest no with a reason — and a pointer elsewhere if I know one.",
+                  "You get either an approach with a timeline and a price, or an honest no with a reason, plus a pointer elsewhere if I know one.",
                   "If it looks like a fit, we get on a call and go through the detail before anyone commits to anything.",
                 ].map((step, i) => (
                   <li key={i} className="flex gap-4">

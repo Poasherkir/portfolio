@@ -10,7 +10,7 @@ const Payload = z.object({
   company: z.string().trim().max(120).optional().or(z.literal("")),
   budget: z.string().trim().max(60).optional().or(z.literal("")),
   message: z.string().trim().min(20, "A little more detail helps me answer usefully."),
-  /** Honeypot — must stay empty. */
+  /** Honeypot: must stay empty. */
   company_website: z.string().max(0).optional().or(z.literal("")),
   /** Time the form was on screen before submit. */
   elapsedMs: z.number().optional(),
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     );
   }
   if (!process.env.RESEND_API_KEY) {
-    console.error("[contact] RESEND_API_KEY is missing — the form cannot send.");
+    console.error("[contact] RESEND_API_KEY is missing; the form cannot send.");
     return Response.json(
       {
         error: "The form cannot deliver right now. Please email me directly.",
@@ -128,7 +128,7 @@ export async function POST(req: Request) {
       from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
       to: [to],
       replyTo: email,
-      subject: `Portfolio enquiry — ${name}${company ? ` (${company})` : ""}`,
+      subject: `Portfolio enquiry from ${name}${company ? ` (${company})` : ""}`,
       html,
     });
 

@@ -16,7 +16,7 @@ export const profile = {
   role: "Full-stack & mobile developer",
   location: "Algiers, Algeria",
   timezone: "GMT+1",
-  legal: "Registered auto-entrepreneur (ANAE) — I invoice internationally.",
+  legal: "Registered auto-entrepreneur (ANAE), so I can invoice internationally.",
   languages: [
     { name: "English", level: "Professional" },
     { name: "French", level: "Professional" },
@@ -37,7 +37,7 @@ export const profile = {
 };
 
 export const seo = {
-  title: `${profile.name} — Full-Stack & Mobile Developer`,
+  title: `${profile.name} · Full-Stack & Mobile Developer`,
   description: {
     short:
       "Full-stack and mobile developer building production web and mobile applications with Flutter, React, Supabase and Python.",
@@ -87,7 +87,7 @@ export const hero = {
   displayLines: ["I build", "software", "that ships."],
   accentWord: "ships.",
   subhead:
-    "Production apps, end to end. Flutter on mobile, React on web, Supabase and Python behind them — architecture through to the signed release.",
+    "Production apps, end to end. Flutter on mobile, React on web, Supabase and Python behind them, from architecture to the signed release.",
   /** Null hides the availability badge. */
   availability: "Available for selected freelance projects",
   primaryCta: { label: "View the work", href: "/projects" },
@@ -97,8 +97,8 @@ export const hero = {
 
 export const proofStrip: string[] = [
   "Flagship: an Electronic Flight Bag in commercial aviation use",
-  "Rewritten twice — React Native → Capacitor → Flutter",
-  "Registered auto-entrepreneur — invoices internationally",
+  "Rewritten twice: React Native → Capacitor → Flutter",
+  "Registered auto-entrepreneur, invoices internationally",
   "EN · FR · AR",
   "Mobile + backend + admin + release pipeline, solo",
 ];
@@ -106,7 +106,7 @@ export const proofStrip: string[] = [
 export const proofPillars = [
   {
     id: "production",
-    title: "Production, not portfolio-ware",
+    title: "Running in production",
     body: "Signed release pipelines, encrypted credentials, live data feeds and real users, in aviation, education, healthcare and commerce.",
   },
   {
@@ -122,7 +122,7 @@ export const proofPillars = [
   {
     id: "languages",
     title: "Trilingual delivery",
-    body: "English, French and Arabic — specs, calls and handover docs. Clients in three markets, no translator in the loop.",
+    body: "Specs, calls and handover docs in English, French or Arabic. Clients in three markets, no translator in the loop.",
   },
 ];
 
@@ -136,7 +136,9 @@ export const skillGroups: SkillGroup[] = [
     items: [
       { name: "Flutter / Dart", note: "primary", icons: ["flutter-original.svg", "dart-original.svg"] },
       { name: "go_router" },
+      { name: "Riverpod" },
       { name: "Custom state layer", note: "ChangeNotifier + InheritedWidget (AppScope)" },
+      { name: "Drift / SQLite", note: "encrypted with SQLCipher" },
       { name: "Design systems", note: "custom component libraries" },
       { name: "React Native", icons: ["react-original.svg"] },
       { name: "Capacitor" },
@@ -150,6 +152,7 @@ export const skillGroups: SkillGroup[] = [
     blurb: "Client-facing web, plus the back-office nobody else wants to build.",
     items: [
       { name: "React", icons: ["react-original.svg"] },
+      { name: "Next.js", icons: ["nextjs-original.svg"] },
       { name: "TypeScript / JavaScript", icons: ["typescript-original.svg", "javascript-original.svg"] },
       { name: "HTML / CSS", icons: ["html5-original.svg", "css3-original.svg"] },
       { name: "Admin dashboards", note: "CRUD, auth, role gating" },
@@ -161,6 +164,10 @@ export const skillGroups: SkillGroup[] = [
     blurb: "Postgres-first. Auth and permissions enforced on the server, never in the client.",
     items: [
       { name: "Supabase", note: "Postgres, Auth, Storage, RLS, Edge Functions", icons: ["supabase-original.svg", "postgresql-original.svg"] },
+      { name: "PostgreSQL", note: "Prisma, SQLAlchemy" },
+      { name: "Node.js", note: "Express, NestJS", icons: ["nodejs-original.svg"] },
+      { name: "FastAPI", icons: ["fastapi-original.svg"] },
+      { name: "Docker", note: "Compose stacks", icons: ["docker-original.svg"] },
       { name: "PHP / MySQL", icons: ["php-original.svg", "mysql-original.svg"] },
       { name: "Python", note: "pipelines, scraping, automation", icons: ["python-original.svg"] },
       { name: "Playwright", note: "authenticated scraping" },
@@ -173,10 +180,11 @@ export const skillGroups: SkillGroup[] = [
     items: [
       {
         name: "Document / PDF engineering",
-        note: "PyMuPDF — watermark removal, A4 normalisation, merging",
+        note: "PyMuPDF: watermark removal, A4 normalisation, merging",
         icons: ["python-original.svg"],
       },
       { name: "Aviation data", note: "METAR/TAF, ADS-B, crew rosters, OFP" },
+      { name: "Constraint solving", note: "OR-Tools CP-SAT" },
       { name: "Algerian payment gating", note: "BaridiMob" },
       { name: "Gamification & quiz engines" },
     ],
@@ -234,7 +242,7 @@ export const keycaps: Keycap[][] = [
     { id: "python", icon: "python-plain.svg", label: "Python", level: "shipping", color: "#3776AB", key: "p", description: "Solvers, pipelines, scraping and API services.", usedIn: "DocRoster · PDF pipeline · BAC Archive importer" },
     { id: "php", icon: "php-plain.svg", label: "PHP", level: "shipping", color: "#777BB4", key: "u", description: "Features and maintenance on existing PHP and MySQL stacks.", usedIn: "Gestion de la Scolarité" },
     { id: "nodejs", icon: "nodejs-plain.svg", label: "Node.js", level: "shipping", color: "#5FA04E", key: "4", description: "Express and Socket.IO for realtime servers, NestJS for structured APIs.", usedIn: "GateFlow · TechSub API" },
-    { id: "nestjs", icon: "nestjs-original.svg", label: "NestJS", level: "shipping", color: "#E0234E", key: "5", description: "Structured Node backend — the TechSub API runs on it.", usedIn: "TechSub API" },
+    { id: "nestjs", icon: "nestjs-original.svg", label: "NestJS", level: "shipping", color: "#E0234E", key: "5", description: "Structured Node backend. The TechSub API runs on it.", usedIn: "TechSub API" },
     { id: "java", icon: "java-plain.svg", label: "Java", level: "working", color: "#E76F00", key: "7", description: "Native Android shells: WebView, notifications, foreground services.", usedIn: "GateFlow Android apps" },
     { id: "fastapi", icon: "fastapi-original.svg", label: "FastAPI", level: "shipping", color: "#009688", key: "8", description: "The DocRoster API and the services behind Briefing Point Go.", usedIn: "DocRoster · Briefing Point Go services" },
   ],
@@ -258,9 +266,9 @@ export const experience: Experience[] = [
     id: 1,
     endDate: "Present",
     title: "Freelance full-stack & mobile developer",
-    company: "Independent — registered auto-entrepreneur (ANAE)",
+    company: "Independent, registered auto-entrepreneur (ANAE)",
     description: [
-      "Ships production Flutter apps end to end: mobile client, Supabase backend, React admin dashboard and a signed release pipeline — alone.",
+      "Ships production Flutter apps end to end: mobile client, Supabase backend, React admin dashboard and a signed release pipeline, alone.",
       "Flagship work is Briefing Point Go, an Electronic Flight Bag in production with Air Algérie crew, integrating METAR weather, ADS-B tracking and authenticated crew roster data.",
       "Built GateFlow, a dismissal system for a school in Algiers with parent, guard, office and driver apps, and DocRoster, a solver-generated duty roster for hospital resident doctors.",
       "Invoices international clients and receives foreign payments legally.",
@@ -283,7 +291,7 @@ export const capabilities: {
   {
     id: "offline",
     title: "Works without a signal",
-    body: "Local-first storage and background sync, so the app keeps working on a plane, in a basement or on a dead connection — and catches up quietly when the network returns.",
+    body: "Local-first storage and background sync, so the app keeps working on a plane, in a basement or on a dead connection, and catches up quietly when the network returns.",
     proof: "BAC Archive · Briefing Point Go · GateFlow",
   },
   {
@@ -295,25 +303,25 @@ export const capabilities: {
   {
     id: "bilingual",
     title: "Arabic, French and English",
-    body: "Full right-to-left layouts, not a translated string file. Mixed-direction text, mirrored navigation and number formatting that survives contact with real content.",
+    body: "Full right-to-left layouts, with every screen mirrored and every string translated. Mixed-direction text, mirrored navigation and number formatting that survives contact with real content.",
     proof: "TechSub · BAC Archive · GateFlow",
   },
   {
     id: "security",
     title: "Permissions enforced on the server",
-    body: "Row-level security in Postgres and encrypted credential storage on device. If a request should be refused it is refused by the database, not by a hidden button.",
+    body: "Row-level security in Postgres and encrypted credential storage on device. A request that should be refused is refused by the database itself.",
     proof: "Briefing Point Go · TechSub · DocRoster",
   },
   {
     id: "release",
-    title: "Shipped to the store, not to a demo",
+    title: "Shipped to the store",
     body: "Signed release pipelines, ProGuard rules, screenshot blocking on sensitive screens, and remote config that can force an update or block a bad build after it is out.",
     proof: "Briefing Point Go",
   },
   {
     id: "integrations",
     title: "Hostile data sources",
-    body: "Live third-party feeds normalised into something dependable — weather and aircraft tracking, authenticated scraping where there is no API, and document pipelines that rebuild broken PDFs.",
+    body: "Live third-party feeds normalised into something dependable: weather and aircraft tracking, authenticated scraping where there is no API, and document pipelines that rebuild broken PDFs.",
     proof: "Briefing Point Go · Aviation PDF Pipeline",
   },
 ];
@@ -325,11 +333,11 @@ export const services: Service[] = [
     id: "mobile-products",
     title: "Mobile products",
     outcome:
-      "Flutter applications for Android and iOS from one codebase — from a Figma file or a rough idea to a signed build on the store.",
+      "Flutter applications for Android and iOS from one codebase, taken from a Figma file or a rough idea to a signed build on the store.",
     includes: [
       "Flutter app for Android and iOS from one codebase",
       "Supabase backend: Postgres schema, auth, storage, row-level security",
-      "Offline behaviour designed in, not bolted on",
+      "Offline behaviour designed in from the start",
       "Signed release pipeline and store submission",
       "Handover documentation and a walkthrough",
     ],
@@ -341,10 +349,10 @@ export const services: Service[] = [
     id: "business-platforms",
     title: "Business platforms",
     outcome:
-      "Web applications, dashboards, authentication and databases — the back-office your team actually runs the product from.",
+      "Web applications, dashboards, authentication and databases: the back office your team actually runs the product from.",
     includes: [
       "Postgres schema design and migrations",
-      "Auth with role gating enforced server-side, not in the client",
+      "Auth with role gating enforced on the server",
       "Row-level security policies, reviewed and tested",
       "React admin dashboard over the whole thing",
       "Payment and third-party integration where the product needs it",
@@ -378,7 +386,7 @@ export const services: Service[] = [
       "Architecture and code review, written up plainly",
       "Diagnosis of the failures you can reproduce and the ones you cannot",
       "Security pass: auth, permissions, credential storage, input validation",
-      "Release engineering — signing, obfuscation, a build you can ship again",
+      "Release engineering: signing, obfuscation, a build you can ship again",
       "A prioritised list of what to fix now and what can wait",
     ],
     timeline: "1–2 weeks for the review",
@@ -408,7 +416,7 @@ export const deliveryProcess: { step: string; title: string; body: string }[] = 
   {
     step: "04",
     title: "Test",
-    body: "Real devices, real data shapes, and the failure cases — bad network, hostile API responses, permissions that should be refused.",
+    body: "Real devices, real data shapes, and the failure cases: bad network, hostile API responses, permissions that should be refused.",
   },
   {
     step: "05",
@@ -428,8 +436,8 @@ export const projects: Project[] = [
   {
     slug: "briefing-point-go",
     title: "Briefing Point Go",
-    tagline: "Electronic Flight Bag for Air Algérie crew — a native Flutter rebuild.",
-    role: "Sole developer — Flutter client, Supabase schema, FastAPI services, release pipeline",
+    tagline: "Electronic Flight Bag for Air Algérie crew, rebuilt natively in Flutter.",
+    role: "Sole developer: Flutter client, Supabase schema, FastAPI services, release pipeline",
     year: "Ongoing",
     status: "production",
     tags: ["Mobile", "Backend", "Automation"],
@@ -465,13 +473,13 @@ export const projects: Project[] = [
     problem:
       "A pilot assembles a duty day from a dozen disconnected sources: roster, operational flight plan, load and passenger figures, slot times and delays, weather, NOTAMs, radiation exposure. On a phone, in an airport, minutes before pushback. Anything not in one place does not get read.",
     approach:
-      "One Flutter app, five tabs behind a go_router StatefulShellRoute.indexedStack — Home, Airports, Crew, Tools, Settings. State is plain ChangeNotifier controllers per feature, read through a top-level AppScope; no Provider, Riverpod or Bloc anywhere, so rebuild scope stays explicit and the dependency surface stays small. It speaks to the same Supabase backend and the same two internal FastAPI services (load figures and flight plans) as the existing web app, through the same nginx origin — the rebuild required no server changes at all.",
+      "One Flutter app, five tabs behind a go_router StatefulShellRoute.indexedStack: Home, Airports, Crew, Tools, Settings. State is plain ChangeNotifier controllers per feature, read through a top-level AppScope; no Provider, Riverpod or Bloc anywhere, so rebuild scope stays explicit and the dependency surface stays small. It speaks to the same Supabase backend and the same two internal FastAPI services (load figures and flight plans) as the existing web app, through the same nginx origin, so the rebuild required no server changes at all.",
     hardPart:
       "Breadth and trust, at once. Roughly 70 reference and calculation tools sit behind one dashboard, and the data underneath is hostile: METAR/TAF, ADS-B, CTOT and delay feeds, cosmic radiation dose per sector. Operator credentials live in flutter_secure_storage, structured data caches to Hive so the app still works airside with no signal, and remote config can force an update or block a build outright when something ships wrong. Aviation is not a domain where “it mostly works” is a state you ship in.",
     result:
-      "In production with Air Algérie crew. A native rebuild that reached feature parity with the web app without touching the backend — the same Supabase project and FastAPI services serve both.",
+      "In production with Air Algérie crew. A native rebuild that reached feature parity with the web app without touching the backend. The same Supabase project and FastAPI services serve both.",
     whyItMatters:
-      "Crew read this minutes before pushback, on a phone, in an airport. Every source it consolidates is one fewer thing to chase while doing something else — and in aviation the cost of missing one is not a bad user experience.",
+      "Crew read this minutes before pushback, on a phone, in an airport. Every source it consolidates is one fewer thing to chase while doing something else, and in aviation the cost of missing one is more than a bad user experience.",
     links: {},
     images: [],
     featured: true,
@@ -487,7 +495,7 @@ export const projects: Project[] = [
     slug: "gateflow",
     title: "GateFlow",
     tagline: "School dismissal for a school with one gate: parents queue from their phones and collect their children with a signed QR pass.",
-    role: "Sole developer — Node.js server, React web app, four Android apps, in-browser demo",
+    role: "Sole developer: Node.js server, React web app, four Android apps, in-browser demo",
     year: "2026",
     status: "active",
     tags: ["Web", "Mobile", "Backend"],
@@ -567,7 +575,7 @@ export const projects: Project[] = [
     slug: "docroster",
     title: "DocRoster",
     tagline: "On-call rosters for hospital resident doctors, generated by a constraint solver and checked by one rules engine.",
-    role: "Sole developer — FastAPI backend, CP-SAT solver, Next.js app, document generation",
+    role: "Sole developer: FastAPI backend, CP-SAT solver, Next.js app, document generation",
     year: "2026",
     status: "active",
     tags: ["Web", "Backend", "Automation"],
@@ -647,7 +655,7 @@ export const projects: Project[] = [
     slug: "techsub",
     title: "TechSub",
     tagline: "Bilingual AR/FR subscription marketplace built on Algerian payment rails.",
-    role: "Sole developer — NestJS API, Next.js storefront, admin panel, Prisma schema",
+    role: "Sole developer: NestJS API, Next.js storefront, admin panel, Prisma schema",
     year: "Ongoing",
     status: "production",
     tags: ["Web", "Backend"],
@@ -660,23 +668,23 @@ export const projects: Project[] = [
       data: ["Prisma", "PostgreSQL"],
       integrations: ["Baridimob", "RedotPay"],
       automation: ["Admin verification and fulfilment queue"],
-      deploy: ["Vercel — two projects from one monorepo"],
+      deploy: ["Vercel, two projects from one monorepo"],
     },
     problem:
       "Algerians largely cannot buy digital subscriptions: the payment methods people actually hold do not work with international checkout. The workaround in the market is shared credentials, which is fragile and unsafe for everyone involved.",
     approach:
-      "A monorepo — NestJS + Prisma + Postgres API, Next.js 15 App Router storefront, and a shared package of types and Zod schemas both sides validate against, so the contract cannot drift. Customers pay in dinars via Baridimob or dollars via RedotPay and upload a receipt; an admin verifies the transfer and a brand-new single-owner account is created under the customer's own email. No shared-credential pool anywhere. Fully bilingual Arabic and French with real RTL, not a mirrored stylesheet.",
+      "A monorepo holding a NestJS + Prisma + Postgres API, a Next.js 15 App Router storefront, and a shared package of types and Zod schemas both sides validate against, so the contract cannot drift. Customers pay in dinars via Baridimob or dollars via RedotPay and upload a receipt; an admin verifies the transfer and a brand-new single-owner account is created under the customer's own email. No shared-credential pool anywhere. Fully bilingual Arabic and French, with layouts built for right-to-left.",
     hardPart:
-      "The order lifecycle is a genuine state machine with reserved inventory, not a status column. PENDING_PAYMENT to PENDING_VERIFICATION to VERIFIED — which decrements product capacity — then IN_PROGRESS to FULFILLED. Every terminal state reached after VERIFIED has to hand the reserved capacity back, or the shop slowly convinces itself it is sold out. Dual currency runs the whole way through: dinar and dollar prices are set independently per duration, and a plan with no dollar price is simply not offered for dollar checkout.",
+      "The order lifecycle is a real state machine that reserves inventory. PENDING_PAYMENT to PENDING_VERIFICATION to VERIFIED (which decrements product capacity), then IN_PROGRESS to FULFILLED. Every terminal state reached after VERIFIED has to hand the reserved capacity back, or the shop slowly convinces itself it is sold out. Dual currency runs the whole way through: dinar and dollar prices are set independently per duration, and a plan with no dollar price is simply not offered for dollar checkout.",
     result:
-      "Live and deployed, storefront and API running as two Vercel projects from one monorepo. The admin panel covers verification, the fulfilment queue, capacity, payment methods, coupons, support tickets and analytics — the owner never touches the database.",
+      "Live and deployed, storefront and API running as two Vercel projects from one monorepo. The admin panel covers verification, the fulfilment queue, capacity, payment methods, coupons, support tickets and analytics, so the owner never touches the database.",
     whyItMatters:
-      "The market default is shared credentials — one account passed between strangers. This gives each customer an account in their own name, paid for with the money they actually hold, which is the difference between a workaround and a product.",
+      "The market default is shared credentials: one account passed between strangers. This gives each customer an account in their own name, paid for with the money they actually hold, which is the difference between a workaround and a product.",
     links: { live: "https://subhub-three.vercel.app/fr" },
     images: [
       {
         src: "/assets/projects/techsub-fr.webp",
-        alt: "TechSub storefront in French — subscription search and local payment methods",
+        alt: "TechSub storefront in French, with subscription search and local payment methods",
       },
       {
         src: "/assets/projects/techsub-ar.webp",
@@ -693,9 +701,9 @@ export const projects: Project[] = [
   },
   {
     slug: "bac-archive",
-    title: "أرشيف البكالوريا — BAC Archive",
+    title: "أرشيف البكالوريا / BAC Archive",
     tagline: "Offline-first archive of Algerian Baccalaureate papers, 2008 to 2026.",
-    role: "Sole developer — Flutter app, admin dashboard, Python importer, Supabase backend",
+    role: "Sole developer: Flutter app, admin dashboard, Python importer, Supabase backend",
     year: "Ongoing",
     status: "production",
     tags: ["Mobile", "Backend", "Automation"],
@@ -706,8 +714,8 @@ export const projects: Project[] = [
       logic: ["Riverpod"],
       api: ["Supabase Auth", "Row-level security"],
       data: ["Supabase Postgres + Storage", "Full on-device mirror"],
-      automation: ["Python importer — idempotent and resumable", "HTML/JS admin dashboard"],
-      deploy: ["Public APK — anon key assumed compromised by design"],
+      automation: ["Python importer, idempotent and resumable", "HTML/JS admin dashboard"],
+      deploy: ["Public APK, anon key assumed compromised by design"],
     },
     screens: [
       {
@@ -734,9 +742,9 @@ export const projects: Project[] = [
     problem:
       "Algerian bac students revise from photocopies and PDFs scattered across messaging apps, frequently on a connection that cannot be relied on. Anything that needs the network to open is useless in the room where the studying actually happens.",
     approach:
-      "The app is a mirror, not a client. One sync on first launch pulls the whole archive to the device, and from then on every screen and every PDF reads from local storage with zero network calls — the network is only ever used to refresh the mirror. Three parts share one Supabase backend: the Flutter app, a dependency-free HTML/JS admin dashboard for uploads, and a stdlib-only Python importer for bulk-loading a local archive.",
+      "The app works from a local mirror. One sync on first launch pulls the whole archive to the device, and from then on every screen and every PDF reads from local storage with zero network calls. The network is only ever used to refresh the mirror. Three parts share one Supabase backend: the Flutter app, a dependency-free HTML/JS admin dashboard for uploads, and a stdlib-only Python importer for bulk-loading a local archive.",
     hardPart:
-      "Making the offline guarantee actually hold. Downloads stream to a .part file and are renamed only on success, so an app killed mid-download never leaves a half-file that looks complete; the importer is idempotent and resumable, skipping what storage already has. Local paths are derived from the public URL rather than rebuilt, so the mirror cannot drift from whatever the dashboard uploaded. And because the anon key ships inside a public APK, security cannot rest on key secrecy — reads are public, every write is gated behind Auth and row-level security.",
+      "Making the offline guarantee actually hold. Downloads stream to a .part file and are renamed only on success, so an app killed mid-download never leaves a half-file that looks complete; the importer is idempotent and resumable, skipping what storage already has. Local paths are derived from the public URL rather than rebuilt, so the mirror cannot drift from whatever the dashboard uploaded. And because the anon key ships inside a public APK, security cannot rest on key secrecy: reads are public, and every write is gated behind Auth and row-level security.",
     result:
       "Serving the full Experimental Sciences archive offline, with new uploads reaching students through a silent background delta-sync rather than an app update.",
     whyItMatters:
@@ -755,7 +763,7 @@ export const projects: Project[] = [
     slug: "ofp-api",
     title: "OFP API",
     tagline: "Turns an airline flight-planning portal with no API into clean JSON, on serverless.",
-    role: "Sole developer — reverse engineering, parser, edge function",
+    role: "Sole developer: reverse engineering, parser, edge function",
     year: "2026",
     status: "production",
     tags: ["Backend", "Automation"],
@@ -768,11 +776,11 @@ export const projects: Project[] = [
       automation: ["Scheduled fetch and parse"],
     },
     problem:
-      "A pilot's operational flight plan — fuel, weights, route, alternates — lives in a dispatch portal with no API and no export. Reading it on a phone meant logging into a desktop web app and scrolling a PDF minutes before departure.",
+      "A pilot's operational flight plan (fuel, weights, route, alternates) lives in a dispatch portal with no API and no export. Reading it on a phone meant logging into a desktop web app and scrolling a PDF minutes before departure.",
     approach:
       "The edge function talks to the portal directly rather than driving a browser: locate the flight in the schedule, pull its plan document, extract the text and parse the operational figures out. It returns the parsed fields and the full text together, so the client can dig for the richer items itself.",
     hardPart:
-      "Authentication. The portal hands back its session across a redirect, so the request has to be made without following it — follow the redirect and the credentials are simply gone, with no error explaining why. Earlier versions drove a headless browser on a plain-HTTP box, which the mobile client could not call at all: it runs in a WebView on a secure origin and refuses mixed content outright. Moving to an HTTPS edge function removed that whole class of failure.",
+      "Authentication. The portal hands back its session across a redirect, so the request has to be made without following it. Follow the redirect and the credentials are simply gone, with no error explaining why. Earlier versions drove a headless browser on a plain-HTTP box, which the mobile client could not call at all: it runs in a WebView on a secure origin and refuses mixed content outright. Moving to an HTTPS edge function removed that whole class of failure.",
     result:
       "Five architectures ended at one that needs no server: a Deno isolate that answers in a few seconds. In production behind Briefing Point Go.",
     links: {},
@@ -789,7 +797,7 @@ export const projects: Project[] = [
     slug: "amadeus-api",
     title: "Load Control API",
     tagline: "Live load-control figures from an airline operations platform, exposed to a mobile app.",
-    role: "Sole developer — integration, session handling, backend",
+    role: "Sole developer: integration, session handling, backend",
     year: "2026",
     status: "production",
     tags: ["Backend", "Automation"],
@@ -802,7 +810,7 @@ export const projects: Project[] = [
       automation: ["Automated document retrieval"],
     },
     problem:
-      "Load control — boarding figures, weight and balance, the loadsheet sent at closeout — lives in a web application built for desktop ground agents. Crew who needed those numbers had no way to see them on a phone.",
+      "Load control (boarding figures, weight and balance, the loadsheet sent at closeout) lives in a web application built for desktop ground agents. Crew who needed those numbers had no way to see them on a phone.",
     approach:
       "A small backend authenticates against the operations platform under an authorised account, keeps the session alive across its several token types, and re-exposes only the figures the app needs as a narrow JSON interface.",
     hardPart:
@@ -818,8 +826,8 @@ export const projects: Project[] = [
   {
     slug: "bac-dz",
     title: "Bac DZ",
-    tagline: "Study companion for Algerian Baccalaureate students — curriculum, exams, planner and paid tiers.",
-    role: "Sole developer — Flutter app, Supabase backend, React admin console",
+    tagline: "Study companion for Algerian Baccalaureate students: curriculum, exams, planner and paid tiers.",
+    role: "Sole developer: Flutter app, Supabase backend, React admin console",
     year: "2026",
     status: "production",
     tags: ["Mobile", "Backend", "Web"],
@@ -865,7 +873,7 @@ export const projects: Project[] = [
     approach:
       "One Flutter app over a Supabase backend: subjects broken into units and lessons, official past papers by filière, per-unit quizzes with scoring, a planner with a persistent Pomodoro timer, XP and badges, and offline downloads. Free and premium lessons are gated by subscription, and a separate React console handles content, users and payment review.",
     hardPart:
-      "Shipping a paid product into a market with no usable card infrastructure. Subscriptions run on manual payment review with expiry handling, which means the app has to behave correctly for a user whose payment is pending, approved, rejected or lapsed — and keep working offline through all four. Remote maintenance, force-update and ban gates exist because a mistake reaches every student at once.",
+      "Shipping a paid product into a market with no usable card infrastructure. Subscriptions run on manual payment review with expiry handling, which means the app has to behave correctly for a user whose payment is pending, approved, rejected or lapsed, and keep working offline through all four. Remote maintenance, force-update and ban gates exist because a mistake reaches every student at once.",
     result:
       "In production, with a tools hub of more than thirty student utilities and a runtime-switchable theme set.",
     links: {},
@@ -881,7 +889,7 @@ export const projects: Project[] = [
   {
     slug: "briefing-pdf-pipeline",
     title: "Aviation Briefing PDF Pipeline",
-    tagline: "Turns raw airport briefing packs into one clean, printable document — automatically.",
+    tagline: "Turns raw airport briefing packs into one clean, printable document, with no manual steps.",
     role: "Sole developer",
     year: "Ongoing",
     status: "production",
@@ -889,7 +897,7 @@ export const projects: Project[] = [
     stack: ["Python", "PyMuPDF"],
     valueProp: "Converts raw aviation briefing packs into one clean printable document automatically.",
     architecture: {
-      automation: ["Python", "PyMuPDF — content-stream editing"],
+      automation: ["Python", "PyMuPDF content-stream editing"],
     },
     beforeAfter: {
       before: [
@@ -911,7 +919,7 @@ export const projects: Project[] = [
     approach:
       "A Python pipeline over PyMuPDF: strip the watermark layer, normalise every page to A4 regardless of source geometry, then merge cover, briefing body and disclaimer into one correctly ordered document.",
     hardPart:
-      "The watermarks are not a flat image you can delete. They are drawn into the page content stream, interleaved with the text that has to survive. Removing them means operating on the page draw operations without touching legible content — then re-normalising geometry so nothing shifts or crops when pages of different sizes are forced to A4.",
+      "The watermarks are not a flat image you can delete. They are drawn into the page content stream, interleaved with the text that has to survive. Removing them means operating on the page draw operations without touching legible content, then re-normalising geometry so nothing shifts or crops when pages of different sizes are forced to A4.",
     result:
       "A manual, error-prone pre-flight chore reduced to one command. The same approach is the basis of my document-automation service package.",
     whyItMatters:
@@ -933,7 +941,7 @@ export const projects: Project[] = [
     stack: [],
     valueProp: "Loan comparison and matching for the Algerian banking market.",
     problem:
-      "Algerian borrowers compare loan products by visiting branches and reading PDFs. Rate, duration and eligibility — the three things that decide the answer — are never in one comparable place.",
+      "Algerian borrowers compare loan products by visiting branches and reading PDFs. Rate, duration and eligibility, the three things that decide the answer, are never in one comparable place.",
     approach:
       "A guided matcher: the borrower describes what they need and what they earn, and the app narrows it to the loan products they would actually qualify for.",
     hardPart: "",
@@ -947,7 +955,7 @@ export const projects: Project[] = [
   {
     slug: "delivery-os",
     title: "Delivery OS",
-    tagline: "Offline-first Android app for Algerian delivery drivers — built by someone who did the job.",
+    tagline: "Offline-first Android app for Algerian delivery drivers, built by someone who did the job.",
     role: "Sole developer",
     year: "Ongoing",
     status: "active",
@@ -955,7 +963,7 @@ export const projects: Project[] = [
     stack: ["Flutter", "Dart", "Riverpod", "go_router", "Drift", "SQLCipher"],
     valueProp: "Offline Flutter app for delivery drivers: orders, customers and cash, reconciled to the dinar.",
     architecture: {
-      client: ["Flutter, Android only", "Arabic, French, English — full RTL"],
+      client: ["Flutter, Android only", "Arabic, French, English, full RTL"],
       logic: ["Riverpod", "Pure-Dart domain layer", "Order state machine"],
       data: ["Drift over SQLite", "SQLCipher, key in the Android Keystore", "Outbox, written now, synced later"],
       deploy: ["CI: analyze, tests, 90% domain coverage gate, APK build"],
@@ -963,9 +971,9 @@ export const projects: Project[] = [
     problem:
       "A driver in Algiers collects batches of parcels from several delivery companies each morning, plans the route in their head, and settles the cash with each agency at night. If the phone says 47,300 DA and the agency counts 47,250, the driver pays the difference. I did electric-bike delivery here, so I know where the time and the money leak.",
     approach:
-      "Built for one person at a door, holding a parcel, often with no signal. Everything works offline: IDs are UUIDv7 generated on the phone, every write also lands in a local outbox, and the app makes no network call at all until the route milestone. Money is integer centimes end to end, and a payment rule produces exactly one rounded value per order, with every other amount derived by subtraction, so the day's totals add up to the dinar.",
+      "The user is one driver at a door, holding a parcel, often with no signal, so everything works offline. IDs are UUIDv7 generated on the phone, every write also lands in a local outbox, and the app makes no network call at all until the route milestone. Money is integer centimes end to end, and a payment rule produces exactly one rounded value per order, with every other amount derived by subtraction, so the day's totals add up to the dinar.",
     hardPart:
-      "Data that has to be right with nobody around to fix it. The database is a list of households, their addresses and when they receive cash parcels, so it is encrypted with SQLCipher and no log line or exception ever carries a full phone number or coordinate. Phone numbers arrive pasted from WhatsApp with Arabic-Indic digits and invisible bidi marks, and are folded to one canonical form because they are the customer's identity key. Rules that cannot be made structural are enforced by guard tests, each proven by planting a real violation and watching it fail.",
+      "The data has to be right with nobody around to fix it. The database is a list of households, their addresses and when they receive cash parcels, so it is encrypted with SQLCipher and no log line or exception ever carries a full phone number or coordinate. Phone numbers arrive pasted from WhatsApp with Arabic-Indic digits and invisible bidi marks, and are folded to one canonical form because they are the customer's identity key. Rules that cannot be made structural are enforced by guard tests, each proven by planting a real violation and watching it fail.",
     result:
       "In active development. Done: the encrypted database, Arabic, French and English with RTL, and customer and order entry. Batches are being built now; the money engine and the route optimiser come in later milestones.",
     links: { repo: "https://github.com/Poasherkir/delivery-os" },
@@ -1000,9 +1008,9 @@ export const about = {
     "I work in English, French and Arabic, remotely, from GMT+1. I am a registered auto-entrepreneur through ANAE, which means I can invoice international clients and receive foreign payments legally.",
   ],
   facts: [
-    { label: "Based", value: "Algiers, Algeria — GMT+1, remote" },
+    { label: "Based", value: "Algiers, Algeria (GMT+1), remote" },
     { label: "Languages", value: "English, French, Arabic" },
-    { label: "Status", value: "Registered auto-entrepreneur (ANAE) — invoices internationally" },
+    { label: "Status", value: "Registered auto-entrepreneur (ANAE), invoices internationally" },
     { label: "Primary stack", value: "Flutter · React · Supabase · Python · Node.js" },
   ],
 };
@@ -1024,7 +1032,7 @@ export const faq: { q: string; a: string }[] = [
   },
   {
     q: "Which languages can we work in?",
-    a: "English, French or Arabic \u2014 including specs, commit messages and handover docs, not just the calls.",
+    a: "English, French or Arabic, for specs, commit messages and handover docs as well as the calls.",
   },
   {
     q: "How do you price?",
@@ -1106,11 +1114,11 @@ export const engineering = {
   practices: [
     {
       title: "Server-enforced permissions",
-      body: "Row-level security policies in Postgres, not a hidden button in the client. If the request should be refused, it is refused by the database.",
+      body: "Row-level security policies in Postgres decide what each user can read and write. Hiding a button in the client is not a permission.",
     },
     {
       title: "Offline as a design constraint",
-      body: "Local-first data and cached assets where the product is used somewhere with no signal — a cockpit, a classroom, a warehouse.",
+      body: "Local-first data and cached assets where the product is used somewhere with no signal: a cockpit, a classroom, a warehouse.",
     },
     {
       title: "Release engineering",
@@ -1129,7 +1137,7 @@ export const contactCopy = {
   headline: "Have something worth building?",
   headlineAccent: "Let's ship it.",
   body:
-    "Tell me what you are building, what is broken, or what you want automated. You get an approach, a timeline and a price — or an honest no if I am not the right person for it.",
+    "Tell me what you are building, what is broken, or what you want automated. You get an approach, a timeline and a price, or an honest no if I am not the right person for it.",
   formTitle: "Start a conversation",
   cta: "Start a conversation",
   responseTime: "I reply within one working day.",

@@ -28,7 +28,7 @@ export default function CvPage() {
       <PageHeader
         eyebrow="Curriculum vitae"
         title="The short version, on one page."
-        lead="Everything below is also downloadable. If you need it in a different format for a client or a platform, ask."
+        lead="Print it, or save it as a PDF with the button below. If you need it in a different format for a client or a platform, ask."
       >
         <div className="flex flex-wrap gap-3 print:hidden">
           {profile.cv.en && (
@@ -80,7 +80,7 @@ export default function CvPage() {
             <section>
               <h3 className="eyebrow">Summary</h3>
               <p className="mt-4 leading-relaxed text-muted-foreground">
-                {about.lead} {seo.description.short}
+                {about.lead} {about.body[0]}
               </p>
             </section>
 
@@ -131,7 +131,7 @@ export default function CvPage() {
                 {profile.languages.map((l) => (
                   <li key={l.name}>
                     <span className="font-medium">{l.name}</span>
-                    <span className="text-muted-foreground"> — {l.level}</span>
+                    <span className="text-muted-foreground">: {l.level}</span>
                   </li>
                 ))}
                 <li className="pt-2 text-muted-foreground">{profile.legal}</li>

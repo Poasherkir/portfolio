@@ -10,7 +10,7 @@ import SocialIcon from "@/components/layout/social-icon";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Start a project with Malik Boudine — Flutter and React development, Supabase backends, Python automation. Based in Algiers, working remotely, replies within one working day.",
+    "Start a project with Malik Boudine: Flutter and React development, Supabase backends, Python automation. Based in Algiers, working remotely, replies within one working day.",
   alternates: { canonical: "/contact" },
 };
 

@@ -38,7 +38,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Getting in touch",
     paragraphs: [
       `Send a real enquiry and you will get a real reply, normally within one working day. Do not use the form for spam, bulk marketing, or anything unlawful.`,
-      `An enquiry does not commit either of us to anything. I may decline work — because it is outside what I do, because the timeline is not realistic, or because I am booked.`,
+      `An enquiry does not commit either of us to anything. I may decline work because it is outside what I do, because the timeline is not realistic, or because I am booked.`,
     ],
   },
   {
@@ -51,14 +51,14 @@ const SECTIONS: LegalSection[] = [
       `Invoices are issued in line with what we agreed. I am a registered auto-entrepreneur (ANAE) and invoice internationally.`,
       `Ownership of the delivered work transfers to you on final payment. Until then it remains mine.`,
       `I keep the right to describe the work publicly and show it in this portfolio, unless we agree in writing that I will not. Anything under NDA stays out of it.`,
-      `Third-party services a project depends on — hosting, payment providers, APIs — are billed to you and governed by their own terms, not by mine.`,
+      `Third-party services a project depends on (hosting, payment providers, APIs) are billed to you and governed by their own terms, not by mine.`,
       `I do not warrant that software will be free of defects. I fix defects in delivered work for an agreed period after handover; beyond that, changes are new work.`,
     ],
   },
   {
     heading: "Liability",
     paragraphs: [
-      `To the extent the law allows, I am not liable for indirect or consequential loss — lost profit, lost data, lost business — arising from this site or from work delivered. Where liability cannot be excluded, it is limited to the amount you actually paid me for the work in question.`,
+      `To the extent the law allows, I am not liable for indirect or consequential loss (lost profit, lost data, lost business) arising from this site or from work delivered. Where liability cannot be excluded, it is limited to the amount you actually paid me for the work in question.`,
       `Nothing here limits liability for anything that cannot lawfully be limited.`,
     ],
   },
@@ -82,7 +82,7 @@ export default function TermsPage() {
       <PageHeader
         eyebrow={`Terms · updated ${LEGAL_UPDATED}`}
         title="Terms of use, and how I work."
-        lead="The rules for this site, and the defaults for an engagement — which a signed agreement always overrides."
+        lead="The rules for this site, and the defaults for an engagement. A signed agreement always overrides them."
       />
 
       <Section className="py-16 md:py-24">

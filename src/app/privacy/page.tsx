@@ -24,7 +24,7 @@ const SECTIONS: LegalSection[] = [
   {
     heading: "What the contact form collects",
     paragraphs: [
-      `Your name, your email address, and — if you fill them in — your company, your budget range and your message. The company and budget fields are optional and the form works without them.`,
+      `Your name, your email address, your message and, if you fill them in, your company and your budget range. The company and budget fields are optional and the form works without them.`,
       `That submission is delivered as an email through Resend, a transactional email provider, and lands in my inbox. It is not written to a database, and this site has no user accounts, so there is nothing here to log into or be logged out of.`,
       `I use it to reply to you and to keep track of the work if we go ahead. I do not add you to a mailing list, because there isn't one.`,
     ],
@@ -55,13 +55,13 @@ const SECTIONS: LegalSection[] = [
   {
     heading: "How long it is kept",
     paragraphs: [
-      `Contact emails stay in my inbox until they are no longer useful — an enquiry that goes nowhere gets deleted, and correspondence about actual work is kept while that work and its invoicing are live. Ask me to delete yours and I will.`,
+      `Contact emails stay in my inbox until they are no longer useful. An enquiry that goes nowhere gets deleted, and correspondence about actual work is kept while that work and its invoicing are live. Ask me to delete yours and I will.`,
     ],
   },
   {
     heading: "Your rights",
     paragraphs: [
-      `Ask me what I hold about you, ask for a copy, ask me to correct it, or ask me to delete it. Email me and I will do it — there is no form to fill in and no process to go through.`,
+      `Ask me what I hold about you, ask for a copy, ask me to correct it, or ask me to delete it. Email me and I will do it. There is no form to fill in and no process to go through.`,
     ],
   },
   {

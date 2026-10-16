@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Stack",
   description:
-    "Everything Malik Boudine works with — frontend, mobile, backend, databases, DevOps, security, testing, architecture, APIs and AI engineering.",
+    "Everything Malik Boudine works with: frontend, mobile, backend, databases, DevOps, security, testing, architecture, APIs and AI engineering.",
   alternates: { canonical: "/stack" },
 };
 
@@ -133,7 +133,7 @@ export default function StackPage() {
                           "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm",
                           LEVEL_STYLE[item.level]
                         )}
-                        title={`${LEVEL_LABEL[item.level]} — ${LEVEL_BLURB[item.level]}`}
+                        title={`${LEVEL_LABEL[item.level]}: ${LEVEL_BLURB[item.level]}`}
                       >
                         {/* Logo when there is one, otherwise a level dot. */}
                         {TECH_LOGOS[item.name] ? (
@@ -158,7 +158,7 @@ export default function StackPage() {
                         {item.note && (
                           <span className="font-mono text-[0.65rem] opacity-70">{item.note}</span>
                         )}
-                        <span className="sr-only">— {LEVEL_LABEL[item.level]}</span>
+                        <span className="sr-only">, {LEVEL_LABEL[item.level]}</span>
                       </li>
                     ))}
                   </ul>

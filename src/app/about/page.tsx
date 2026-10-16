@@ -12,7 +12,7 @@ import Engineering from "@/components/sections/engineering";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Malik Boudine — full-stack and mobile developer in Algiers. Flutter, React, Supabase and Python, from architecture to deployment. EN/FR/AR.",
+    "Malik Boudine, full-stack and mobile developer in Algiers. Flutter, React, Supabase and Python, from architecture to deployment. EN/FR/AR.",
   alternates: { canonical: "/about" },
 };
 
@@ -69,7 +69,7 @@ export default function AboutPage() {
         <div className="container">
           <p className="eyebrow">How I work</p>
           <h2 className="mt-3 max-w-3xl font-display text-display-sm font-semibold tracking-tighter">
-            Small commits, milestone gates, visual verification before moving on.
+            Small commits, a review at every milestone, and each screen checked before I move on.
           </h2>
 
           <RevealGroup className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

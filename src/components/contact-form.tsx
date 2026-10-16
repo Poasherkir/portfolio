@@ -68,7 +68,7 @@ export default function ContactForm() {
         ].filter((l) => l !== null);
         setFallbackHref(
           `mailto:${address}` +
-            `?subject=${encodeURIComponent(`Project enquiry — ${data.name ?? ""}`)}` +
+            `?subject=${encodeURIComponent(`Project enquiry from ${data.name ?? ""}`)}` +
             `&body=${encodeURIComponent(lines.join(String.fromCharCode(10)))}`
         );
       }
@@ -163,7 +163,7 @@ export default function ContactForm() {
         >
           <p className="font-medium text-foreground">That did not send.</p>
           <p className="mt-1 text-muted-foreground">
-            Something on my end is not working — nothing you did. Your message is
+            Something on my end is not working, not anything you did. Your message is
             still here.
           </p>
           <a
