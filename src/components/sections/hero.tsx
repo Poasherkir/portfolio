@@ -119,7 +119,7 @@ export default function Hero() {
                   <span className="absolute inset-0 rounded-full bg-brand opacity-40 blur-[3px]" />
                 </span>
                 {hero.availability}
-                <span className="hidden text-muted-foreground/70 sm:inline">
+                <span className="hidden text-muted-foreground sm:inline">
                   · {profile.location} · {profile.timezone}
                 </span>
               </p>

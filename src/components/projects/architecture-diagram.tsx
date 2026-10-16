@@ -75,12 +75,8 @@ export default function ArchitectureDiagram({ projects }: { projects: Project[] 
 
           return (
             <li key={layer.id} className="relative bg-background/96">
-              <div
-                className={cn(
-                  "grid gap-4 p-5 transition-opacity duration-300 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-8 md:p-6",
-                  filled ? "opacity-100" : "opacity-35"
-                )}
-              >
+              {/* Unused layers are told apart by colour, not opacity, so they stay legible. */}
+              <div className="grid gap-4 p-5 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-8 md:p-6">
                 <div className="flex items-baseline gap-3">
                   <span
                     aria-hidden
@@ -92,7 +88,12 @@ export default function ArchitectureDiagram({ projects }: { projects: Project[] 
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <p className="font-display text-sm font-semibold tracking-tight">
+                    <p
+                      className={cn(
+                        "font-display text-sm font-semibold tracking-tight",
+                        !filled && "text-muted-foreground"
+                      )}
+                    >
                       {layer.label}
                     </p>
                     <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
