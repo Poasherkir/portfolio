@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 import { FadeIn } from "./reveal";
 
 /** Masthead for the inner pages. */
@@ -7,14 +8,18 @@ export default function PageHeader({
   title,
   lead,
   children,
+  className,
 }: {
   eyebrow: string;
   title: string;
   lead?: string;
   children?: ReactNode;
+  className?: string;
 }) {
   return (
-    <header className="relative border-b border-border pb-14 pt-36 md:pb-20 md:pt-44">
+    <header
+      className={cn("relative border-b border-border pb-14 pt-36 md:pb-20 md:pt-44", className)}
+    >
       <div className="container">
         <FadeIn>
           <p className="eyebrow">{eyebrow}</p>

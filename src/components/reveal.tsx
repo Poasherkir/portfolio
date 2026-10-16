@@ -56,6 +56,7 @@ export function WipeReveal({
       {/* Offset in percent: a fixed pixel offset can push short content fully
           outside this clipping box, and then whileInView never fires. */}
       <motion.div
+        data-reveal
         initial={reduced ? { opacity: 1, y: "0%" } : { opacity: 0, y: "60%" }}
         whileInView={{ opacity: 1, y: "0%" }}
         viewport={{ once: true, amount: 0.2 }}
@@ -71,7 +72,7 @@ export function WipeReveal({
           whileInView={{ left: "101%" }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration, delay, ease: [0.65, 0, 0.35, 1] }}
-          className="absolute inset-y-0 right-0 z-20 bg-brand"
+          className="absolute inset-y-0 right-0 z-20 bg-brand print:hidden"
         />
       )}
     </div>
@@ -110,6 +111,7 @@ export function Reveal({
   const Comp = motion[as];
   return (
     <Comp
+      data-reveal
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-10%" }}
@@ -156,6 +158,7 @@ export function RevealItem({
   const reduced = useReducedMotion();
   return (
     <motion.div
+      data-reveal
       variants={reduced ? staticVariants : defaultVariants}
       transition={reduced ? INSTANT : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={className}

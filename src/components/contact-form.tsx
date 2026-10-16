@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { cloneElement, isValidElement, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,15 @@ export default function ContactForm() {
       fallback = json.fallbackEmail;
 
       if (!res.ok) {
-        if (json.fieldErrors) setErrors(json.fieldErrors);
+        if (json.fieldErrors) {
+          setErrors(json.fieldErrors);
+          // Take the user to the first field that needs fixing.
+          const firstInvalid = Array.from(form.elements).find(
+            (el): el is HTMLInputElement =>
+              "name" in el && Boolean(json.fieldErrors[(el as HTMLInputElement).name])
+          );
+          firstInvalid?.focus();
+        }
         throw new Error(json.error ?? "Something went wrong.");
       }
 
@@ -193,12 +201,21 @@ function Field({
   error?: string;
   children: React.ReactNode;
 }) {
+  const errorId = `${name}-error`;
+  // Tie the message to its control, so it is read out when the field gets focus.
+  const control = isValidElement<React.HTMLAttributes<HTMLElement>>(children)
+    ? cloneElement(children, {
+        "aria-invalid": error ? true : undefined,
+        "aria-describedby": error ? errorId : undefined,
+      })
+    : children;
+
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
-      {children}
+      {control}
       {error && (
-        <p role="alert" className="text-xs text-destructive">
+        <p id={errorId} className="text-xs text-destructive">
           {error}
         </p>
       )}

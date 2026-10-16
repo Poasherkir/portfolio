@@ -135,6 +135,9 @@ Spam handling, without a CAPTCHA:
   dock. A prefix match would give Java the JavaScript logo.
 - The starfield and cover figures use a seeded PRNG so server and client
   markup match.
+- Printing is styled in `globals.css`: A4 margins, no film grain, and anything
+  wrapped in a scroll-in animation carries `data-reveal` so it prints even if
+  it was never scrolled to. `/cv` prints to two pages.
 - The key sound is synthesised in
   [`keyboard-audio.ts`](src/components/keyboard/keyboard-audio.ts): a noise
   burst through resonant bandpass filters, then a `tanh` soft clip. The

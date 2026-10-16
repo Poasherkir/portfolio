@@ -26,8 +26,9 @@ export default function CvPage() {
   return (
     <>
       <PageHeader
+        className="print:hidden"
         eyebrow="Curriculum vitae"
-        title="The short version, on one page."
+        title="The short version."
         lead="Print it, or save it as a PDF with the button below. If you need it in a different format for a client or a platform, ask."
       >
         <div className="flex flex-wrap gap-3 print:hidden">
@@ -56,7 +57,7 @@ export default function CvPage() {
 
       <Section className="py-16 md:py-24">
         <div className="container">
-          <div className="mx-auto max-w-3xl space-y-14">
+          <div className="mx-auto max-w-3xl space-y-14 print:max-w-none print:space-y-6">
             {/* Header block */}
             <header>
               <h2 className="font-display text-3xl font-semibold tracking-tight">{profile.name}</h2>
@@ -68,7 +69,12 @@ export default function CvPage() {
                 {profile.email && <li>{profile.email}</li>}
                 {socials.map((s) => (
                   <li key={s.title}>
-                    <a href={s.href} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="print-no-url"
+                    >
                       {s.href.replace(/^https?:\/\//, "")}
                     </a>
                   </li>
@@ -87,7 +93,7 @@ export default function CvPage() {
             {/* Selected work */}
             <section>
               <h3 className="eyebrow">Selected work</h3>
-              <ul className="mt-5 space-y-7 border-t border-border pt-5">
+              <ul className="mt-5 space-y-7 border-t border-border pt-5 print:mt-3 print:space-y-3 print:pt-3">
                 {featuredProjects.map((p) => (
                   <li key={p.slug}>
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
