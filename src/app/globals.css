@@ -188,6 +188,11 @@
 }
 
 /* Print styles, mainly for the /cv page. */
+@page {
+  size: A4;
+  margin: 14mm 16mm;
+}
+
 @media print {
   header[class*="fixed"],
   footer,
@@ -195,9 +200,15 @@
     display: none !important;
   }
 
+  html,
   body {
     background: #fff !important;
     color: #000 !important;
+  }
+
+  /* The film grain prints as a grey wash and adds over a megabyte to a PDF. */
+  .grain::after {
+    display: none !important;
   }
 
   .instrument-grid {
@@ -205,7 +216,8 @@
     backdrop-filter: none !important;
   }
 
-  a[href^="http"]::after {
+  /* Print the address after a link, unless its text already is the address. */
+  a[href^="http"]:not(.print-no-url)::after {
     content: " (" attr(href) ")";
     font-size: 0.7em;
     color: #555;
@@ -213,7 +225,26 @@
 
   section {
     padding-block: 1rem !important;
+  }
+
+  /* Scroll-in content that was never scrolled to would otherwise print blank. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Keep small units whole; whole sections are often taller than a page. */
+  li,
+  dl > div,
+  figure {
     break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
   }
 
   /* Hide the 3D canvas and fixed decorative layers. */
