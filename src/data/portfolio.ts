@@ -136,7 +136,9 @@ export const skillGroups: SkillGroup[] = [
     items: [
       { name: "Flutter / Dart", note: "primary", icons: ["flutter-original.svg", "dart-original.svg"] },
       { name: "go_router" },
+      { name: "Riverpod" },
       { name: "Custom state layer", note: "ChangeNotifier + InheritedWidget (AppScope)" },
+      { name: "Drift / SQLite", note: "encrypted with SQLCipher" },
       { name: "Design systems", note: "custom component libraries" },
       { name: "React Native", icons: ["react-original.svg"] },
       { name: "Capacitor" },
@@ -150,6 +152,7 @@ export const skillGroups: SkillGroup[] = [
     blurb: "Client-facing web, plus the back-office nobody else wants to build.",
     items: [
       { name: "React", icons: ["react-original.svg"] },
+      { name: "Next.js", icons: ["nextjs-original.svg"] },
       { name: "TypeScript / JavaScript", icons: ["typescript-original.svg", "javascript-original.svg"] },
       { name: "HTML / CSS", icons: ["html5-original.svg", "css3-original.svg"] },
       { name: "Admin dashboards", note: "CRUD, auth, role gating" },
@@ -161,6 +164,10 @@ export const skillGroups: SkillGroup[] = [
     blurb: "Postgres-first. Auth and permissions enforced on the server, never in the client.",
     items: [
       { name: "Supabase", note: "Postgres, Auth, Storage, RLS, Edge Functions", icons: ["supabase-original.svg", "postgresql-original.svg"] },
+      { name: "PostgreSQL", note: "Prisma, SQLAlchemy" },
+      { name: "Node.js", note: "Express, NestJS", icons: ["nodejs-original.svg"] },
+      { name: "FastAPI", icons: ["fastapi-original.svg"] },
+      { name: "Docker", note: "Compose stacks", icons: ["docker-original.svg"] },
       { name: "PHP / MySQL", icons: ["php-original.svg", "mysql-original.svg"] },
       { name: "Python", note: "pipelines, scraping, automation", icons: ["python-original.svg"] },
       { name: "Playwright", note: "authenticated scraping" },
@@ -177,6 +184,7 @@ export const skillGroups: SkillGroup[] = [
         icons: ["python-original.svg"],
       },
       { name: "Aviation data", note: "METAR/TAF, ADS-B, crew rosters, OFP" },
+      { name: "Constraint solving", note: "OR-Tools CP-SAT" },
       { name: "Algerian payment gating", note: "BaridiMob" },
       { name: "Gamification & quiz engines" },
     ],
