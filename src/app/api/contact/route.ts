@@ -6,7 +6,11 @@ export const runtime = "nodejs";
 
 const Payload = z.object({
   name: z.string().trim().min(2, "Please give me a name to reply to."),
-  email: z.string().trim().email("That email address does not look right."),
+  email: z
+    .string()
+    .trim()
+    .min(1, "I need an email address to reply to.")
+    .email("That email address does not look right."),
   company: z.string().trim().max(120).optional().or(z.literal("")),
   budget: z.string().trim().max(60).optional().or(z.literal("")),
   message: z.string().trim().min(20, "A little more detail helps me answer usefully."),
