@@ -35,7 +35,7 @@ export default function Hero() {
 
           <h1 className="mt-6">
             <span className="sr-only">
-              {profile.name} — {hero.displayLines.join(" ")}
+              {profile.name}: {hero.displayLines.join(" ")}
             </span>
             {hero.displayLines.map((line, i) => (
               <FadeIn key={line} delay={offset + 0.3 + i * 0.11}>

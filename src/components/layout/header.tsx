@@ -70,7 +70,7 @@ export default function Header() {
             href="/"
             onClick={() => setOpen(false)}
             className="group flex items-center gap-2.5"
-            aria-label={`${profile.name} — home`}
+            aria-label={`${profile.name}, home`}
           >
             <span className="relative flex h-2.5 w-2.5 shrink-0" aria-hidden>
               <span className="absolute inset-0 animate-blip rounded-full bg-brand" />

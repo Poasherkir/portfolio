@@ -32,13 +32,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     alternates: { canonical: `/projects/${project.slug}` },
     // The image comes from opengraph-image.tsx in this folder.
     openGraph: {
-      title: `${project.title} — ${profile.name}`,
+      title: `${project.title} · ${profile.name}`,
       description: project.tagline,
       url: absoluteUrl(`/projects/${project.slug}`),
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} — ${profile.name}`,
+      title: `${project.title} · ${profile.name}`,
       description: project.tagline,
     },
   };
@@ -66,7 +66,7 @@ function Prose({
     <Reveal as="section">
       <div id={section.key} className="max-w-2xl scroll-mt-28">
         <p className="eyebrow">
-          {pad(n)} — {section.label}
+          {pad(n)} · {section.label}
         </p>
         <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
           {section.label}
@@ -286,7 +286,7 @@ export default async function CaseStudyPage({ params }: Params) {
               {project.architecture && (
                 <Reveal as="section">
                   <div id="architecture" className="scroll-mt-28">
-                    <p className="eyebrow">{pad(num("architecture"))} — Architecture</p>
+                    <p className="eyebrow">{pad(num("architecture"))} · Architecture</p>
                     <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
                       Architecture
                     </h2>
@@ -303,7 +303,7 @@ export default async function CaseStudyPage({ params }: Params) {
               {project.screens && project.screens.length > 0 && (
                 <Reveal as="section">
                   <div id="screens" className="scroll-mt-28">
-                    <p className="eyebrow">{pad(num("screens"))} — The app</p>
+                    <p className="eyebrow">{pad(num("screens"))} · The app</p>
                     <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
                       The app
                     </h2>
@@ -322,7 +322,7 @@ export default async function CaseStudyPage({ params }: Params) {
               {project.beforeAfter && (
                 <Reveal as="section">
                   <div id="pipeline" className="scroll-mt-28">
-                    <p className="eyebrow">{pad(num("pipeline"))} — Before / after</p>
+                    <p className="eyebrow">{pad(num("pipeline"))} · Before / after</p>
                     <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
                       What changed
                     </h2>
@@ -366,7 +366,7 @@ export default async function CaseStudyPage({ params }: Params) {
                     id="why"
                     className="scroll-mt-28 rounded-xl border border-brand/25 bg-brand/[0.05] p-7 md:p-9"
                   >
-                    <p className="eyebrow">{pad(num("why"))} — Why it matters</p>
+                    <p className="eyebrow">{pad(num("why"))} · Why it matters</p>
                     <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight md:text-3xl">
                       Why it matters
                     </h2>

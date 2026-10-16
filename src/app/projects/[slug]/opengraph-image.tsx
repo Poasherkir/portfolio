@@ -28,7 +28,7 @@ const MUTED = "#9a9a9a";
 /** The bundled OG font has no Arabic glyphs, so bilingual titles keep their Latin half. */
 function latinTitle(title: string) {
   if (!/[؀-ۿ]/.test(title)) return title;
-  return title.split("—").pop()?.trim() ?? title;
+  return title.split("/").pop()?.trim() ?? title;
 }
 
 /** Satori cannot decode WebP; screenshots are converted to PNG data URLs. */

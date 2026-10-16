@@ -1,4 +1,4 @@
-# Portfolio — Malik Boudine
+# Malik Boudine's portfolio
 
 Source for my personal site: full-stack and mobile work, case studies, and an
 interactive 3D keyboard whose keycaps are the technologies I use.
@@ -116,29 +116,28 @@ Copy `.env.example` to `.env.local`. Everything is optional.
 payload with Zod and HTML-escapes everything before it reaches the email.
 Spam handling, without a CAPTCHA:
 
-1. **Honeypot.** A hidden `company_website` field must stay empty.
-2. **Timing.** Submissions faster than 2.5 s get a `200` and are dropped.
-3. **Rate limit.** 8 messages per IP per 10 minutes, in memory. Serverless
+1. A hidden `company_website` field (a honeypot) must stay empty.
+2. Submissions faster than 2.5 s get a `200` and are dropped.
+3. Each IP gets 8 messages per 10 minutes, counted in memory. Serverless
    instances are short-lived, so this only slows bursts down.
 
 ## Implementation notes
 
-- **Lenis and ScrollTrigger share one clock.** `useLenis(ScrollTrigger.update)`
-  drives ScrollTrigger from Lenis's frame loop; without it the keyboard drifts
-  against the page.
-- **The section chain follows the page order** (hero, projects, skills,
+- `useLenis(ScrollTrigger.update)` drives ScrollTrigger from Lenis's frame
+  loop. Without it the keyboard drifts against the page.
+- The keyboard's section chain follows the page order (hero, projects, skills,
   contact). Each section falls back to the previous one when scrolling up.
-- **Pointer events reach the keyboard through the page.** `main` has
-  `canvas-overlay-mode`, which disables pointer events except on links,
-  controls and text. The canvas re-enables them for itself.
-- **Logos are matched by exact name** in
+- `main` has `canvas-overlay-mode`, which disables pointer events except on
+  links, controls and text, so the pointer reaches the keyboard through the
+  page. The canvas re-enables them for itself.
+- Logos are matched by exact name in
   [`src/data/tech-logos.ts`](src/data/tech-logos.ts) and in the project modal
   dock. A prefix match would give Java the JavaScript logo.
-- **Seeded randomness.** The starfield and cover figures use a seeded PRNG so
-  server and client markup match.
-- **Keyboard sound** is synthesised in
-  [`keyboard-audio.ts`](src/components/keyboard/keyboard-audio.ts) (a noise
-  burst through resonant bandpass filters, then a `tanh` soft clip). The
+- The starfield and cover figures use a seeded PRNG so server and client
+  markup match.
+- The key sound is synthesised in
+  [`keyboard-audio.ts`](src/components/keyboard/keyboard-audio.ts): a noise
+  burst through resonant bandpass filters, then a `tanh` soft clip. The
   AudioContext is created on the first user gesture.
 
 ## Deployment

@@ -170,7 +170,7 @@ function ProjectDetail({ project }: { project: Project }) {
         {sections.map((s, i) => (
           <div key={s.key}>
             <p className="eyebrow">
-              {String(i + 1).padStart(2, "0")} — {s.label}
+              {String(i + 1).padStart(2, "0")} · {s.label}
             </p>
             <p className="mt-3 text-sm font-normal leading-relaxed text-muted-foreground md:text-base">
               {s.body}

@@ -131,7 +131,7 @@ export default function CvPage() {
                 {profile.languages.map((l) => (
                   <li key={l.name}>
                     <span className="font-medium">{l.name}</span>
-                    <span className="text-muted-foreground"> — {l.level}</span>
+                    <span className="text-muted-foreground">: {l.level}</span>
                   </li>
                 ))}
                 <li className="pt-2 text-muted-foreground">{profile.legal}</li>
